@@ -1,0 +1,48 @@
+<style>
+  body {
+    margin: 40px 10px;
+    padding: 0;
+    font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
+    font-size: 14px;
+  }
+
+  #calendar {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+</style>
+<div class="coverdiv">
+  <div class="card-body">
+    <div [ngSwitch]="view">
+      <mwl-calendar-month-view
+        *ngSwitchCase="'month'" 
+        [viewDate]="viewDate" 
+        [events]="events2" 
+        [refresh]="refresh" 
+        [locale]="locale">
+      </mwl-calendar-month-view>
+      <mwl-calendar-week-view
+      *ngSwitchCase="'week'"
+      [viewDate]="viewDate"
+      [events]="events2" 
+      [refresh]="refresh" 
+      [locale]="locale">
+    </mwl-calendar-week-view>
+    </div>
+    <button (click)="view = 'week'">add-Event</button>
+    <ng-template #loading>
+      <div class="text-center">
+        <i class="fa fa-spin fa-spinner fa-5x"></i>
+        <br> Loading events...
+      </div>
+    </ng-template>
+    <!-- <div *ngIf="events$ | async; else loading; let events">
+    <mwl-calendar-month-view
+      [viewDate]="viewDate"
+      [events]="events"
+      [activeDayIsOpen]="true">
+    </mwl-calendar-month-view>
+</div> -->
+    <!-- <div id='calendar'></div> -->
+  </div>
+</div>

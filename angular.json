@@ -23,9 +23,15 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.css",
+              "src/assets/layout/styles/layout.css",
+              "node_modules/bootstrap/dist/css/bootstrap.min.css"
             ],
-            "scripts": []
+            "scripts": [ "../BookNail/node_modules/jquery/dist/jquery.min.js",
+                        "node_modules/bootstrap/dist/js/bootstrap.min.js",
+                         "src/assets/layout/scripts/jquery.backtotop.js",
+                         "src/assets/layout/scripts/jquery.flexslider-min.js",
+                         "src/assets/layout/scripts/jquery.mobilemenu.js"]
           },
           "configurations": {
             "production": {

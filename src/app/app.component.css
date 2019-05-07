@@ -1,0 +1,12 @@
+
+.main-container {
+    direction: rtl;
+    text-align: right;
+    margin-top: 12%;
+    padding: 15px;
+    -ms-overflow-x: hidden;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    position: relative;
+    overflow: hidden;
+}
