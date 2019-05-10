@@ -18,19 +18,13 @@ export class AuthService {
     this.initClient();
     this.user$ = afAuth.authState;
   }
-  // loadClient() {
-  //   gapi.client.setApiKey("AIzaSyA7HzWhPVRF7dNjWuTV8h4es6H3m_pyPoM");
-  //   return gapi.client.load("https://content.googleapis.com/discovery/v1/apis/calendar/v3/rest")
-  //     .then(function () { console.log("GAPI client loaded for API"); },
-  //       function (err) { console.error("Error loading GAPI client for API", err); });
-  // }
 
   initClient() {
     gapi.load('client', () => {
       console.log('Loaded client');
       gapi.client.init({
-        apiKey: 'AIzaSyC3Wn-g15Q6kDaTKyVZGdrRuDDtnhmHYZI',
-        clientId: '565956861788-8pj575ea8lvq97ecvk5fr0g8g1v4qkd7.apps.googleusercontent.com',
+        apiKey: 'KEY-KEY',
+        clientId: 'CLIENT ID',
         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
         scope: 'https://www.googleapis.com/auth/calendar'
       });
