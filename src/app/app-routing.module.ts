@@ -16,13 +16,15 @@ import {NgbModule, NgbDateAdapter, NgbDateNativeAdapter, NgbDateParserFormatter}
 import {NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateCustomParserFormatter } from './dateformat';
 import { AuthService } from './auth.service';
+import { LoginComponent } from './components/login/login.component';
 registerLocaleData(localeHe);
 
 const routes: Routes = [
   { path: 'setbook', component: SetBookComponent },
   { path: 'Customers', component: CustomersComponent },
   { path: 'Calendar', component: CalendarViewComponent },
-  { path: '', component: HomeComponent }
+  { path: '', component: HomeComponent },
+  { path: 'Admin', component: LoginComponent }
 ];
 
 @NgModule({
@@ -37,4 +39,4 @@ const routes: Routes = [
   providers:[ApiServiceService,LocalresService,AuthService,{provide:LocationStrategy,useClass:HashLocationStrategy},{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},{provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}]
 })
 export class AppRoutingModule { }
-export const routingComponents = [SetBookComponent, CustomersComponent, CalendarViewComponent];
+export const routingComponents = [SetBookComponent, CustomersComponent, CalendarViewComponent,LoginComponent];

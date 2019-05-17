@@ -12,6 +12,7 @@ import { NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
 import { Services } from '../../Services';
 import { ServiceTypes } from '../../servicetypes';
 import { Book } from '../../Book';
+import { resultsAPI } from 'src/app/results';
 
 const I18N_VALUES = {
   'he': {
@@ -71,7 +72,8 @@ export class SetBookComponent implements OnInit, OnChanges {
   TimeSlotSelected: TimeSlots;
   ServiceSelected: Services;
   ServcieTypeSelected: ServiceTypes;
-  ServicesTypes$: Observable<ServiceTypes[]>;
+  // ServicesTypes$: Observable<resultsAPI<ServiceTypes[]>>;
+  ServicesTypes$: ServiceTypes[];
   date: { year: number, month: number };
   dateNow: Date = new Date(Date.now());
   minDate: NgbDateStruct = {
@@ -118,20 +120,28 @@ export class SetBookComponent implements OnInit, OnChanges {
   }
 
   onServiceChange(event) {
+    // try {
+    //   this.ServicesTypes$ = this.API.getAllServicetypesByServiceID(event.ServiceID = !undefined ? event.ServiceID : 4);
+    //   debugger;
+    // } catch (error) {
+    //   this.ServicesTypes$ = this.API.getAllServicetypesByServiceID(0);
+    // }
     try {
-      this.ServicesTypes$ = this.API.getAllServicetypesByServiceID(event.ServiceID = !undefined ? event.ServiceID : 4);
+      this.API.getAllServicetypesByServiceID(event.ServiceID = !undefined ? event.ServiceID : 4).subscribe(api => {
+        this.ServicesTypes$ = api.Result;
+      })
+      debugger;
     } catch (error) {
-      this.ServicesTypes$ = this.API.getAllServicetypesByServiceID(0);
+      //this.ServicesTypes$ = this.API.getAllServicetypesByServiceID(0);
     }
   }
 
   onServiceTypeChange(event) {
-    debugger;
+    console.log(this.ServcieTypeSelected);
     this.finishEndDate = addMinutes(this.finishEndDate, event.Duration)
   }
 
   setBook() {
-    debugger;
     this.Books = new Book()
     this.Books = {
       CustomerID: 1,

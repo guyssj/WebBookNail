@@ -25,6 +25,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth'
 import { environment } from '../environments/environment';
 import { AuthService } from './auth.service';
+import { LoginComponent } from './components/login/login.component';
 
 registerLocaleData(localeHe);
 
@@ -35,6 +36,7 @@ registerLocaleData(localeHe);
     CustomersComponent,
     NavbarComponent,
     HomeComponent,
+    LoginComponent,
   ],
   imports: [
     BrowserModule,

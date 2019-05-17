@@ -81,14 +81,14 @@
                   בחר סוג טיפול
                   <small class="text-danger">*</small>
                 </label>
-                <ng-select  [items]="ServicesTypes$ | async"  
+                <ng-select  [items]="ServicesTypes$"  
                 bindLabel="ServiceTypeName" 
                 autofocus
                 (change)="onServiceTypeChange($event)"
                 name="serviceType" 
                 [(ngModel)]="ServcieTypeSelected">
                 </ng-select> 
-                {{ServiceTypeSelected | json}}
+                {{ServcieTypeSelected | json}}
           </div>
       </div>
     </form>

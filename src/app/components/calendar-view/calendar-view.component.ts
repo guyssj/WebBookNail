@@ -19,6 +19,7 @@ import {
 import { Observable, Subject } from "rxjs";
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { removeSummaryDuplicates } from "../../../../node_modules/@angular/compiler";
+import { ActivatedRoute } from "@angular/router";
 
 interface bookz {
   BookID: number;
@@ -34,13 +35,22 @@ const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, "0");
 const direction = timezoneOffset > 0 ? "-" : "+";
 const timezoneOffsetString = `T00:00:00${direction}${hoursOffset}${minutesOffset}`;
 
+function setCookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
 @Component({
   selector: "app-calendar-view",
   templateUrl: "./calendar-view.component.html",
   styleUrls: ["./calendar-view.component.css"]
 })
+
+
 export class CalendarViewComponent implements OnInit {
-  constructor(private API: ApiServiceService, private http: HttpClient) { }
+  constructor(private API: ApiServiceService, private http: HttpClient,    private route: ActivatedRoute) { }
   events2: CalendarEvent[] = [];
   viewDate: Date = new Date();
   Books: Book[]= [];
@@ -50,29 +60,18 @@ export class CalendarViewComponent implements OnInit {
   refresh: Subject<any> = new Subject();
   locale: string = 'he';
   ngOnInit() {
-    this.API.getBooks().subscribe(allbook => {
-      debugger;
-      this.Books = allbook.Result;
-      this.getEvent(this.Books);
-    })
-    //this.fetchEvents2();
-    // fill all event to array fixed to ui-calendar
-    // for (let i = 0; i < books.length; i++) {
-    //   let event = {
-    //     title:'ok '+i,
-    //     start:'',
-    //     end:''
-    //   }
-    //   event.start = books[i].StartDate;
-    //   event.end = books[i].EndDate;
-    //   this.events2.push(event);
-    // }
-    // this.getCalendar(this.events2);
-    // });
+    this.route
+      .queryParams
+      .subscribe(params => {
+        setCookie("user",params["TokenApi"],1)
+        this.API.getBooks().subscribe(allbook => {
+          this.Books = allbook.Result;
+          this.getEvent(this.Books);
+        })
+      });
   }
 
   addEvent(): void {
-    debugger;
     this.events2.push({
       title: 'New event',
       start: new Date("2018-10-19"),
@@ -124,7 +123,6 @@ export class CalendarViewComponent implements OnInit {
    */
   getEvent(books:Book[]): void {
     // this.Books = this.getBooks();
-    debugger;
     // fill all ecent to array EventCalendar Angular 6 calendar
     for (let i = 0; i < books.length; i++) {
       const event = {

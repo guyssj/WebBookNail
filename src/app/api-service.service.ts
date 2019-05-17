@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Book } from './Book';
 import { Observable } from '../../node_modules/rxjs';
 import { CalendarEvent } from '../../node_modules/calendar-utils';
-import {resultsAPI} from './results'
+import { resultsAPI } from './results'
 import { date } from './date';
 import { TimeSlots } from './TimeSlots';
 import { Services } from './Services';
@@ -13,12 +13,16 @@ import { ServiceTypes } from './servicetypes';
   providedIn: 'root'
 })
 export class ApiServiceService {
-  // tslint:disable-next-line:no-inferrable-types
-  _baseUrl: string = 'http://localhost/NailAPI/public/api/';
+  _baseUrl: string = 'http://localhost/NailBook/public/api/';
   constructor(private http: HttpClient) { }
 
+
+  login(obj){
+    return this.http.post("http://localhost/NailBook/public/login",obj,{observe: 'response'});
+  }
+
   getBooks() {
-    return this.http.get<resultsAPI<Book[]>>(this._baseUrl + 'GetAllBook2');
+    return this.http.get<resultsAPI<Book[]>>(this._baseUrl + 'GetAllBook2',{withCredentials:true});
   }
 
   getAllDates():Observable<date[]>{
@@ -33,8 +37,11 @@ export class ApiServiceService {
     return this.http.get<Services[]>(this._baseUrl+'GetAllServices')
   }
 
-  getAllServicetypesByServiceID(id):Observable<ServiceTypes[]>{
-    return this.http.get<ServiceTypes[]>(this._baseUrl+'GetAllServiceTypeByService?ServiceID='+id)
+  // getAllServicetypesByServiceID(id):Observable<resultsAPI<ServiceTypes[]>>{
+  //   return this.http.get<resultsAPI<ServiceTypes[]>>(this._baseUrl+'GetAllServiceTypeByService?ServiceID='+id)
+  // }
+  getAllServicetypesByServiceID(id){
+    return this.http.get<resultsAPI<ServiceTypes[]>>(this._baseUrl+'GetAllServiceTypeByService?ServiceID='+id)
   }
 
   setBook(Book:Book){
