@@ -10,6 +10,15 @@
     "desc":"תיאור מלל תיאור מלל",
     "Contact":"צרו קשר",
     "CustomerRecommend":"לקוחות ממליצים",
-    "Time":"שעה"
+    "Time":"שעה",
+    "FirstName":"שם פרטי",
+    "LastName":"שם משפחה",
+    "PhoneNumber":"מספר פלאפון",
+    "selectedDate":"בחרי תאריך",
+    "selectedTime":"בחרי שעה",
+    "selectedService":"בחרי טיפול",
+    "selectedType":"בחרי סוג הטיפול",
+    "BookSet":"קבעי את הטיפול",
+    "Cancel":"בטלי"
 
 }

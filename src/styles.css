@@ -1,26 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
-@import "~@ng-select/ng-select/themes/default.theme.css";
-/* .coverdiv{
-    border: 0;
-    box-shadow: 0 2px 2px 0 rgba(0,0,0,.14),0 3px 1px -2px rgba(0,0,0,.2),0 1px 5px 0 rgba(0,0,0,.12);
-    position: relative;
-display: flex;
-flex-direction: column;
-min-width: 0;
-word-wrap: break-word;
-background-color: #fff;
-background-clip: border-box;
-border: 1px solid rgba(0,0,0,.12);
-border-radius: .125rem;
-background-color: rgb(255,218,225);
-} */
+@import "~@ng-select/ng-select/themes/material.theme.css";
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
 
 div{
     text-align: right;
 }
 
-
+.btn,.btn.pink, .btn.inverse:hover{color:#FFFFFF; background-color:#C96D9F; border-color:#C96D9F;}
+.btn:hover, .btn.inverse{color:inherit; background-color:transparent; border-color:inherit;}
 /* You can add global styles to this file, and also import other style files */
 
 @font-face {
@@ -45,3 +33,7 @@ div{
     font-style:   normal;
     font-weight:  200;
   }
+
+  mat-datepicker-content{
+    z-index: 1200;
+}

@@ -13,7 +13,7 @@
 </style>
 <div class="coverdiv">
   <div class="card-body">
-    <div [ngSwitch]="view">
+    <div [ngSwitch]="view" *ngIf="loading2 == false; else loading">
       <mwl-calendar-month-view
         *ngSwitchCase="'month'" 
         [viewDate]="viewDate" 
@@ -26,7 +26,9 @@
       [viewDate]="viewDate"
       [events]="events2" 
       [refresh]="refresh" 
-      [locale]="locale">
+      [locale]="locale"
+      [hourSegments]="6"
+      (eventClicked)="clickEvent($event)">
     </mwl-calendar-week-view>
     </div>
     <button (click)="view = 'week'">add-Event</button>

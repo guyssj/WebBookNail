@@ -13,7 +13,7 @@ import { AuthService } from '../../auth.service';
 export class HomeComponent implements OnInit ,AfterViewInit {
   localRes:any = {};
   @ViewChild(SetBookComponent) setBookCom;
-  constructor(private localres:LocalresService,private auth:AuthService) { }
+  constructor(private localres:LocalresService) { }
 
   ngOnInit() {
     this.localres.getLocalResoruce("he").subscribe(data => {
@@ -35,13 +35,9 @@ export class HomeComponent implements OnInit ,AfterViewInit {
         }, 500);
       });
     });
-
+    
   }
 
   ngAfterViewInit(){
-  }
-
-  setBooking(){
-    this.setBookCom.setBook();
   }
 }

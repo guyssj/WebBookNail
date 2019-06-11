@@ -1,96 +1,80 @@
-<div class="card">
-  <div class="card-body">
-    <h3 class='text-center'> </h3>
-    <form>
+    <form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()">
       <br>
       <h6 class="text-primary"> </h6>
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="First_name" style="position: initial;" class="bmd-label-floating">
-            שם פרטי
-            <small class="text-danger">*</small>
-          </label>
-          <input type="text" class="form-control" name="First_name" required minlength="2">
-          <small class="form-text text-danger"></small>
-          <small class="form-text text-danger"></small>
+      <!-- First Name and LastName -->
+      <div>
+        <div class="form-row">
+          <mat-form-field class="col-md-6">
+            <input matInput placeholder="{{localRes?.FirstName}}"
+              formControlName="firstName" required>
+            <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-md-6">
+            <input matInput placeholder="{{localRes?.LastName}}"
+              formControlName="lastName" required>
+            <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
+          </mat-form-field>
         </div>
-        <div class="form-group col-md-6">
-          <label for="last_name" style="position: initial;" class="bmd-label-floating">
-            שם משפחה
-            <small class="text-danger">*</small>
-          </label>
-          <input type="text" class="form-control" name="last_name" required minlength="2">
-          <small class="form-text text-danger"></small>
-          <small class="form-text text-danger"></small>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="phone" style="position: initial;" class="bmd-label-floating">
-            מספר פלאפון
-            <small class="text-danger">*</small>
-          </label>
-          <input type="text" class="form-control" name="phone" required minlength="2">
-          <small class="form-text text-danger"></small>
-          <small class="form-text text-danger"></small>
-        </div>
-        <div class="form-group col-md-6">
-            <label for="dp" style="position: initial;" class="bmd-label-floating">
-                תאריך התור
-                <small class="text-danger">*</small>
-              </label>
-          <div class="input-group">
-            <input class="form-control hebrew rtl" placeholder="יש לבחור תאריך" 
-              (dateSelect)="itemSelected($event)" 
-              [minDate]="minDate" 
-              [maxDate]="maxDateNew" 
-              [displayMonths]="1" 
-              [firstDayOfWeek]="7"
-              name="dp" 
-              [(ngModel)]="model" 
-              ngbDatepicker 
-              #d="ngbDatepicker">
-            <div class="input-group-prepend">
-              <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button"><fa-icon [icon]="faCalendarAlt"></fa-icon></button>
-            </div>
-          </div>
+
+        <!-- Phone Number And Date -->
+        <div class="form-row">
+          <mat-form-field class="col-md-6">
+            <input matInput placeholder="{{localRes?.PhoneNumber}}"
+              formControlName="phoneNumber" required>
+            <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
+          </mat-form-field>
+          <!-- {{customer | json}} -->
+          <mat-form-field class="col-md-6">
+              <input matInput [min]="dateNow" required formControlName="date" [max]="maxDate" (dateChange)="itemSelected($event)" [matDatepicker]="picker" placeholder="{{localRes?.selectedDate}}">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+              <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
+            </mat-form-field>
         </div>
       </div>
+      <!-- Time and Service -->
       <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="time" style="position: initial;" class="bmd-label-floating">
-            שעה
-            <small class="text-danger">*</small>
-          </label>
-          <ng-select [items]="Time$ | async" bindLabel="timeSlot" autofocus bindValue="timeSlot" (change)="onTimeChange($event)" name="time" [(ngModel)]="TimeSlotSelected">
-          </ng-select> 
+        <div class="col-md-6">
+          <ng-select dir="rtl"
+          [items]="Time$ | async" 
+          bindLabel="timeSlot"
+          clearAllText="Clear"
+          autofocus 
+          formControlName="timeSlot"
+          bindValue="timeSlot"
+          placeholder="{{localRes?.selectedTime}}"
+          (change)="onTimeChange($event)" 
+           required>
+          </ng-select>
         </div>
-        <div class="form-group col-md-6">
-            <label for="service" style="position: initial;" class="bmd-label-floating">
-              בחר טיפול
-              <small class="text-danger">*</small>
-            </label>
-            <ng-select [items]="Services$ | async" bindLabel="ServiceName" autofocus (change)="onServiceChange($event)" name="service" [(ngModel)]="ServiceSelected">
-            </ng-select> 
-            {{ServiceSelected | json}}
-          </div>
+        <div class="col-md-6">
+          <ng-select 
+            [items]="Services$ | async"
+            dir="rtl"
+            placeholder="{{localRes?.selectedService}}"
+            bindLabel="ServiceName" 
+            autofocus
+            (change)="onServiceChange($event)"
+            formControlName="service">
+          </ng-select>
+        </div>
       </div>
+      <!-- Service Types -->
       <div class="form-row">
-          <div class="form-group col-md-6" *ngIf="ServiceSelected">
-              <label for="serviceType" style="position: initial;" class="bmd-label-floating">
-                  בחר סוג טיפול
-                  <small class="text-danger">*</small>
-                </label>
-                <ng-select  [items]="ServicesTypes$"  
-                bindLabel="ServiceTypeName" 
-                autofocus
-                (change)="onServiceTypeChange($event)"
-                name="serviceType" 
-                [(ngModel)]="ServcieTypeSelected">
-                </ng-select> 
-                {{ServcieTypeSelected | json}}
-          </div>
+        <div class="col-md-6" *ngIf="ServiceSelected">
+          <ng-select 
+            [items]="ServicesTypes$" 
+            bindLabel="ServiceTypeName" 
+            placeholder="{{localRes?.selectedType}}"
+            dir="rtl"
+            autofocus
+            (change)="onServiceTypeChange($event)" 
+            formControlName="ServcieType">
+          </ng-select>
+        </div>
       </div>
+         <div>
+          <button type="submit" class="btn pink">{{localRes?.BookSet}}</button>
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">{{localRes?.Cancel}}</button>
+        </div>
     </form>
-  </div>
-</div>
