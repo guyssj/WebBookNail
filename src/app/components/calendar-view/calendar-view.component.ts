@@ -19,6 +19,7 @@ import {
 import { Observable, Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute } from "@angular/router";
+import { addDays, addMinutes } from 'date-fns';
 
 interface bookz {
   BookID: number;
@@ -71,7 +72,7 @@ export class CalendarViewComponent implements OnInit {
   tokenCookie: string = "";
   Books: Book[] = [];
   view: string = "week";
-  loading2:boolean = true;
+  loading2: boolean = true;
   events$: Observable<Array<CalendarEvent<{ bookz: bookz }>>>;
   activeDayIsOpen: boolean = false;
   refresh: Subject<any> = new Subject();
@@ -79,36 +80,34 @@ export class CalendarViewComponent implements OnInit {
   ngOnInit() {
     this.getApiWithToken();
   }
-/**
- * 
- * get API request with check if have token in Query string
- */
-  getApiWithToken(){
+  /**
+   * 
+   * get API request with check if have token in Query string
+   */
+  getApiWithToken() {
     this.route
       .queryParams
       .subscribe(params => {
         //check if cookie token is exist
-        this.tokenCookie = getCookie("userToken"); 
+        this.tokenCookie = getCookie("userToken");
         if (this.tokenCookie != "") {
           let GetToken = params["TokenApi"];
           // check if have token API in Query string
-          if (GetToken != undefined) { 
+          if (GetToken != undefined) {
             // update the Cookie token
-            setCookie("userToken", GetToken, 1) 
+            setCookie("userToken", GetToken, 1)
             this.API.getBooks().subscribe(allbook => {
               debugger;
               this.Books = allbook.Result;
               this.getEvent(this.Books);
-              this.loading2 = false;
             })
           }
-          else{
+          else {
             //Get all books from API with Token
             this.API.getBooks().subscribe(allbook => {
               debugger;
               this.Books = allbook.Result;
               this.getEvent(this.Books);
-              this.loading2 = false;
             })
           }
         }
@@ -120,14 +119,13 @@ export class CalendarViewComponent implements OnInit {
             this.API.getBooks().subscribe(allbook => {
               this.Books = allbook.Result;
               this.getEvent(this.Books);
-              this.loading2 = false;
             })
           }
         }
       });
   }
 
-  clickEvent(event){
+  clickEvent(event) {
     console.log(event);
   }
   addEvent(): void {
@@ -183,21 +181,27 @@ export class CalendarViewComponent implements OnInit {
   getEvent(books: Book[]): void {
     // fill all ecent to array EventCalendar Angular 6 calendar
     for (let i = 0; i < books.length; i++) {
-      this.API.getCustomerById(books[i].CustomerID).subscribe(cus =>{
-        const event = {
-          title: cus.Result.FirstName +' '+ cus.Result.LastName ,
-          start: new Date(books[i].StartDate),
-          end: new Date(books[i].EndDate),
-          draggable: false,
-          resizable: {
-            beforeStart: false,
-            afterEnd: false
+      this.API.getCustomerById(books[i].CustomerID).subscribe(cus => {
+        this.API.getAllServicetypesByServiceID(books[i].ServiceID).subscribe(srvtype => {
+          let servType = srvtype.Result.find(serv => serv.ServiceTypeId == books[i].ServiceTypeID)
+          let Start = addMinutes(books[i].StartDate, books[i].StartAt);
+          let End = addMinutes(Start, books[i].Durtion);
+          const event = {
+            title: cus.Result.FirstName + ' ' + cus.Result.LastName + ' '+ servType.ServiceTypeName,
+            start: Start,
+            end: End,
+            draggable: false,
+            resizable: {
+              beforeStart: false,
+              afterEnd: false
+            }
           }
-        }
-        this.events2.push(event);
-        this.refresh.next();
-      });
+          this.events2.push(event);
+          this.refresh.next();
+          this.loading2 = false;
+        });
+      }); //end customer
 
-    }
+    } //end of loop for
   }
 }

@@ -53,8 +53,8 @@ export class ApiServiceService {
     return this.http.get<resultsAPI<Customer>>(this._baseUrl2+'GetCustomerById?CustomerID='+id,{withCredentials:true})
   }
 
-  setBook(Book:Book){
-    return this.http.post(this._baseUrl+'SetBook',Book)
+  setBook(Book:Book):Observable<resultsAPI<any>>{
+    return this.http.post<resultsAPI<any>>(this._baseUrl+'SetBook',Book)
   }
 
 }

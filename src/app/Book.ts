@@ -1,7 +1,7 @@
 export class Book {
     BookID?: number;
     StartDate: any;
-    EndDate: any;
+    StartAt: number;
     CustomerID: number;
     ServiceID: number;
     Durtion: number;

@@ -19,91 +19,29 @@ import { MessageConfig } from '../MessageConfig';
 import { timeInterval, take } from 'rxjs/operators';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 
-const I18N_VALUES = {
-  'he': {
-    weekdays: ['ב׳', 'ג׳', 'ד׳', 'ה׳', 'ו׳', 'ש׳', 'א׳'],
-    months: [
-      'ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי',
-      'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'
-    ],
-  }
-  // other languages you would support
-};
-
-// Define a service holding the language. You probably already have one if your app is i18ned. Or you could also
-// use the Angular LOCALE_ID value
-@Injectable()
-export class I18n {
-  language = 'he';
-}
-
-// Define custom service providing the months and weekdays translations
-@Injectable()
-export class CustomDatepickerI18n extends NgbDatepickerI18n {
-
-  constructor(private _i18n: I18n) {
-    super();
-  }
-
-  getWeekdayShortName(weekday: number): string {
-    return I18N_VALUES[this._i18n.language].weekdays[weekday - 1];
-  }
-  getMonthShortName(month: number): string {
-    return I18N_VALUES[this._i18n.language].months[month - 1];
-  }
-  getMonthFullName(month: number): string {
-    return this.getMonthShortName(month);
-  }
-
-  getDayAriaLabel(date: NgbDateStruct): string {
-    return `${date.day}-${date.month}-${date.year}`;
-  }
-}
-
 
 @Component({
   selector: 'app-set-book',
   templateUrl: './set-book.component.html',
   styleUrls: ['./set-book.component.css'],
-
-  providers: [I18n, { provide: NgbDatepickerI18n, useClass: CustomDatepickerI18n }] // define custom NgbDatepickerI18n provider
 })
-export class SetBookComponent implements OnInit, OnChanges {
+export class SetBookComponent implements OnInit {
   localRes: any
-  Date$: Observable<date[]>
   faCalendarAlt = faCalendarAlt;
   Time$: Observable<TimeSlots[]>;
   Services$: Observable<Services[]>;
   model: NgbDateStruct;
-  TimeLoad: boolean = true;
-  ServiceLoad: boolean = true;
-  ServiceTypeLoad: boolean = true;
+  StartAt:number;
+  EndAt:number;
   TimeSlotSelected: TimeSlots;
   ServiceSelected: Services;
   ServcieTypeSelected: ServiceTypes;
-  customer: Customer = {
-    FirstName: '',
-    LastName: '',
-    PhoneNumber: ''
-  }
-  // ServicesTypes$: Observable<resultsAPI<ServiceTypes[]>>;
+  customer: Customer;
   ServicesTypes$: ServiceTypes[];
-  date: { year: number, month: number };
   dateNow: Date = new Date(Date.now());
-  minDate: NgbDateStruct = {
-    year: this.dateNow.getFullYear(),
-    month: this.dateNow.getUTCMonth() + 1,
-    day: this.dateNow.getUTCDate()
-  };
   maxDate: Date = addDays(this.dateNow, 30);
-  maxDateNew: NgbDateStruct = {
-    year: this.maxDate.getFullYear(),
-    month: this.maxDate.getMonth() + 1,
-    day: this.maxDate.getDate()
-  }
   formBuilder: any;
   finishStartDate: Date;
-  finishEndDate: Date;
   Books: Book;
   reactiveForm = new FormGroup({
     firstName: new FormControl(null, Validators.required),
@@ -114,27 +52,41 @@ export class SetBookComponent implements OnInit, OnChanges {
     service: new FormControl(null, Validators.required),
     ServcieType: new FormControl(null, Validators.required)
   });
-  constructor(private localres: LocalresService, private dialog: MatDialog, private API: ApiServiceService, private adapter: DateAdapter<any>) { }
+  constructor(private localres: LocalresService,
+              private dialog: MatDialog, 
+              private API: ApiServiceService, 
+              private adapter: DateAdapter<any>) { }
+
   ngOnInit() {
     this.localres.getLocalResoruce("he").subscribe(data => {
       this.localRes = data;
       console.log(this.localRes)
     })
     this.adapter.setLocale('he');
-    this.Date$ = this.API.getAllDates();
     this.Time$ = this.API.getAllTimes();
-    this.TimeLoad = false;
     this.Services$ = this.API.getAllServices();
-    this.ServiceLoad = false;
   }
 
+  /**
+   * 
+   * Event when selected DatePicker
+   * 
+   * @param Event:MatDatepickerInputEvent
+   * 
+   */
   itemSelected(event: MatDatepickerInputEvent<Date>) {
-    debugger;
-
-    this.finishStartDate = new Date(event.value)
-    this.finishEndDate = new Date(event.value);
+    this.finishStartDate = new Date(event.value);
+    this.finishStartDate = this.clearTime(this.finishStartDate);
+    this.finishStartDate = addMinutes(this.finishStartDate, 0);
+    this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
   }
 
+  /**
+   * 
+   * Method when submit button was clicked
+   * 
+   * check if all form field is valid
+   */
   onSubmit() {
     if (!this.reactiveForm.valid) {
       Object.keys(this.reactiveForm.controls).forEach(field => { // {1}
@@ -144,41 +96,57 @@ export class SetBookComponent implements OnInit, OnChanges {
     }
     else {
       this.setBook();
-      console.log(this.reactiveForm.value);
-    }
-  }
-  onTimeChange(event) {
-    if (this.finishStartDate) {
-      this.finishEndDate = this.clearTime(this.finishEndDate);
-      this.finishStartDate = this.clearTime(this.finishStartDate);
-      this.finishStartDate = addMinutes(this.finishStartDate, event.id);
-      this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
-      this.finishEndDate = addMinutes(this.finishEndDate, event.id);
-      this.finishEndDate = addMinutes(this.finishEndDate, this.finishEndDate.getTimezoneOffset() * (-1));
-      console.log(this.finishStartDate)
-      console.log(this.finishEndDate)
     }
   }
 
-  onServiceChange(event) {
+  /**
+   * Event method when Time changed
+   * 
+   * Save the time when selected in minutes
+   * @param event TimeSlots
+   */
+  onTimeChange(event:TimeSlots) {
+    if (this.finishStartDate) {
+      this.StartAt = event.id;
+    }
+    else {
+      this.StartAt = event.id;
+    }
+  }
+
+  /**
+   * Method event when selected a Service
+   * 
+   * Go to api with service selected and get ServiceTypes
+   * @param event Services
+   */
+  onServiceChange(event:Services) {
     try {
       this.API.getAllServicetypesByServiceID(event.ServiceID = !undefined ? event.ServiceID : 4).subscribe(api => {
-        debugger;
         this.ServicesTypes$ = api.Result;
         this.ServiceSelected = this.reactiveForm.value.service;
-        this.ServiceTypeLoad = false;
       })
     } catch (error) {
 
     }
   }
 
-  onServiceTypeChange(event) {
+  /**
+   * Method event when Service type selected
+   * 
+   * Save the Service type selected
+   * 
+   * @param event ServiceTypes
+   */
+  onServiceTypeChange(event:ServiceTypes) {
     this.ServcieTypeSelected = event;
-    console.log(this.ServcieTypeSelected);
-    this.finishEndDate = addMinutes(this.finishEndDate, event.Duration)
   }
 
+  /**
+   * Berfore Save book Customer save
+   * 
+   * Set booking with all parametres
+   */
   setBook() {
     this.customer = {
       FirstName: this.reactiveForm.value.firstName,
@@ -191,23 +159,28 @@ export class SetBookComponent implements OnInit, OnChanges {
       this.Books = {
         CustomerID: this.customer.CustomerID,
         StartDate: this.finishStartDate,
+        StartAt:this.StartAt,
         ServiceID: this.ServiceSelected.ServiceID,
-        EndDate: this.finishEndDate,
         ServiceTypeID: this.ServcieTypeSelected.ServiceTypeId,
         Durtion: this.ServcieTypeSelected.Duration
       }
       this.API.setBook(this.Books).subscribe(results => {
-        if (results > 0) {
+        if (results.Result > 0) {
           this.openDialog("הפגישה נקבעה בהצלחה",5000)
           console.log(results);
+        }
+        else{
+          this.openDialog(results.ErrorMessage,5000)
         }
       })
 
     });
   }
-  ngOnChanges(change) {
-  }
-
+  /**
+   * Clear dateTime from Date
+   * 
+   * @param DateTime Date
+   */
   clearTime(DateTime: Date): Date {
     DateTime.setMinutes(0);
     DateTime.setHours(0);
