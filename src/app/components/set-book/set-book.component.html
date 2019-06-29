@@ -25,7 +25,7 @@
           </mat-form-field>
           <!-- {{customer | json}} -->
           <mat-form-field class="col-md-6">
-              <input matInput [min]="dateNow" required formControlName="date" [max]="maxDate" (dateChange)="itemSelected($event)" [matDatepicker]="picker" placeholder="{{localRes?.selectedDate}}">
+              <input matInput [min]="dateNow" required formControlName="date" [max]="maxDate" (dateChange)="dateChange($event)" [matDatepicker]="picker" placeholder="{{localRes?.selectedDate}}">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
               <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
@@ -63,18 +63,20 @@
       <div class="form-row">
         <div class="col-md-6" *ngIf="ServiceSelected">
           <ng-select 
+            #select
             [items]="ServicesTypes$" 
             bindLabel="ServiceTypeName" 
             placeholder="{{localRes?.selectedType}}"
             dir="rtl"
             autofocus
-            (change)="onServiceTypeChange($event)" 
+            (change)="onServiceTypeChange($event,select)" 
             formControlName="ServcieType">
           </ng-select>
+          <mat-error *ngIf="notEnoughtime">{{localRes?.notEnoughtime}}</mat-error>
         </div>
       </div>
          <div>
-          <button type="submit" class="btn pink">{{localRes?.BookSet}}</button>
+          <button type="submit" [disabled]="reactiveForm.invalid" class="btn pink">{{localRes?.BookSet}}</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">{{localRes?.Cancel}}</button>
         </div>
     </form>

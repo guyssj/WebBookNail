@@ -1,7 +1,41 @@
-<form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
-  <input type="text" name="userName" id="userName" ngModel #userName="ngModel">
-  <input type="text" name="key" id="key" ngModel #key="ngModel">
+<div class="bg">
+  <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
+    <div style="width: 50%;height: 50%;" class="center">
+      <div class="card">
+        <div class="card-title center">
+          <h4 class="float-right inline" style="padding: 10px; color: rgba(201,109,159,1);">כניסה לניהול יומן פגישות
+          </h4>
+        </div>
+        <div class="line"></div>
 
-  <input type="submit" value="">
-
-</form>
+        <div class="card-body">
+          <mat-form-field class="col-md-12 form-group">
+            <input 
+              id="userName" 
+              name="userName" 
+              matInput 
+              placeholder="{{localRes?.userName}}" 
+              [(ngModel)]="userName"
+              required>
+              <mat-error *ngIf="f.invalid">שם משתמש הוא שדה חובה</mat-error>
+          </mat-form-field>
+          <mat-form-field class="col-md-12 form-group">
+            <input 
+              id="key" 
+              type="password"
+              name="key" 
+              matInput 
+              placeholder="{{localRes?.password}}" 
+              [(ngModel)]="key" 
+              required>
+            <mat-error *ngIf="f.invalid"> יש להקיש סיסמא</mat-error>
+          </mat-form-field>
+        </div>
+        <button class="btn pink" type="submit">{{localRes?.signIn}}</button>
+      </div>
+      <div *ngIf="APIResult?.StatusCode == 403" class="alert alert-danger center" role="alert">
+          {{APIResult?.ErrorMessage}}
+        </div>
+    </div>
+  </form>
+</div>

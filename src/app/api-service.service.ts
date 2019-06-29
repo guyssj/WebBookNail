@@ -19,42 +19,40 @@ export class ApiServiceService {
   constructor(private http: HttpClient) { }
 
 
-  login(obj){
-    return this.http.post("http://localhost/NailBook/public/login",obj,{observe: 'response'});
+  login(obj) {
+    return this.http.post("http://localhost/NailBook/public/login", obj, { observe: 'response' });
   }
 
-  addCustomer(customer:Customer):Observable<resultsAPI<number>>{
-    return this.http.post<resultsAPI<number>>(this._baseUrl + 'AddCustomer',customer);
+  addCustomer(customer: Customer): Observable<resultsAPI<number>> {
+    return this.http.post<resultsAPI<number>>(this._baseUrl + 'AddCustomer', customer);
   }
 
   getBooks() {
-    return this.http.get<resultsAPI<Book[]>>(this._baseUrl2 + 'GetAllBook2',{withCredentials:true});
+    return this.http.get<resultsAPI<Book[]>>(this._baseUrl2 + 'GetAllBook2', { withCredentials: true });
   }
 
-  getAllDates():Observable<date[]>{
-    return this.http.get<date[]>(this._baseUrl+'GetAllDates')
+  getAllTimes(): Observable<TimeSlots[]> {
+    return this.http.get<TimeSlots[]>(this._baseUrl + 'GetTimeSlots')
+  }
+  getTimeByDate(date): Observable<TimeSlots[]> {
+    return this.http.get<TimeSlots[]>(this._baseUrl + 'GetTimeSlots?Date='+date)
+  }
+  TimeExist(date): Observable<resultsAPI<any[]>> {
+    return this.http.get<resultsAPI<any[]>>(this._baseUrl + 'GetSlotsExist?Date='+date)
+  }
+  getAllServices(): Observable<Services[]> {
+    return this.http.get<Services[]>(this._baseUrl + 'GetAllServices')
   }
 
-  getAllTimes():Observable<TimeSlots[]>{
-    return this.http.get<TimeSlots[]>(this._baseUrl+'GetTimeSlots')
+  getAllServicetypesByServiceID(id) {
+    return this.http.get<resultsAPI<ServiceTypes[]>>(this._baseUrl + 'GetAllServiceTypeByService?ServiceID=' + id)
+  }
+  getCustomerById(id) {
+    return this.http.get<resultsAPI<Customer>>(this._baseUrl2 + 'GetCustomerById?CustomerID=' + id, { withCredentials: true })
   }
 
-  getAllServices():Observable<Services[]>{
-    return this.http.get<Services[]>(this._baseUrl+'GetAllServices')
-  }
-
-  // getAllServicetypesByServiceID(id):Observable<resultsAPI<ServiceTypes[]>>{
-  //   return this.http.get<resultsAPI<ServiceTypes[]>>(this._baseUrl+'GetAllServiceTypeByService?ServiceID='+id)
-  // }
-  getAllServicetypesByServiceID(id){
-    return this.http.get<resultsAPI<ServiceTypes[]>>(this._baseUrl+'GetAllServiceTypeByService?ServiceID='+id)
-  }
-  getCustomerById(id){
-    return this.http.get<resultsAPI<Customer>>(this._baseUrl2+'GetCustomerById?CustomerID='+id,{withCredentials:true})
-  }
-
-  setBook(Book:Book):Observable<resultsAPI<any>>{
-    return this.http.post<resultsAPI<any>>(this._baseUrl+'SetBook',Book)
+  setBook(Book: Book): Observable<resultsAPI<any>> {
+    return this.http.post<resultsAPI<any>>(this._baseUrl + 'SetBook', Book)
   }
 
 }

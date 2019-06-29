@@ -1,4 +1,8 @@
+export enum typeMessage{
+    Success,
+    Error
+}
 export interface MessageConfig{
     message:string,
-    type?: 'Success' | 'error';
+    type?:typeMessage
 }

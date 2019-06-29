@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatDatepickerModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatProgressBarModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -26,6 +26,8 @@ import { AngularFireAuthModule } from '@angular/fire/auth'
 import { environment } from '../environments/environment';
 import { AuthService } from './auth.service';
 import { LoginComponent } from './components/login/login.component';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 
 registerLocaleData(localeHe);
 
@@ -48,14 +50,15 @@ registerLocaleData(localeHe);
     NgSelectModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatProgressBarModule,
     MatFormFieldModule,
     MatInputModule,
     MatDialogModule,
+    MatIconModule,
     MatDatepickerModule,
     MatNativeDateModule,
     ReactiveFormsModule,
     FormsModule,
-    AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     FontAwesomeModule,
     CalendarModule.forRoot({
@@ -67,4 +70,9 @@ registerLocaleData(localeHe);
   bootstrap: [AppComponent],
   entryComponents:[DialogContentExampleDialog]
 })
-export class AppModule { }
+export class AppModule { 
+  constructor() {
+    // Add an icon to the library for convenient access in other components
+    library.add(fas);
+  }
+}

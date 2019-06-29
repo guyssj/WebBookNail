@@ -1,103 +1,13 @@
-<!-- <div class="card">
-  <div class="card-body">
-    <h3 class='text-center'> </h3>
-    <form>
-      <br>
-      <h6 class="text-primary"> </h6> -->
-      <!-- First Name and LastName -->
-      <!-- <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="First_name" style="position: initial;" class="bmd-label-floating">
-            שם פרטי
-            <small class="text-danger">*</small>
-          </label>
-          <input type="text" class="form-control" name="First_name" #First_name="ngModel"
-            [(ngModel)]="customer.FirstName" required minlength="2">
-          <small class="form-text text-danger"></small>
-          <small class="form-text text-danger"></small>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="last_name" style="position: initial;" class="bmd-label-floating">
-            שם משפחה
-            <small class="text-danger">*</small>
-          </label>
-          <input type="text" class="form-control" name="last_name" #last_name="ngModel" [(ngModel)]="customer.LastName" required minlength="2">
-          <small class="form-text text-danger"></small>
-          <small class="form-text text-danger"></small>
-        </div>
-      </div> -->
-      <!-- Phone Number And Date -->
-      <!-- <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="phone" style="position: initial;" class="bmd-label-floating">
-            מספר פלאפון
-            <small class="text-danger">*</small>
-          </label>
-          <input type="text" class="form-control" name="phone" #phone="ngModel" [(ngModel)]="customer.PhoneNumber" required minlength="2">
-          <small class="form-text text-danger"></small>
-          <small class="form-text text-danger"></small>
-          {{customer | json}}
-        </div>
-        <div class="form-group col-md-6">
-          <label for="dp" style="position: initial;" class="bmd-label-floating">
-            תאריך התור
-            <small class="text-danger">*</small>
-          </label>
-          <div class="input-group">
-            <input class="form-control hebrew rtl" placeholder="יש לבחור תאריך" (dateSelect)="itemSelected($event)"
-              [minDate]="minDate" [maxDate]="maxDateNew" [displayMonths]="1" [firstDayOfWeek]="7" name="dp"
-              [(ngModel)]="model" ngbDatepicker #d="ngbDatepicker">
-            <div class="input-group-prepend">
-              <button class="btn btn-outline-secondary" (click)="d.toggle()" type="button">
-                <fa-icon [icon]="faCalendarAlt"></fa-icon>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div> -->
-      <!-- Time and Service -->
-      <!-- <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="time" style="position: initial;" class="bmd-label-floating">
-            שעה
-            <small class="text-danger">*</small>
-          </label>
-          <ng-select [items]="Time$ | async" bindLabel="timeSlot" autofocus bindValue="timeSlot"
-            (change)="onTimeChange($event)" name="time" [(ngModel)]="TimeSlotSelected">
-          </ng-select>
-        </div>
-        <div class="form-group col-md-6">
-          <label for="service" style="position: initial;" class="bmd-label-floating">
-            בחר טיפול
-            <small class="text-danger">*</small>
-          </label>
-          <ng-select [items]="Services$ | async" bindLabel="ServiceName" autofocus (change)="onServiceChange($event)"
-            name="service" [(ngModel)]="ServiceSelected">
-          </ng-select>
-          {{ServiceSelected | json}}
-        </div>
-      </div> -->
-      <!-- Service Types -->
-      <!-- <div class="form-row">
-        <div class="form-group col-md-6" *ngIf="ServiceSelected">
-          <label for="serviceType" style="position: initial;" class="bmd-label-floating">
-            בחר סוג טיפול
-            <small class="text-danger">*</small>
-          </label>
-          <ng-select [items]="ServicesTypes$" bindLabel="ServiceTypeName" autofocus
-            (change)="onServiceTypeChange($event)" name="serviceType" [(ngModel)]="ServcieTypeSelected">
-          </ng-select>
-          {{ServcieTypeSelected | json}}
-        </div>
-      </div>
-    </form>
-  </div>
-</div> -->
-<div mat-dialog-title>Install Angular</div>
+<!-- <div mat-dialog-title></div> -->
 <mat-dialog-content class="mat-typography">
+  <div style="display: inline-flex;">
   {{data.message}}
+  <mat-icon *ngIf="data.type == MessageResult.Error" style="margin-left: 10px; color: red">close</mat-icon>
+  <mat-icon *ngIf="data.type == MessageResult.Success" style="margin-left: 10px; color: #C96D9F">done</mat-icon>
+</div>
 </mat-dialog-content>
 <mat-dialog-actions align="end">
-  <button mat-icon-button mat-dialog-close>Cancel</button>
-  <button mat-button cdkFocusInitial>Install</button>
+  <button mat-button mat-dialog-close cdkFocusInitial>
+    
+  </button>
 </mat-dialog-actions>

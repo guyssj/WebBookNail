@@ -19,6 +19,11 @@
     "selectedService":"בחרי טיפול",
     "selectedType":"בחרי סוג הטיפול",
     "BookSet":"קבעי את הטיפול",
-    "Cancel":"בטלי"
+    "Cancel":"בטלי",
+    "userName":"שם משתמש",
+    "password":"סיסמא",
+    "signIn":"התחברי",
+    "notEnoughtime":"מצטערת! אין מספיק זמן לטיפול זה בשעה שנבחרה",
+    "SuccessApp":"הפגישה שלך נקבעה בהצלחה, אשמח לראותך"
 
 }

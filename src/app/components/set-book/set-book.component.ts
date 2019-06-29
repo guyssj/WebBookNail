@@ -2,22 +2,20 @@ import { Component, OnInit, Injectable, OnChanges, Inject } from '@angular/core'
 import { LocalresService } from '../../localres.service';
 import { ApiServiceService } from '../../api-service.service';
 import { Observable, timer } from 'node_modules/rxjs';
-import { date } from '../../date';
 import { TimeSlots } from '../../TimeSlots';
 import { NgbDateStruct, NgbCalendar, NgbCalendarHebrew } from '@ng-bootstrap/ng-bootstrap';
 import { addDays, addMinutes } from 'date-fns';
-import { NgbDateCustomParserFormatter } from '../../dateformat';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
-import { NgbDatepickerI18n } from '@ng-bootstrap/ng-bootstrap';
 import { Services } from '../../Services';
 import { ServiceTypes } from '../../servicetypes';
 import { Book } from '../../Book';
 import { resultsAPI } from 'src/app/results';
 import { Customer } from 'src/app/Customer';
 import { MatDialog, MAT_DIALOG_DATA, MatFormField, DateAdapter, MatDatepickerInputEvent } from '@angular/material';
-import { MessageConfig } from '../MessageConfig';
+import { MessageConfig, typeMessage } from '../MessageConfig';
 import { timeInterval, take } from 'rxjs/operators';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
+import { NgSelectComponent } from '@ng-select/ng-select';
 
 
 @Component({
@@ -43,6 +41,7 @@ export class SetBookComponent implements OnInit {
   formBuilder: any;
   finishStartDate: Date;
   Books: Book;
+  notEnoughtime:boolean = false;
   reactiveForm = new FormGroup({
     firstName: new FormControl(null, Validators.required),
     lastName: new FormControl(null, Validators.required),
@@ -65,6 +64,7 @@ export class SetBookComponent implements OnInit {
     this.adapter.setLocale('he');
     this.Time$ = this.API.getAllTimes();
     this.Services$ = this.API.getAllServices();
+    
   }
 
   /**
@@ -74,11 +74,14 @@ export class SetBookComponent implements OnInit {
    * @param Event:MatDatepickerInputEvent
    * 
    */
-  itemSelected(event: MatDatepickerInputEvent<Date>) {
+  dateChange(event: MatDatepickerInputEvent<Date>) {
     this.finishStartDate = new Date(event.value);
     this.finishStartDate = this.clearTime(this.finishStartDate);
     this.finishStartDate = addMinutes(this.finishStartDate, 0);
     this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
+    console.log(this.finishStartDate.getFullYear()+"-"+(this.finishStartDate.getMonth()+1)+"-"+this.finishStartDate.getDate());
+    this.Time$ = this.API.getTimeByDate(this.finishStartDate.getFullYear()+"-"+(this.finishStartDate.getMonth()+1)+"-"+this.finishStartDate.getDate());
+    
   }
 
   /**
@@ -138,8 +141,22 @@ export class SetBookComponent implements OnInit {
    * 
    * @param event ServiceTypes
    */
-  onServiceTypeChange(event:ServiceTypes) {
+  onServiceTypeChange(event:ServiceTypes,select:NgSelectComponent) {
     this.ServcieTypeSelected = event;
+    //in this request from server to check all time exist in date choosed
+    this.API.TimeExist(this.finishStartDate.getFullYear()+"-"+(this.finishStartDate.getMonth()+1)+"-"+this.finishStartDate.getDate()).subscribe(arry => {
+      var timeTotal = this.StartAt + this.ServcieTypeSelected.Duration
+      this.notEnoughtime = false;
+      for (let i = 0; i < arry.Result.length; i++) {
+        if(arry.Result[i] == timeTotal){
+          this.notEnoughtime = true;
+          this.reactiveForm.value.ServcieType = null;
+          this.ServcieTypeSelected = null;
+          select.clearModel();
+        }
+      }
+    })
+    
   }
 
   /**
@@ -166,11 +183,11 @@ export class SetBookComponent implements OnInit {
       }
       this.API.setBook(this.Books).subscribe(results => {
         if (results.Result > 0) {
-          this.openDialog("הפגישה נקבעה בהצלחה",5000)
-          console.log(results);
+          this.openDialog({message: this.localRes.SuccessApp , type:typeMessage.Success},3000)
+          this.clearForm();
         }
         else{
-          this.openDialog(results.ErrorMessage,5000)
+          this.openDialog({message: results.ErrorMessage , type:typeMessage.Error},5000)
         }
       })
 
@@ -189,11 +206,26 @@ export class SetBookComponent implements OnInit {
 
   }
 
-  openDialog(message, time) {
+  /**
+   * Clear all field from the Set book Form
+   */
+  clearForm(){
+    this.Books = null;
+    this.reactiveForm = new FormGroup({
+      firstName: new FormControl(null, Validators.required),
+      lastName: new FormControl(null, Validators.required),
+      phoneNumber: new FormControl(null, Validators.required),
+      date: new FormControl(null, Validators.required),
+      timeSlot: new FormControl(null, Validators.required),
+      service: new FormControl(null, Validators.required),
+      ServcieType: new FormControl(null, Validators.required)
+    });
+    this.customer = null;
+  }
+
+  openDialog(messageObj:MessageConfig, time) {
     this.dialog.open(DialogContentExampleDialog, {
-      data: {
-        message: message
-      }
+      data:messageObj
     });
     timer(time, 1000).pipe(
       take(1)).subscribe(x => {
@@ -206,7 +238,9 @@ export class SetBookComponent implements OnInit {
   templateUrl: 'set-book.component-dialog.html',
 })
 export class DialogContentExampleDialog {
+  get MessageResult() { return typeMessage; }
   constructor(@Inject(MAT_DIALOG_DATA) public data: MessageConfig) {
 
   }
+
 }

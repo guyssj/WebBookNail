@@ -1,4 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
 @import "~@ng-select/ng-select/themes/material.theme.css";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
@@ -36,4 +37,11 @@ div{
 
   mat-datepicker-content{
     z-index: 1200;
+}
+.mat-dialog-container{
+  border-radius: 8px !important;
+}
+
+.cal-days{
+  height: 88vh !important;
 }

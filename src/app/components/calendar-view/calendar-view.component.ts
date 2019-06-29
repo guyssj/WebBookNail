@@ -18,8 +18,10 @@ import {
 } from "date-fns";
 import { Observable, Subject } from "rxjs";
 import { HttpClient } from "@angular/common/http";
-import { ActivatedRoute } from "@angular/router";
+import { ActivatedRoute, Router } from "@angular/router";
 import { addDays, addMinutes } from 'date-fns';
+import { MatDialogRef, MatDialog } from "@angular/material";
+import { DialogContentExampleDialog, SetBookComponent } from "../set-book/set-book.component";
 
 interface bookz {
   BookID: number;
@@ -66,7 +68,12 @@ function getCookie(cname) {
 
 
 export class CalendarViewComponent implements OnInit {
-  constructor(private API: ApiServiceService, private http: HttpClient, private route: ActivatedRoute) { }
+  constructor(
+    private API: ApiServiceService,
+    private http: HttpClient,
+    private route: ActivatedRoute,
+    private router: Router,
+    public dialog: MatDialog) { }
   events2: CalendarEvent[] = [];
   viewDate: Date = new Date();
   tokenCookie: string = "";
@@ -80,14 +87,17 @@ export class CalendarViewComponent implements OnInit {
   ngOnInit() {
     this.getApiWithToken();
   }
+
   /**
    * 
    * get API request with check if have token in Query string
    */
   getApiWithToken() {
+    debugger;
     this.route
       .queryParams
       .subscribe(params => {
+        debugger;
         //check if cookie token is exist
         this.tokenCookie = getCookie("userToken");
         if (this.tokenCookie != "") {
@@ -97,9 +107,9 @@ export class CalendarViewComponent implements OnInit {
             // update the Cookie token
             setCookie("userToken", GetToken, 1)
             this.API.getBooks().subscribe(allbook => {
-              debugger;
               this.Books = allbook.Result;
               this.getEvent(this.Books);
+              window.history.replaceState({}, document.title, "/#/" + "Calendar");
             })
           }
           else {
@@ -121,12 +131,20 @@ export class CalendarViewComponent implements OnInit {
               this.getEvent(this.Books);
             })
           }
+          else {
+            this.router.navigate(['/Admin']);
+          }
         }
       });
   }
 
   clickEvent(event) {
     console.log(event);
+    this.dialog.open(DialogContentExampleDialog, {
+      data: {
+        message:event.event.title
+      }
+    });
   }
   addEvent(): void {
     this.events2.push({
@@ -187,7 +205,7 @@ export class CalendarViewComponent implements OnInit {
           let Start = addMinutes(books[i].StartDate, books[i].StartAt);
           let End = addMinutes(Start, books[i].Durtion);
           const event = {
-            title: cus.Result.FirstName + ' ' + cus.Result.LastName + ' '+ servType.ServiceTypeName,
+            title: cus.Result.FirstName + ' ' + cus.Result.LastName + ' ' + servType.ServiceTypeName,
             start: Start,
             end: End,
             draggable: false,
@@ -198,10 +216,10 @@ export class CalendarViewComponent implements OnInit {
           }
           this.events2.push(event);
           this.refresh.next();
-          this.loading2 = false;
         });
       }); //end customer
 
     } //end of loop for
+    this.loading2 = false;
   }
 }
