@@ -1,0 +1,21 @@
+<!-- <div mat-dialog-title></div> -->
+<mat-dialog-content class="mat-typography">
+    <div style="display: inline-flex;">
+        <div class="form-row">
+            <mat-form-field class="col-md-12">
+                <input matInput placeholder="לקוח וסוג טיפול" [(ngModel)]="data.title" disabled>
+            </mat-form-field>
+            <mat-form-field class="col-md-6">
+                <input matInput placeholder="התחלה" [(ngModel)]="data.start" disabled>
+            </mat-form-field>
+            <mat-form-field class="col-md-6">
+                <input matInput placeholder="סיום" [(ngModel)]="data.end" disabled>
+            </mat-form-field>
+        </div>
+    </div>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close cdkFocusInitial>
+
+    </button>
+</mat-dialog-actions>

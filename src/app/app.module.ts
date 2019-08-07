@@ -18,7 +18,6 @@ import { LocalresService } from './localres.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule, NgbDateAdapter, NgbDateNativeAdapter, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
-import { NgbPaginationModule, NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateCustomParserFormatter } from './dateformat';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AngularFireModule } from '@angular/fire';
@@ -28,6 +27,7 @@ import { AuthService } from './auth.service';
 import { LoginComponent } from './components/login/login.component';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { DialogForClickEvent } from './components/calendar-view/calendar-view.component';
 
 registerLocaleData(localeHe);
 
@@ -39,12 +39,15 @@ registerLocaleData(localeHe);
     NavbarComponent,
     HomeComponent,
     LoginComponent,
-    DialogContentExampleDialog
+    DialogContentExampleDialog,
+    DialogForClickEvent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule, // imports firebase/auth, only needed for auth features
     NgbModule,
     BrowserAnimationsModule,
     NgSelectModule,
@@ -68,7 +71,7 @@ registerLocaleData(localeHe);
   ],
   providers: [ApiServiceService, LocalresService, AuthService , { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }, { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter }],
   bootstrap: [AppComponent],
-  entryComponents:[DialogContentExampleDialog]
+  entryComponents:[DialogContentExampleDialog,DialogForClickEvent]
 })
 export class AppModule { 
   constructor() {

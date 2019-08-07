@@ -4,6 +4,7 @@ import { ApiServiceService } from 'src/app/api-service.service';
 import { Router } from '@angular/router';
 import { LocalresService } from 'src/app/localres.service';
 import { resultsAPI } from 'src/app/results';
+import { AuthService } from 'src/app/auth.service';
 
 
 @Component({
@@ -16,7 +17,8 @@ export class LoginComponent implements OnInit {
   key: string = "";
   userName: string = "";
   APIResult: resultsAPI<string>;
-  constructor(private API: ApiServiceService, private localres: LocalresService, private router: Router) { }
+  constructor(private API: ApiServiceService, private localres: LocalresService, private router: Router,
+    public auth:AuthService) { }
 
   onSubmit(f: NgForm) {
     if (f.valid) {
@@ -34,6 +36,14 @@ export class LoginComponent implements OnInit {
     this.localres.getLocalResoruce("he").subscribe(data => {
       this.localRes = data;
       console.log(this.localRes)
+    })
+  }
+
+  Google(){
+    //this.auth.doGoogleLogin();
+    //this.auth.login();
+    this.API.getBooks().subscribe(books => {
+      this.API.SyncGoogle(books.Result[0]);
     })
   }
 

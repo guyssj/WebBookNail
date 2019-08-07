@@ -1,14 +1,19 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { AngularFireAuth } from '@angular/fire/auth';
+import * as firebase from 'firebase/app';
 import { auth } from 'firebase/app';
+
 import { HttpClient } from '../../node_modules/@angular/common/http';
+import { GoogleEvent } from './GoogleEvents';
+const hoursFromNow = (n) => new Date(Date.now() + n * 1000 * 60 * 60 ).toISOString();
 
-declare var gapi: any;
-
+declare var gapi;
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class AuthService {
 
   user$: Observable<firebase.User>;
@@ -16,15 +21,14 @@ export class AuthService {
 
   constructor(public afAuth: AngularFireAuth, public http: HttpClient) {
     this.initClient();
-    this.user$ = afAuth.authState;
   }
 
   initClient() {
     gapi.load('client', () => {
       console.log('Loaded client');
       gapi.client.init({
-        apiKey: 'KEY-KEY',
-        clientId: 'CLIENT ID',
+        apiKey: 'AIzaSyA7HzWhPVRF7dNjWuTV8h4es6H3m_pyPoM',
+        clientId: '107195644423-o9vujm4pei3dv7goll3e6955j7gdo91e.apps.googleusercontent.com',
         discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest'],
         scope: 'https://www.googleapis.com/auth/calendar'
       });
@@ -40,10 +44,14 @@ export class AuthService {
     console.log(googleAuth);
     const googleUser = await googleAuth.signIn();
     const token = googleUser.getAuthResponse().id_token;
-    const credential = auth.GoogleAuthProvider.credential(token);
-    debugger;
-    await this.afAuth.auth.signInAndRetrieveDataWithCredential(credential);
+    // Alternative approach, use the Firebase login with scopes and make RESTful API calls
 
+    const provider = new auth.GoogleAuthProvider()
+    provider.addScope('https://www.googleapis.com/auth/calendar');
+
+    this.afAuth.auth.signInWithPopup(provider)
+
+    return this.afAuth.auth.currentUser;
   }
 
   logout() {
@@ -59,8 +67,14 @@ export class AuthService {
       maxResults: 10,
       orderBy: 'startTime'
     })
-    console.log(events);
-
-    this.calendarItems = events.result.items;
+     this.calendarItems = events.result.items;
+     return this.calendarItems
   }
+
+  async insertEvent(Event:GoogleEvent) {
+    const insert = await gapi.client.calendar.events.insert(Event)
+    // await this.getCalendar().then(results =>{
+    //   console.log(results)
+    // });
+  }  
 }

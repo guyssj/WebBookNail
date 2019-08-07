@@ -55,4 +55,9 @@ export class ApiServiceService {
     return this.http.post<resultsAPI<any>>(this._baseUrl + 'SetBook', Book)
   }
 
+  SyncGoogle(Book: Book) {
+    // return this.http.post<resultsAPI<any>>(this._baseUrl + 'Gets', Book ,{responseType: 'arraybuffer'})
+    return this.http.post("http://localhost/NailBook/src/config/GoogleApis.php", Book, {responseType: 'text'})
+  }
+
 }

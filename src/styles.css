@@ -43,5 +43,8 @@ div{
 }
 
 .cal-days{
-  height: 88vh !important;
+  height: 81.5vh !important;
+}
+.cal-week-view{
+  height: 85.5vh !important;
 }

@@ -1,4 +1,4 @@
-body {
+.bg {
     /* Set rules to fill background */
     min-height: 30%;
     min-width: 1024px;
@@ -11,23 +11,21 @@ body {
     height: auto;
       
     /* Set up positioning */
-    
+    overflow: hidden !important;
     top: 0;
     left: 0;
   }
   
-  @media screen and (max-width: 1024px) { /* Specific to this particular image */
-    body {
+  /* @media screen and (max-width: 1024px) {  Specific to this particular image 
+    .bg {
       left: 50%;
-      margin-left: -512px;   /* 50% */
+      margin-left: -512px;   /* 50% 
     }
-  }
-
+  } */
   .center {
     margin: auto;
     padding: 10px;
-    width: 80%;
-    height: 3vh;
+    width: 70%;
   }
   .spinners{
     display: inline-table;    

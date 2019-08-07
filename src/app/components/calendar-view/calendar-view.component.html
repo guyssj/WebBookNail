@@ -1,41 +1,117 @@
-<div class="center">
-  <div style="overflow: auto;">
-    <div style="width: 100%; overflow: auto;" [ngSwitch]="view" *ngIf="loading2 == false; else loading">
-      <mwl-calendar-month-view
-        *ngSwitchCase="'month'" 
-        [viewDate]="viewDate" 
-        [events]="events2" 
-        [refresh]="refresh" 
-        [locale]="locale">
-      </mwl-calendar-month-view>
-      <mwl-calendar-week-view
-        *ngSwitchCase="'week'"
-        [viewDate]="viewDate"
-        [events]="events2" 
-        [refresh]="refresh" 
-        [locale]="locale"
-        [hourSegments]="6"
-        (eventClicked)="clickEvent($event)">
-    </mwl-calendar-week-view>
-    </div>
-    <ng-template #loading>
-      <div class="text-center">
-        <!-- <fa-icon></fa-icon>
-        <i class="fa fa-sync fa-spin fa-5x"></i>
-        <br> Loading events... -->
-        <div class="spinners">
-        <fa-icon [icon]="['fa', 'circle-notch']" size="5x" [spin]="true"></fa-icon>
-      </div>
-      </div>
-    </ng-template>
-    <!-- <div *ngIf="events$ | async; else loading; let events">
-    <mwl-calendar-month-view
-      [viewDate]="viewDate"
-      [events]="events"
-      [activeDayIsOpen]="true">
-    </mwl-calendar-month-view>
-</div> -->
-    <!-- <div id='calendar'></div> -->
+<div class="bg">
 
+  <div class="center col-md-12" style="position: relative;padding: 16px; " *ngIf="loading2 == false;" >
+      <div class="row text-center">
+          <div class="col-md-4">
+            <div class="btn-group">
+              <div
+                class="btn pink"
+                mwlCalendarPreviousView
+                [view]="view"
+                [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()"
+              >
+                Previous
+              </div>
+              <div
+                class="btn btn-outline-secondary"
+                mwlCalendarToday
+                [(viewDate)]="viewDate"
+              >
+                Today
+              </div>
+              <div
+                class="btn pink"
+                mwlCalendarNextView
+                [view]="view"
+                [(viewDate)]="viewDate"
+                (viewDateChange)="closeOpenMonthViewDay()"
+              >
+                Next
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'he' }}</h3>
+          </div>
+          <div class="col-md-4">
+            <div class="btn-group">
+              <div
+                class="btn pink"
+                (click)="setView(CalendarView.Month)"
+                [class.active]="view === CalendarView.Month"
+              >
+                Month
+              </div>
+              <div
+                class="btn pink"
+                (click)="setView(CalendarView.Week)"
+                [class.active]="view === CalendarView.Week"
+              >
+                Week
+              </div>
+              <div
+                class="btn pink"
+                (click)="setView(CalendarView.Day)"
+                [class.active]="view === CalendarView.Day"
+              >
+                Day
+              </div>
+            </div>
+          </div>
+        </div>
+        <br />        
+  </div>
+  <div style="width: 100%; height: 100px; position: fixed;">
+
+  </div>
+  <div class="center">
+    <div style="overflow: auto;">
+      <div [ngSwitch]="view" *ngIf="loading2 == false; else loading">
+        <mwl-calendar-month-view
+          *ngSwitchCase="'month'" 
+          [viewDate]="viewDate" 
+          [events]="events2" 
+          [refresh]="refresh" 
+          [locale]="locale"
+          (dayClicked)="dayClicked($event.day)"
+          (eventClicked)="clickEvent($event)"
+          [activeDayIsOpen]="activeDayIsOpen">
+        </mwl-calendar-month-view>
+        <mwl-calendar-week-view
+          *ngSwitchCase="'week'"
+          [viewDate]="viewDate"
+          [events]="events2" 
+          [refresh]="refresh" 
+          [locale]="locale"
+          [hourSegments]="2"
+          [dayStartHour]="8"
+          [dayEndHour]="18"
+          (eventClicked)="clickEvent($event)">
+      </mwl-calendar-week-view>
+      </div>
+      <ng-template #loading>
+        <div class="text-center">
+          <div class="spinners">
+          <fa-icon [icon]="['fa', 'circle-notch']" size="5x" [spin]="true"></fa-icon>
+        </div>
+        </div>
+      </ng-template>
+      <!-- <div *ngIf="events$ | async; else loading; let events">
+      <mwl-calendar-month-view
+        [viewDate]="viewDate"
+        [events]="events"
+        [activeDayIsOpen]="true">
+      </mwl-calendar-month-view>
+  </div> -->
+      <!-- <div id='calendar'></div> -->
+      <button type="button" (click)="SignInToGoogle();">dfdfdfdf</button>
+      <button type="button" (click)="getCalendar();">Get</button>
+      <button type="button" (click)="SyncAllEvents(events2);">sync</button>
+
+      <p *ngIf="UserGoogle">Hi {{ UserGoogle?.displayName }}</p>
+
+
+    </div>
   </div>
 </div>
