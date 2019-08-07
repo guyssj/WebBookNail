@@ -12,7 +12,7 @@ import { AuthService } from '../../auth.service';
 })
 export class HomeComponent implements OnInit ,AfterViewInit {
   localRes:any = {};
-  @ViewChild(SetBookComponent) setBookCom;
+  @ViewChild(SetBookComponent, { static: true }) setBookCom;
   constructor(private localres:LocalresService) { }
 
   ngOnInit() {
