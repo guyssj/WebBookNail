@@ -8,6 +8,10 @@ div{
     text-align: right;
 }
 
+::ng-deep .mat-select-placeholder {
+  color:#FFFFFF; background-color:#C96D9F; border-color:#C96D9F;
+}
+
 .btn,.btn.pink, .btn.inverse:hover{color:#FFFFFF; background-color:#C96D9F; border-color:#C96D9F;}
 .btn:hover, .btn.inverse{color:inherit; background-color:transparent; border-color:inherit;}
 /* You can add global styles to this file, and also import other style files */
