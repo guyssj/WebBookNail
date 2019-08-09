@@ -16,7 +16,7 @@ import { Observable } from 'rxjs';
 import { MatChip, MatChipEvent, MatChipSelectionChange } from './chip';
 import { MatChipTextControl } from './chip-text-control';
 /** @docs-private */
-declare class MatChipListBase {
+export declare class MatChipListBase {
     _defaultErrorStateMatcher: ErrorStateMatcher;
     _parentForm: NgForm;
     _parentFormGroup: FormGroupDirective;
@@ -26,7 +26,7 @@ declare class MatChipListBase {
     /** @docs-private */
     ngControl: NgControl);
 }
-declare const _MatChipListMixinBase: CanUpdateErrorStateCtor & typeof MatChipListBase;
+export declare const _MatChipListMixinBase: CanUpdateErrorStateCtor & typeof MatChipListBase;
 /** Change event object that is emitted when the chip list value has changed. */
 export declare class MatChipListChange {
     /** Chip list that emitted the event. */
@@ -247,12 +247,6 @@ export declare class MatChipList extends _MatChipListMixinBase implements MatFor
     _blur(): void;
     /** Mark the field as touched */
     _markAsTouched(): void;
-    /**
-     * Removes the `tabindex` from the chip list and resets it back afterwards, allowing the
-     * user to tab out of it. This prevents the list from capturing focus and redirecting
-     * it back to the first chip, creating a focus trap, if it user tries to tab away.
-     */
-    _allowFocusEscape(): void;
     private _resetChips;
     private _dropSubscriptions;
     /** Listens to user-generated selection events on each chip. */
@@ -267,4 +261,3 @@ export declare class MatChipList extends _MatChipListMixinBase implements MatFor
     /** Syncs the list's state with the individual chips. */
     private _syncChipsState;
 }
-export {};

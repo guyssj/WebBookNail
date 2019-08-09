@@ -89,13 +89,13 @@ export declare class RippleRenderer {
     /** Sets up the trigger event listeners */
     setupTriggerEvents(element: HTMLElement): void;
     /** Function being called whenever the trigger is being pressed using mouse. */
-    private _onMousedown;
+    private onMousedown;
     /** Function being called whenever the trigger is being pressed using touch. */
-    private _onTouchStart;
+    private onTouchStart;
     /** Function being called whenever the trigger is being released. */
-    private _onPointerUp;
+    private onPointerUp;
     /** Runs a timeout outside of the Angular zone to avoid triggering the change detection. */
-    private _runTimeoutOutsideZone;
+    private runTimeoutOutsideZone;
     /** Removes previously registered event listeners from the trigger element. */
     _removeTriggerEvents(): void;
 }

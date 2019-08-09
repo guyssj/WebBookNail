@@ -64,8 +64,6 @@ export declare class MatDialogConfig<D = any> {
     direction?: Direction;
     /** ID of the element that describes the dialog. */
     ariaDescribedBy?: string | null;
-    /** ID of the element that labels the dialog. */
-    ariaLabelledBy?: string | null;
     /** Aria label to assign to the dialog element */
     ariaLabel?: string | null;
     /** Whether the dialog should focus the first focusable element on open. */

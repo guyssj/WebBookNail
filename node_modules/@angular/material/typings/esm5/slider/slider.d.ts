@@ -24,11 +24,11 @@ export declare class MatSliderChange {
     value: number | null;
 }
 /** @docs-private */
-declare class MatSliderBase {
+export declare class MatSliderBase {
     _elementRef: ElementRef;
     constructor(_elementRef: ElementRef);
 }
-declare const _MatSliderMixinBase: HasTabIndexCtor & CanColorCtor & CanDisableCtor & typeof MatSliderBase;
+export declare const _MatSliderMixinBase: HasTabIndexCtor & CanColorCtor & CanDisableCtor & typeof MatSliderBase;
 /**
  * Allows users to select from a range of values by moving the slider thumb. It is similar in
  * behavior to the native `<input type="range">` element.
@@ -220,4 +220,3 @@ export declare class MatSlider extends _MatSliderMixinBase implements ControlVal
      */
     setDisabledState(isDisabled: boolean): void;
 }
-export {};

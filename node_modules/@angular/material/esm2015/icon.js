@@ -7,7 +7,7 @@
  */
 import { DOCUMENT } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Inject, Injectable, Optional, SecurityContext, SkipSelf, NgModule, Attribute, ChangeDetectionStrategy, Component, ElementRef, Input, ViewEncapsulation, InjectionToken, inject, ɵɵdefineInjectable, ɵɵinject } from '@angular/core';
+import { Inject, Injectable, Optional, SecurityContext, SkipSelf, NgModule, Attribute, ChangeDetectionStrategy, Component, ElementRef, Input, ViewEncapsulation, InjectionToken, inject, defineInjectable } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { forkJoin, of, throwError } from 'rxjs';
 import { catchError, finalize, map, share, tap, take } from 'rxjs/operators';
@@ -16,7 +16,7 @@ import { coerceBooleanProperty } from '@angular/cdk/coercion';
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Returns an exception to be thrown in the case when attempting to
@@ -30,7 +30,7 @@ function getMatIconNameNotFoundError(iconName) {
 }
 /**
  * Returns an exception to be thrown when the consumer attempts to use
- * `<mat-icon>` without including \@angular/common/http.
+ * `<mat-icon>` without including \@angular/http.
  * \@docs-private
  * @return {?}
  */
@@ -290,15 +290,7 @@ class MatIconRegistry {
         if (cachedIcon) {
             return of(cloneSvg(cachedIcon));
         }
-        return this._loadSvgIconFromConfig(new SvgIconConfig(safeUrl)).pipe(tap((/**
-         * @param {?} svg
-         * @return {?}
-         */
-        svg => this._cachedIconsByUrl.set((/** @type {?} */ (url)), svg))), map((/**
-         * @param {?} svg
-         * @return {?}
-         */
-        svg => cloneSvg(svg))));
+        return this._loadSvgIconFromConfig(new SvgIconConfig(safeUrl)).pipe(tap(svg => this._cachedIconsByUrl.set((/** @type {?} */ (url)), svg)), map(svg => cloneSvg(svg)));
     }
     /**
      * Returns an Observable that produces the icon (as an `<svg>` DOM element) with the given name
@@ -347,15 +339,7 @@ class MatIconRegistry {
         }
         else {
             // Fetch the icon from the config's URL, cache it, and return a copy.
-            return this._loadSvgIconFromConfig(config).pipe(tap((/**
-             * @param {?} svg
-             * @return {?}
-             */
-            svg => config.svgElement = svg)), map((/**
-             * @param {?} svg
-             * @return {?}
-             */
-            svg => cloneSvg(svg))));
+            return this._loadSvgIconFromConfig(config).pipe(tap(svg => config.svgElement = svg), map(svg => cloneSvg(svg)));
         }
     }
     /**
@@ -385,42 +369,27 @@ class MatIconRegistry {
         // fetched, fetch them now and look for iconName in the results.
         /** @type {?} */
         const iconSetFetchRequests = iconSetConfigs
-            .filter((/**
-         * @param {?} iconSetConfig
-         * @return {?}
-         */
-        iconSetConfig => !iconSetConfig.svgElement))
-            .map((/**
-         * @param {?} iconSetConfig
-         * @return {?}
-         */
-        iconSetConfig => {
-            return this._loadSvgIconSetFromConfig(iconSetConfig).pipe(catchError((/**
-             * @param {?} err
-             * @return {?}
-             */
-            (err) => {
+            .filter(iconSetConfig => !iconSetConfig.svgElement)
+            .map(iconSetConfig => {
+            return this._loadSvgIconSetFromConfig(iconSetConfig).pipe(catchError((err) => {
                 /** @type {?} */
                 const url = this._sanitizer.sanitize(SecurityContext.RESOURCE_URL, iconSetConfig.url);
                 // Swallow errors fetching individual URLs so the
                 // combined Observable won't necessarily fail.
                 console.error(`Loading icon set URL: ${url} failed: ${err.message}`);
                 return of(null);
-            })));
-        }));
+            }));
+        });
         // Fetch all the icon set URLs. When the requests complete, every IconSet should have a
         // cached SVG element (unless the request failed), and we can check again for the icon.
-        return forkJoin(iconSetFetchRequests).pipe(map((/**
-         * @return {?}
-         */
-        () => {
+        return forkJoin(iconSetFetchRequests).pipe(map(() => {
             /** @type {?} */
             const foundIcon = this._extractIconWithNameFromAnySet(name, iconSetConfigs);
             if (!foundIcon) {
                 throw getMatIconNameNotFoundError(name);
             }
             return foundIcon;
-        })));
+        }));
     }
     /**
      * Searches the cached SVG elements for the given icon sets for a nested icon element whose "id"
@@ -455,11 +424,7 @@ class MatIconRegistry {
      */
     _loadSvgIconFromConfig(config) {
         return this._fetchUrl(config.url)
-            .pipe(map((/**
-         * @param {?} svgText
-         * @return {?}
-         */
-        svgText => this._createSvgElementForSingleIcon(svgText))));
+            .pipe(map(svgText => this._createSvgElementForSingleIcon(svgText)));
     }
     /**
      * Loads the content of the icon set URL specified in the SvgIconConfig and creates an SVG element
@@ -473,18 +438,14 @@ class MatIconRegistry {
         if (config.svgElement) {
             return of(config.svgElement);
         }
-        return this._fetchUrl(config.url).pipe(map((/**
-         * @param {?} svgText
-         * @return {?}
-         */
-        svgText => {
+        return this._fetchUrl(config.url).pipe(map(svgText => {
             // It is possible that the icon set was parsed and cached by an earlier request, so parsing
             // only needs to occur if the cache is yet unset.
             if (!config.svgElement) {
                 config.svgElement = this._svgElementFromString(svgText);
             }
             return config.svgElement;
-        })));
+        }));
     }
     /**
      * Creates a DOM element from the given SVG string, and adds default attributes.
@@ -508,10 +469,8 @@ class MatIconRegistry {
      * @return {?}
      */
     _extractSvgIconFromSet(iconSet, iconName) {
-        // Use the `id="iconName"` syntax in order to escape special
-        // characters in the ID (versus using the #iconName syntax).
         /** @type {?} */
-        const iconSource = iconSet.querySelector(`[id="${iconName}"]`);
+        const iconSource = iconSet.querySelector('#' + iconName);
         if (!iconSource) {
             return null;
         }
@@ -619,10 +578,7 @@ class MatIconRegistry {
         // TODO(jelbourn): for some reason, the `finalize` operator "loses" the generic type on the
         // Observable. Figure out why and fix it.
         /** @type {?} */
-        const req = this._httpClient.get(url, { responseType: 'text' }).pipe(finalize((/**
-         * @return {?}
-         */
-        () => this._inProgressUrlFetches.delete(url))), share());
+        const req = this._httpClient.get(url, { responseType: 'text' }).pipe(finalize(() => this._inProgressUrlFetches.delete(url)), share());
         this._inProgressUrlFetches.set(url, req);
         return req;
     }
@@ -670,7 +626,7 @@ MatIconRegistry.ctorParameters = () => [
     { type: DomSanitizer },
     { type: undefined, decorators: [{ type: Optional }, { type: Inject, args: [DOCUMENT,] }] }
 ];
-/** @nocollapse */ MatIconRegistry.ngInjectableDef = ɵɵdefineInjectable({ factory: function MatIconRegistry_Factory() { return new MatIconRegistry(ɵɵinject(HttpClient, 8), ɵɵinject(DomSanitizer), ɵɵinject(DOCUMENT, 8)); }, token: MatIconRegistry, providedIn: "root" });
+/** @nocollapse */ MatIconRegistry.ngInjectableDef = defineInjectable({ factory: function MatIconRegistry_Factory() { return new MatIconRegistry(inject(HttpClient, 8), inject(DomSanitizer), inject(DOCUMENT, 8)); }, token: MatIconRegistry, providedIn: "root" });
 /**
  * \@docs-private
  * @param {?} parentRegistry
@@ -717,7 +673,7 @@ function iconKey(namespace, name) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 // Boilerplate for applying mixins to MatIcon.
 /**
@@ -755,10 +711,7 @@ function MAT_ICON_LOCATION_FACTORY() {
     return {
         // Note that this needs to be a function, rather than a property, because Angular
         // will only resolve it once, but we want the current path on each call.
-        getPathname: (/**
-         * @return {?}
-         */
-        () => _location ? (_location.pathname + _location.search) : '')
+        getPathname: () => _location ? (_location.pathname + _location.search) : ''
     };
 }
 /**
@@ -779,16 +732,12 @@ const funcIriAttributes = [
     'mask',
     'stroke'
 ];
-const ɵ0 = /**
- * @param {?} attr
- * @return {?}
- */
-attr => `[${attr}]`;
+const ɵ0 = attr => `[${attr}]`;
 /**
  * Selector that can be used to find all elements that are using a `FuncIRI`.
  * @type {?}
  */
-const funcIriAttributeSelector = funcIriAttributes.map((ɵ0)).join(', ');
+const funcIriAttributeSelector = funcIriAttributes.map(ɵ0).join(', ');
 /**
  * Regex that can be used to extract the id out of a FuncIRI.
  * @type {?}
@@ -917,15 +866,7 @@ class MatIcon extends _MatIconMixinBase {
         if (svgIconChanges) {
             if (this.svgIcon) {
                 const [namespace, iconName] = this._splitIconName(this.svgIcon);
-                this._iconRegistry.getNamedSvgIcon(iconName, namespace).pipe(take(1)).subscribe((/**
-                 * @param {?} svg
-                 * @return {?}
-                 */
-                svg => this._setSvgElement(svg)), (/**
-                 * @param {?} err
-                 * @return {?}
-                 */
-                (err) => console.log(`Error retrieving icon: ${err.message}`)));
+                this._iconRegistry.getNamedSvgIcon(iconName, namespace).pipe(take(1)).subscribe(svg => this._setSvgElement(svg), (err) => console.log(`Error retrieving icon: ${err.message}`));
             }
             else if (svgIconChanges.previousValue) {
                 this._clearSvgElement();
@@ -1087,20 +1028,11 @@ class MatIcon extends _MatIconMixinBase {
         /** @type {?} */
         const elements = this._elementsWithExternalReferences;
         if (elements) {
-            elements.forEach((/**
-             * @param {?} attrs
-             * @param {?} element
-             * @return {?}
-             */
-            (attrs, element) => {
-                attrs.forEach((/**
-                 * @param {?} attr
-                 * @return {?}
-                 */
-                attr => {
+            elements.forEach((attrs, element) => {
+                attrs.forEach(attr => {
                     element.setAttribute(attr.name, `url('${path}#${attr.value}')`);
-                }));
-            }));
+                });
+            });
         }
     }
     /**
@@ -1117,11 +1049,7 @@ class MatIcon extends _MatIconMixinBase {
         const elements = this._elementsWithExternalReferences =
             this._elementsWithExternalReferences || new Map();
         for (let i = 0; i < elementsWithFuncIri.length; i++) {
-            funcIriAttributes.forEach((/**
-             * @param {?} attr
-             * @return {?}
-             */
-            attr => {
+            funcIriAttributes.forEach(attr => {
                 /** @type {?} */
                 const elementWithReference = elementsWithFuncIri[i];
                 /** @type {?} */
@@ -1137,7 +1065,7 @@ class MatIcon extends _MatIconMixinBase {
                     }
                     (/** @type {?} */ (attributes)).push({ name: attr, value: match[1] });
                 }
-            }));
+            });
         }
     }
 }
@@ -1173,7 +1101,7 @@ MatIcon.propDecorators = {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 class MatIconModule {
 }
@@ -1187,13 +1115,13 @@ MatIconModule.decorators = [
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { MatIconModule, MAT_ICON_LOCATION_FACTORY, MAT_ICON_LOCATION, MatIcon, getMatIconNameNotFoundError, getMatIconNoHttpProviderError, getMatIconFailedToSanitizeUrlError, getMatIconFailedToSanitizeLiteralError, ICON_REGISTRY_PROVIDER_FACTORY, MatIconRegistry, ICON_REGISTRY_PROVIDER };
+export { MatIconModule, MAT_ICON_LOCATION_FACTORY, MatIconBase, _MatIconMixinBase, MAT_ICON_LOCATION, MatIcon, getMatIconNameNotFoundError, getMatIconNoHttpProviderError, getMatIconFailedToSanitizeUrlError, getMatIconFailedToSanitizeLiteralError, ICON_REGISTRY_PROVIDER_FACTORY, MatIconRegistry, ICON_REGISTRY_PROVIDER };
 //# sourceMappingURL=icon.js.map

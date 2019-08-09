@@ -42,7 +42,7 @@ function __extends(d, b) {
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
  * Visually, a 30px separation between tick marks looks best. This is very subjective but it is
@@ -73,10 +73,7 @@ var MIN_VALUE_ACTIVE_THUMB_GAP = 10;
  */
 var MAT_SLIDER_VALUE_ACCESSOR = {
     provide: forms.NG_VALUE_ACCESSOR,
-    useExisting: core.forwardRef((/**
-     * @return {?}
-     */
-    function () { return MatSlider; })),
+    useExisting: core.forwardRef(function () { return MatSlider; }),
     multi: true
 };
 /**
@@ -94,7 +91,7 @@ MatSliderChange = /** @class */ (function () {
 /**
  * \@docs-private
  */
-var 
+var   
 // Boilerplate for applying mixins to MatSlider.
 /**
  * \@docs-private
@@ -144,10 +141,7 @@ var MatSlider = /** @class */ (function (_super) {
         /**
          * onTouch function registered via registerOnTouch (ControlValueAccessor).
          */
-        _this.onTouched = (/**
-         * @return {?}
-         */
-        function () { });
+        _this.onTouched = function () { };
         _this._percent = 0;
         /**
          * Whether or not the thumb is sliding.
@@ -167,10 +161,7 @@ var MatSlider = /** @class */ (function (_super) {
          * The dimensions of the slider.
          */
         _this._sliderDimensions = null;
-        _this._controlValueAccessorChangeFn = (/**
-         * @return {?}
-         */
-        function () { });
+        _this._controlValueAccessorChangeFn = function () { };
         /**
          * Subscription to the Directionality change EventEmitter.
          */
@@ -629,21 +620,14 @@ var MatSlider = /** @class */ (function (_super) {
         var _this = this;
         this._focusMonitor
             .monitor(this._elementRef, true)
-            .subscribe((/**
-         * @param {?} origin
-         * @return {?}
-         */
-        function (origin) {
+            .subscribe(function (origin) {
             _this._isActive = !!origin && origin !== 'keyboard';
             _this._changeDetectorRef.detectChanges();
-        }));
+        });
         if (this._dir) {
-            this._dirChangeSubscription = this._dir.change.subscribe((/**
-             * @return {?}
-             */
-            function () {
+            this._dirChangeSubscription = this._dir.change.subscribe(function () {
                 _this._changeDetectorRef.markForCheck();
-            }));
+            });
         }
     };
     /**
@@ -1242,14 +1226,14 @@ var MatSlider = /** @class */ (function (_super) {
         change: [{ type: core.Output }],
         input: [{ type: core.Output }],
         valueChange: [{ type: core.Output }],
-        _sliderWrapper: [{ type: core.ViewChild, args: ['sliderWrapper', { static: false },] }]
+        _sliderWrapper: [{ type: core.ViewChild, args: ['sliderWrapper',] }]
     };
     return MatSlider;
 }(_MatSliderMixinBase));
 
 /**
  * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ * @suppress {checkTypes,extraRequire,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 var MatSliderModule = /** @class */ (function () {
     function MatSliderModule() {
@@ -1268,6 +1252,8 @@ var MatSliderModule = /** @class */ (function () {
 exports.MatSliderModule = MatSliderModule;
 exports.MAT_SLIDER_VALUE_ACCESSOR = MAT_SLIDER_VALUE_ACCESSOR;
 exports.MatSliderChange = MatSliderChange;
+exports.MatSliderBase = MatSliderBase;
+exports._MatSliderMixinBase = _MatSliderMixinBase;
 exports.MatSlider = MatSlider;
 
 Object.defineProperty(exports, '__esModule', { value: true });
