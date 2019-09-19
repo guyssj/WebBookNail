@@ -1,0 +1,39 @@
+<div class="form-row">
+    <mat-form-field class="col-md-6">
+        <input matInput placeholder="{{localRes?.FirstName}}" [(ngModel)]="customer.FirstName" readonly>
+    </mat-form-field>
+    <mat-form-field class="col-md-6">
+        <input matInput placeholder="{{localRes?.LastName}}" [(ngModel)]="customer.LastName" readonly>
+    </mat-form-field>
+</div>
+<div class="row">
+    <mat-form-field class="col-md-6">
+        <input matInput placeholder="{{localRes?.PhoneNumber}}" [(ngModel)]="customer.PhoneNumber" readonly>
+    </mat-form-field>
+    <mat-form-field class="col-md-6">
+        <input matInput [min]="dateNow" [(ngModel)]="book.StartDate" (dateChange)="dateChange($event)" [max]="maxDate" [matDatepicker]="picker"
+            placeholder="{{localRes?.selectedDate}}">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <ng-select dir="rtl"
+        [items]="Time$ | async" 
+        bindLabel="timeSlot"
+        clearAllText="Clear"
+        autofocus 
+        bindValue="id"
+        [(ngModel)]="book.StartAt"
+        placeholder="{{localRes?.selectedTime}}"
+        (change)="onTimeChange($event)">
+        </ng-select>
+      </div>
+
+</div>
+
+<div>
+    <button type="submit" (click)="UpdateBook(book)" *ngIf="editMode" class="btn pink">{{localRes?.BookSet}}</button>
+    <button type="button" (click)="editMode = true" *ngIf="!editMode" class="btn pink">{{localRes?.EditMode}}</button>
+</div>

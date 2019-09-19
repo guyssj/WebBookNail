@@ -2,7 +2,10 @@ import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import * as $ from "jquery";
 import { LocalresService } from '../../localres.service';
 import { SetBookComponent } from '../set-book/set-book.component';
-import { AuthService } from '../../auth.service';
+import { isObject } from 'util';
+import { Customer } from 'src/app/Customer';
+import { Book } from 'src/app/Book';
+import { FormGroup } from '@angular/forms';
 
 
 @Component({
@@ -12,6 +15,8 @@ import { AuthService } from '../../auth.service';
 })
 export class HomeComponent implements OnInit ,AfterViewInit {
   localRes:any = {};
+  hidetheSer:boolean;
+  bookFound:Book = new Book();
   @ViewChild(SetBookComponent, { static: true }) setBookCom;
   constructor(private localres:LocalresService) { }
 
@@ -39,5 +44,21 @@ export class HomeComponent implements OnInit ,AfterViewInit {
   }
 
   ngAfterViewInit(){
+  }
+
+  whenCustomerFound(event){
+    debugger;
+    if(isObject(event)){
+      this.bookFound = event;
+      this.hidetheSer = true;
+    }
+    else{
+      console.log(event);
+    }
+  }
+
+  clear(){
+    this.bookFound= null;
+    this.hidetheSer = false;
   }
 }

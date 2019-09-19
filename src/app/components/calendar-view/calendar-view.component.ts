@@ -3,8 +3,8 @@ import * as $ from "jquery";
 import "fullcalendar";
 import { Book } from "../../Book";
 import { ApiServiceService } from "../../api-service.service";
-import { map } from "rxjs/operators";
-import { CalendarEvent, CalendarView } from "angular-calendar";
+import { map, take } from "rxjs/operators";
+import { CalendarEvent, CalendarView, CalendarEventAction } from "angular-calendar";
 import {
   isSameMonth,
   isSameDay,
@@ -16,14 +16,19 @@ import {
   endOfDay,
   format
 } from "date-fns";
-import { Observable, Subject } from "rxjs";
+import { Observable, Subject, timer } from "rxjs";
 import { HttpClient } from "@angular/common/http";
 import { ActivatedRoute, Router } from "@angular/router";
 import { addDays, addMinutes } from 'date-fns';
-import { MatDialog, MAT_DIALOG_DATA } from "@angular/material";
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
 import { DialogContentExampleDialog } from "../set-book/set-book.component";
 import { AuthService } from "src/app/auth.service";
 import { GoogleEvent } from "src/app/GoogleEvents";
+import { LocalresService } from 'src/app/localres.service';
+import { Customer } from 'src/app/Customer';
+import { Services } from 'src/app/Services';
+import { ServiceTypes } from 'src/app/servicetypes';
+import { MessageConfig, typeMessage } from '../MessageConfig';
 
 const timezoneOffset = new Date().getTimezoneOffset();
 const hoursOffset = String(Math.floor(Math.abs(timezoneOffset / 60))).padStart(
@@ -57,6 +62,11 @@ function getCookie(cname) {
   return "";
 }
 
+export interface DialogData {
+  event: CalendarEvent,
+  events: CalendarEvent[]
+}
+
 @Component({
   selector: "app-calendar-view",
   templateUrl: "./calendar-view.component.html",
@@ -71,11 +81,15 @@ export class CalendarViewComponent implements OnInit {
     private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
-    public auth: AuthService) { }
+    public auth: AuthService,
+    public Localres: LocalresService) { }
   events2: CalendarEvent[] = [];
   viewDate: Date = new Date();
   tokenCookie: string = "";
   Books: Book[] = [];
+  Customers: Customer[] = [];
+  Services: Services[] = [];
+  ServiceTypes: ServiceTypes[] = [];
   view: CalendarView = CalendarView.Month;
   CalendarView = CalendarView;
   loading2: boolean = true;
@@ -84,12 +98,43 @@ export class CalendarViewComponent implements OnInit {
   dateNow: Date = new Date(Date.now());
   maxDate: Date = addDays(this.dateNow, 30);
   refresh: Subject<any> = new Subject();
+  localRes: any;
   locale: string = 'he';
-  UserGoogle:any;
+  UserGoogle: any;
+  BookEditing: Book = new Book();
+  hidetheSer: boolean = false;
+  successEvents = [];
   ngOnInit() {
+    this.auth.auth2().subscribe((res) => {
+      this.UserGoogle = res;
+    })
+    this.Localres.getLocalResoruce("he").subscribe(res => {
+      this.localRes = res;
+    })
     this.getApiWithToken();
   }
 
+  async getAllCustomers() {
+    this.Customers = await this.API.GetAllCustomers();
+  }
+
+  async getAllServiceTypes() {
+    this.ServiceTypes = await this.API.getAllServiceTypes();
+  }
+
+  convertEventToBook(Event: CalendarEvent<Book>): Book {
+    let book: Book = {
+      BookID: Event.meta.BookID,
+      StartAt: Event.meta.StartAt,
+      StartDate: Event.meta.StartDate,
+      CustomerID: Event.meta.CustomerID,
+      Durtion: Event.meta.Durtion,
+      ServiceID: Event.meta.ServiceID,
+      ServiceTypeID: Event.meta.ServiceTypeID
+    }
+
+    return book;
+  }
   /**
    * 
    * get API request with check if have token in Query string
@@ -98,6 +143,7 @@ export class CalendarViewComponent implements OnInit {
     this.route
       .queryParams
       .subscribe(params => {
+        debugger;
         //check if cookie token is exist
         this.tokenCookie = getCookie("userToken");
         if (this.tokenCookie != "") {
@@ -107,16 +153,26 @@ export class CalendarViewComponent implements OnInit {
             // update the Cookie token
             setCookie("userToken", GetToken, 1)
             this.API.getBooks().subscribe(allbook => {
+              this.getAllCustomers();
+              this.getAllServiceTypes();
               this.Books = allbook.Result;
-              this.getEvent(this.Books);
+              timer(3000, 1000).pipe(
+                take(1)).subscribe(x => {
+                  this.getEvent(this.Books);
+                })
               window.history.replaceState({}, document.title, "/#/" + "Calendar");
             })
           }
           else {
             //Get all books from API with Token
             this.API.getBooks().subscribe(allbook => {
+              this.getAllCustomers();
+              this.getAllServiceTypes()
               this.Books = allbook.Result;
-              this.getEvent(this.Books);
+              timer(3000, 1000).pipe(
+                take(1)).subscribe(x => {
+                  this.getEvent(this.Books);
+                })
             })
           }
         }
@@ -126,8 +182,13 @@ export class CalendarViewComponent implements OnInit {
           if (GetToken != undefined) {
             setCookie("userToken", GetToken, 1)
             this.API.getBooks().subscribe(allbook => {
+              this.getAllCustomers();
+              this.getAllServiceTypes();
               this.Books = allbook.Result;
-              this.getEvent(this.Books);
+              timer(3000, 1000).pipe(
+                take(1)).subscribe(x => {
+                  this.getEvent(this.Books);
+                })
             })
           }
           else {
@@ -139,9 +200,12 @@ export class CalendarViewComponent implements OnInit {
 
   clickEvent(Event) {
     console.log(Event.event);
-    this.dialog.open(DialogForClickEvent, {
-      data: Event.event
-    });
+    var dialogsData: DialogData = {
+      event: Event.event,
+      events: this.events2
+    }
+
+    this.openDialog(dialogsData);
   }
 
   /**
@@ -152,27 +216,27 @@ export class CalendarViewComponent implements OnInit {
    * 
    */
   getEvent(books: Book[]): void {
-    // fill all ecent to array EventCalendar Angular 6 calendar
     for (let i = 0; i < books.length; i++) {
-      this.API.getCustomerById(books[i].CustomerID).subscribe(cus => {
-        this.API.getAllServicetypesByServiceID(books[i].ServiceID).subscribe(srvtype => {
-          let servType = srvtype.Result.find(serv => serv.ServiceTypeId == books[i].ServiceTypeID)
-          let Start = addMinutes(books[i].StartDate, books[i].StartAt);
-          let End = addMinutes(Start, books[i].Durtion);
-          const event = {
-            title: cus.Result.FirstName + ' ' + cus.Result.LastName + ' - ' + servType.ServiceTypeName,
-            start: Start,
-            end: End,
-            draggable: false,
-            resizable: {
-              beforeStart: false,
-              afterEnd: false
-            }
-          }
-          this.events2.push(event);
-          this.refresh.next();
-        });
-      }); //end customer
+      let FilterServiceType = this.ServiceTypes.find(servFilter => servFilter.ServiceTypeID == books[i].ServiceTypeID);
+      let cus = this.Customers.find(cus => cus.CustomerID == books[i].CustomerID)
+      let Start = addMinutes(books[i].StartDate, books[i].StartAt);
+      let End = addMinutes(Start, books[i].Durtion);
+      const event: CalendarEvent<Book> = {
+        id: books[i].BookID,
+        title: cus.FirstName + ' ' + cus.LastName + ' - ' + FilterServiceType.ServiceTypeName,
+        start: Start,
+        end: End,
+        meta: books[i],
+        actions: this.actions,
+        draggable: false,
+        resizable: {
+          beforeStart: false,
+          afterEnd: false
+        }
+      }
+      this.events2.push(event);
+      this.refresh.next();
+
 
     } //end of loop for
     this.loading2 = false;
@@ -208,6 +272,10 @@ export class CalendarViewComponent implements OnInit {
     });
   }
 
+  signOut() {
+    this.auth.logout();
+  }
+
   getCalendar() {
     this.auth.getCalendar();
   }
@@ -219,7 +287,7 @@ export class CalendarViewComponent implements OnInit {
    * @returns GoogleEvent[]
    */
   RenderEventToGoogle(events: CalendarEvent[]): GoogleEvent[] {
-    let GoogleEvents:GoogleEvent[] = []
+    let GoogleEvents: GoogleEvent[] = []
     for (let i = 0; i < events.length; i++) {
       let evntgogle: GoogleEvent = {
         calendarId: 'primary',
@@ -251,7 +319,7 @@ export class CalendarViewComponent implements OnInit {
    */
   async SyncAllEvents(events) {
     let allEvent = this.RenderEventToGoogle(events);
-    
+
     //filter all event from today and more 
     allEvent = allEvent.filter((item: GoogleEvent) =>
       item.start.dateTime.getTime() >= this.dateNow.getTime()
@@ -272,11 +340,73 @@ export class CalendarViewComponent implements OnInit {
 
       }
       if (!this.isEventExist) {
-        await this.auth.insertEvent(allEvent[i]);
+        let Results = await this.auth.insertEvent(allEvent[i]);
+        if (Results.status == 200) {
+          this.successEvents.push(Results);
+        }
       }
     }
+    if (this.successEvents.length > 0) {
+      this.openMessages({ message: this.localRes.SyncSuccess, type: typeMessage.Success }, 3000);
+    }
+    else {
+      this.openMessages({ message: this.localRes.ErrorSync, type: typeMessage.Error }, 3000);
+
+    }
+
   }
 
+
+
+  openDialog(dialogdata: DialogData): void {
+
+    const dialogRef = this.dialog.open(DialogForClickEvent, {
+      data: dialogdata
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.events2 = result;
+        this.API.DeleteBook(dialogdata.event.id, this.tokenCookie).subscribe(data => {
+          console.log(data);
+        })
+      }
+      this.refresh.next();
+    });
+    this.refresh.next();
+  }
+
+  openMessages(messageObj: MessageConfig, time) {
+    this.dialog.open(DialogContentExampleDialog, {
+      data: messageObj
+    });
+    timer(time, 1000).pipe(
+      take(1)).subscribe(x => {
+        this.dialog.closeAll();
+      })
+  }
+
+  actions: CalendarEventAction[] = [
+    {
+      label: '<i class="far fa-edit"></i>',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        debugger;
+        this.BookEditing = this.convertEventToBook(event);
+        this.hidetheSer = true;
+        document.getElementById('edit2').click();
+      }
+    },
+    {
+      label: '<i class="fa fa-fw fa-times"></i>',
+      onClick: ({ event }: { event: CalendarEvent }): void => {
+        this.API.DeleteBook(event.id, this.tokenCookie).subscribe(data => {
+          if (data.Result) {
+            this.events2 = this.events2.filter(iEvent => iEvent !== event);
+          }
+        })
+      }
+    }
+  ];
 
 }
 
@@ -286,8 +416,24 @@ export class CalendarViewComponent implements OnInit {
 })
 export class DialogForClickEvent {
   //get MessageResult() { return ; }
-  constructor(@Inject(MAT_DIALOG_DATA) public data: CalendarEvent) {
+  newStart: string;
+  newEnd: string;
+  localRes: any = {}
+  newEvents: CalendarEvent[] = [];
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, private localres: LocalresService, public dialogRef: MatDialogRef<DialogForClickEvent>) {
+    this.newStart = data.event.start.toLocaleTimeString();
+    this.newEnd = data.event.end.toLocaleTimeString();
+    this.localres.getLocalResoruce("he").subscribe(res => {
+      this.localRes = res;
+    });
+  }
+
+  deleteEvent(event) {
+    this.newEvents = this.data.events.filter(Ievent => Ievent !== this.data.event);
+    this.dialogRef.close(this.newEvents);
 
   }
+
+
 
 }

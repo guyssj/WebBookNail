@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable, OnChanges, Inject } from '@angular/core';
+import { Component, OnInit, Injectable, OnChanges, Inject, Input } from '@angular/core';
 import { LocalresService } from '../../localres.service';
 import { ApiServiceService } from '../../api-service.service';
 import { Observable, timer } from 'node_modules/rxjs';
@@ -24,7 +24,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
   styleUrls: ['./set-book.component.css'],
 })
 export class SetBookComponent implements OnInit {
-  localRes: any
+  @Input() localRes:any;
   faCalendarAlt = faCalendarAlt;
   Time$: Observable<TimeSlots[]>;
   Services$: Observable<Services[]>;
@@ -57,14 +57,9 @@ export class SetBookComponent implements OnInit {
               private adapter: DateAdapter<any>) { }
 
   ngOnInit() {
-    this.localres.getLocalResoruce("he").subscribe(data => {
-      this.localRes = data;
-      console.log(this.localRes)
-    })
     this.adapter.setLocale('he');
     this.Time$ = this.API.getAllTimes();
     this.Services$ = this.API.getAllServices();
-    
   }
 
   /**
@@ -142,6 +137,7 @@ export class SetBookComponent implements OnInit {
    * @param event ServiceTypes
    */
   onServiceTypeChange(event:ServiceTypes,select:NgSelectComponent) {
+    debugger;
     this.ServcieTypeSelected = event;
     //in this request from server to check all time exist in date choosed
     this.API.TimeExist(this.finishStartDate.getFullYear()+"-"+(this.finishStartDate.getMonth()+1)+"-"+this.finishStartDate.getDate()).subscribe(arry => {
@@ -178,7 +174,7 @@ export class SetBookComponent implements OnInit {
         StartDate: this.finishStartDate,
         StartAt:this.StartAt,
         ServiceID: this.ServiceSelected.ServiceID,
-        ServiceTypeID: this.ServcieTypeSelected.ServiceTypeId,
+        ServiceTypeID: this.ServcieTypeSelected.ServiceTypeID,
         Durtion: this.ServcieTypeSelected.Duration
       }
       this.API.setBook(this.Books).subscribe(results => {

@@ -28,6 +28,9 @@ import { LoginComponent } from './components/login/login.component';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { DialogForClickEvent } from './components/calendar-view/calendar-view.component';
+import { GalleryComponent } from './components/gallery/gallery.component';
+import { ChangeBookComponent } from './components/change-book/change-book.component';
+import { SearchBookComponent } from './components/search-book/search-book.component';
 
 registerLocaleData(localeHe);
 
@@ -40,7 +43,10 @@ registerLocaleData(localeHe);
     HomeComponent,
     LoginComponent,
     DialogContentExampleDialog,
-    DialogForClickEvent
+    DialogForClickEvent,
+    GalleryComponent,
+    ChangeBookComponent,
+    SearchBookComponent
   ],
   imports: [
     BrowserModule,

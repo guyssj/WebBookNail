@@ -1,5 +1,5 @@
 export class ServiceTypes{
-    ServiceTypeId:number;
+    ServiceTypeID:number;
     ServiceTypeName:string;
     ServiceID:number;
     Duration:number;

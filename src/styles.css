@@ -8,12 +8,9 @@ div{
     text-align: right;
 }
 
-::ng-deep .mat-select-placeholder {
-  color:#FFFFFF; background-color:#C96D9F; border-color:#C96D9F;
-}
 
 .btn,.btn.pink, .btn.inverse:hover{color:#FFFFFF; background-color:#C96D9F; border-color:#C96D9F;}
-.btn:hover, .btn.inverse{color:inherit; background-color:transparent; border-color:inherit;}
+.btn:hover, .btn.inverse{color:inherit !important; background-color:transparent; border-color:inherit;}
 /* You can add global styles to this file, and also import other style files */
 
 @font-face {
@@ -48,7 +45,21 @@ div{
 
 .cal-days{
   height: 81.5vh !important;
+  width: 66.7vw !important;
 }
 .cal-week-view{
-  height: 85.5vh !important;
+  height: 76.5vh !important;
 }
+
+.line{
+  width: 100%; 
+  height: 1px;
+  background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0.96) 4%, rgba(201,109,159,0.5) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(255,255,255,0.96) 4%,rgba(201,109,159,0.5) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to right, rgba(255,255,255,1) 0%,rgba(255,255,255,0.96) 4%,rgba(201,109,159,0.5) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+  }
+
+  .cal-month-view .cal-cell-row {
+    width: 66.6vw !important;
+  }

@@ -1,117 +1,102 @@
-<div class="bg">
-
-  <div class="center col-md-12" style="position: relative;padding: 16px; " *ngIf="loading2 == false;" >
-      <div class="row text-center">
-          <div class="col-md-4">
-            <div class="btn-group">
-              <div
-                class="btn pink"
-                mwlCalendarPreviousView
-                [view]="view"
-                [(viewDate)]="viewDate"
-                (viewDateChange)="closeOpenMonthViewDay()"
-              >
-                Previous
-              </div>
-              <div
-                class="btn btn-outline-secondary"
-                mwlCalendarToday
-                [(viewDate)]="viewDate"
-              >
-                Today
-              </div>
-              <div
-                class="btn pink"
-                mwlCalendarNextView
-                [view]="view"
-                [(viewDate)]="viewDate"
-                (viewDateChange)="closeOpenMonthViewDay()"
-              >
-                Next
-              </div>
-            </div>
+<div class="bg" *ngIf="loading2 == false; else loading">
+   
+  <p *ngIf="UserGoogle" style="text-align: left;">Hi {{ UserGoogle?.displayName }}  <fa-icon (click)="signOut()" [icon]="['fa', 'sign-out-alt']" size="1x"></fa-icon></p>
+  <div class="col-sm-10" style="position: relative; " *ngIf="loading2 == false;">
+    <div class="row">
+      <div class="col-sm-4">
+        <div class="btn-group">
+          <div class="btn pink" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
+            (viewDateChange)="closeOpenMonthViewDay()">
+            Previous
           </div>
-          <div class="col-md-4">
-            <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'he' }}</h3>
+          <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
+            Today
           </div>
-          <div class="col-md-4">
-            <div class="btn-group">
-              <div
-                class="btn pink"
-                (click)="setView(CalendarView.Month)"
-                [class.active]="view === CalendarView.Month"
-              >
-                Month
-              </div>
-              <div
-                class="btn pink"
-                (click)="setView(CalendarView.Week)"
-                [class.active]="view === CalendarView.Week"
-              >
-                Week
-              </div>
-              <div
-                class="btn pink"
-                (click)="setView(CalendarView.Day)"
-                [class.active]="view === CalendarView.Day"
-              >
-                Day
-              </div>
-            </div>
+          <div class="btn pink" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
+            (viewDateChange)="closeOpenMonthViewDay()">
+            Next
           </div>
         </div>
-        <br />        
-  </div>
-  <div style="width: 100%; height: 100px; position: fixed;">
-
-  </div>
-  <div class="center">
-    <div style="overflow: auto;">
-      <div [ngSwitch]="view" *ngIf="loading2 == false; else loading">
-        <mwl-calendar-month-view
-          *ngSwitchCase="'month'" 
-          [viewDate]="viewDate" 
-          [events]="events2" 
-          [refresh]="refresh" 
-          [locale]="locale"
-          (dayClicked)="dayClicked($event.day)"
-          (eventClicked)="clickEvent($event)"
-          [activeDayIsOpen]="activeDayIsOpen">
-        </mwl-calendar-month-view>
-        <mwl-calendar-week-view
-          *ngSwitchCase="'week'"
-          [viewDate]="viewDate"
-          [events]="events2" 
-          [refresh]="refresh" 
-          [locale]="locale"
-          [hourSegments]="2"
-          [dayStartHour]="8"
-          [dayEndHour]="18"
-          (eventClicked)="clickEvent($event)">
-      </mwl-calendar-week-view>
       </div>
-      <ng-template #loading>
-        <div class="text-center">
-          <div class="spinners">
-          <fa-icon [icon]="['fa', 'circle-notch']" size="5x" [spin]="true"></fa-icon>
+      <div class="col-sm-3">
+        <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'he' }}</h3>
+      </div>
+      <div class="col-sm-2">
+        <div class="btn-group">
+          <div class="btn pink" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
+            Month
+          </div>
+          <div class="btn pink" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
+            Week
+          </div>
+          <div class="btn pink" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
+            Day
+          </div>
         </div>
+      </div>
+    </div>
+    <br />
+  </div>
+  <div class="row">
+    <div class="center col-sm-8">
+      <div style="overflow: auto;">
+        <div [ngSwitch]="view" *ngIf="loading2 == false; else loading">
+          <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events2" [refresh]="refresh"
+            [locale]="locale" (dayClicked)="dayClicked($event.day)" (eventClicked)="clickEvent($event)"
+            [activeDayIsOpen]="activeDayIsOpen">
+          </mwl-calendar-month-view>
+          <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events2" [refresh]="refresh"
+            [locale]="locale" [hourSegments]="2" [dayStartHour]="8" [dayEndHour]="18"
+            (eventClicked)="clickEvent($event)">
+          </mwl-calendar-week-view>
         </div>
-      </ng-template>
-      <!-- <div *ngIf="events$ | async; else loading; let events">
-      <mwl-calendar-month-view
-        [viewDate]="viewDate"
-        [events]="events"
-        [activeDayIsOpen]="true">
-      </mwl-calendar-month-view>
-  </div> -->
-      <!-- <div id='calendar'></div> -->
-      <button type="button" (click)="SignInToGoogle();">dfdfdfdf</button>
-      <button type="button" (click)="getCalendar();">Get</button>
-      <button type="button" (click)="SyncAllEvents(events2);">sync</button>
 
-      <p *ngIf="UserGoogle">Hi {{ UserGoogle?.displayName }}</p>
+        
+        <!-- modal settings -->
+        <a class="nav-link" data-toggle="modal" id="edit2" data-target="#EditModal" href=""></a>
+        <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2"
+          aria-hidden="true">
 
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <button type="button" class="float-left close" style="margin: -1rem !important;" data-dismiss="modal"
+                  aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="float-right inline" style="color: rgba(201,109,159,1);">התור שלך</h4>
+              </div>
+              <div class="line"></div>
+              <div class="modal-body">
+                <app-change-book [localRes]="localRes" [book]="BookEditing" *ngIf="hidetheSer"></app-change-book>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="box col-sm-3">
+      <div class="row">
+        <div *ngIf="!UserGoogle" class="col-sm-12" style="padding: 30px;">
+            <a class="menuItem" (click)="SignInToGoogle();">
+                {{localRes?.SignIn}} <fa-icon [icon]="['fa', 'sync-alt']" size="1x"></fa-icon>
+              </a>
+        </div>
+        <div *ngIf="UserGoogle" class="col-sm-12" style="padding: 30px;">
+          <a class="menuItem" (click)="SyncAllEvents(events2);">
+            {{localRes?.SyncGoogle}} <fa-icon [icon]="['fa', 'sync-alt']" size="1x"></fa-icon>
+          </a>
+        </div>
+      </div>
 
     </div>
   </div>
 </div>
+
+<ng-template #loading>
+  <div class="text-center">
+    <div class="spinners">
+      <fa-icon [icon]="['fa', 'circle-notch']" size="5x" [spin]="true"></fa-icon>
+    </div>
+  </div>
+</ng-template>

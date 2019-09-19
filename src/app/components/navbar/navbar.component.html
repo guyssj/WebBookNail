@@ -1,70 +1,38 @@
-<div class="bgded overlay" style="background-image:url('assets/443.jpg');">
-    <!-- ################################################################################################ -->
-    <div class="wrapper row1">
-      <header id="header" class="hoc clear">
-        <!-- ################################################################################################ -->
-        <a class="navbar-header" href="#">
-          <img class="img-responsive pull-right" style="width: 180px;" src="assets/LOGO.png" alt="Image" width="230" />
+<div class="bgded">
+  <div class="wrapper row1">
+    <header id="header" class="">
+      <nav class="navbar transparent-navbar navbar-expand-md navbar-dark fixed-top main-menu">
+        <a href="#" class="navbar-brand order-md-last">
+          <img class="img-responsive" style="width: 140px;" src="assets/LOGO.png" alt="Image" />
         </a>
-        <nav id="mainav" class="fl_left">
-          <ul class="clear">
-            <li class="active">
-              <a href="index.html">{{localRes?.homepage}}</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav"
+          aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="navbar-collapse collapse float-right" style="direction: rtl; padding: 10px;" id="mainNav">
+          <ul class="navbar-nav ml-auto bg-pink">
+            <li class="nav-item homeLink">
+              <a class="nav-link" href="/">
+                {{localRes?.homepage}}
+              </a>
             </li>
-            <li>
-              <a class="drop" href="#">{{localRes?.services}}</a>
+            <li class="nav-item active">
+              <a class="nav-link" href="/">{{localRes?.gallery}}</a>
+            </li>
+            <li class="nav-item ">
+              <a class="nav-link" href="/managefeedback/">{{localRes?.fanClub}}</a>
+            </li>
+            <li class="nav-item">
+              <!-- Button trigger modal -->
+              <a class="nav-link" data-toggle="modal" id="edit" data-target="#SerachModal"
+                href="">{{localRes?.EditMode}}</a>
+            </li>
           </ul>
-        </nav>
-        <!-- ################################################################################################ -->
-      </header>
-    </div>
-    <!-- ################################################################################################ -->
-    <!-- ################################################################################################ -->
-    <!-- ################################################################################################ -->
-    <div id="pageintro" class="hoc clear">
-      <div class="">
-        <!-- ################################################################################################ -->
-        <article>
-          <h1>{{localRes?.BookNow}}</h1>
-          <footer>
-            <!-- Button trigger modal -->
-            <a class="btn pink" data-toggle="modal" data-target=".bd-example-modal-lg" href="">{{localRes?.clickBook}}</a>
-            <!-- <button mat-button (click)="openDialog()"> פתח אותי</button> -->
-          </footer>
-        </article>
-  
-        <!-- ################################################################################################ -->
-      </div>
-    </div>
-    <!-- ################################################################################################ -->
-    <!-- ################################################################################################ -->
-    <!-- ################################################################################################ -->
-    <div id="introblocks" class="hoc clear">
-      <ul class="nospace">
-        <!-- ################################################################################################ -->
-        <li>
-          <div>
-            <i class="fa fa-3x fa-clock-o"></i>
-            <h4 class="heading">{{localRes?.WorkingHours}}</h4>
-            <p>08.00 - 18.30 / ראשון - שישי</p>
-          </div>
-        </li>
-        <li>
-          <div>
-            <i class="fa fa-3x fa-phone"></i>
-            <h4 class="heading">{{localRes?.CallNow}}</h4>
-            <p>050-0000000</p>
-          </div>
-        </li>
-        <li>
-          <div>
-            <i class="fa fa-3x fa-envelope-o"></i>
-            <h4 class="heading">{{localRes?.SendMail}}</h4>
-            <p>mirit@Miritush.com</p>
-          </div>
-        </li>
-        <!-- ################################################################################################ -->
-      </ul>
-    </div>
-    <!-- ################################################################################################ -->
+        </div>
+      </nav>
+    </header>
   </div>
+</div>
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->
+<!-- ################################################################################################ -->

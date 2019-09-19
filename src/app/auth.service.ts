@@ -38,6 +38,8 @@ export class AuthService {
 
   }
 
+  
+
   async login() {
     console.log(gapi.client);
     const googleAuth = gapi.auth2.getAuthInstance();
@@ -58,13 +60,24 @@ export class AuthService {
     this.afAuth.auth.signOut();
   }
 
+  authState(){
+    this.afAuth.authState.subscribe((res) => {
+      console.log(res.displayName);
+      return res;
+    })
+  }
+
+  auth2(){
+    return this.afAuth.authState;
+  }
+
   async getCalendar() {
     const events = await gapi.client.calendar.events.list({
       calendarId: 'primary',
       timeMin: new Date().toISOString(),
       showDeleted: false,
       singleEvents: true,
-      maxResults: 10,
+      maxResults: 30,
       orderBy: 'startTime'
     })
      this.calendarItems = events.result.items;
@@ -72,9 +85,8 @@ export class AuthService {
   }
 
   async insertEvent(Event:GoogleEvent) {
-    const insert = await gapi.client.calendar.events.insert(Event)
-    // await this.getCalendar().then(results =>{
-    //   console.log(results)
-    // });
+    const insert = await gapi.client.calendar.events.insert(Event);
+
+    return insert;
   }  
 }

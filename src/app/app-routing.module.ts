@@ -17,14 +17,16 @@ import {NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateCustomParserFormatter } from './dateformat';
 import { AuthService } from './auth.service';
 import { LoginComponent } from './components/login/login.component';
+import { GalleryComponent } from './components/gallery/gallery.component';
 registerLocaleData(localeHe);
 
 const routes: Routes = [
-  { path: 'setbook', component: SetBookComponent },
+  { path: 'Setbook', component: SetBookComponent },
   { path: 'Customers', component: CustomersComponent },
   { path: 'Calendar', component: CalendarViewComponent },
   { path: '', component: HomeComponent },
-  { path: 'Admin', component: LoginComponent }
+  { path: 'Admin', component: LoginComponent },
+  { path: 'Gallery', component: GalleryComponent }
 ];
 
 @NgModule({

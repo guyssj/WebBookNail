@@ -1,7 +1,7 @@
 .bg {
+  /* direction: rtl; */
     /* Set rules to fill background */
-    min-height: 30%;
-    min-width: 1024px;
+    /* min-width: 1024px; */
       /* background-color: #7f8c8d; */
       background-repeat: no-repeat;
       background-image: url('/assets/212.jpg');
@@ -14,6 +14,8 @@
     overflow: hidden !important;
     top: 0;
     left: 0;
+    font-family: 'Varela Round', sans-serif;
+
   }
   
   /* @media screen and (max-width: 1024px) {  Specific to this particular image 
@@ -23,9 +25,7 @@
     }
   } */
   .center {
-    margin: auto;
     padding: 10px;
-    width: 70%;
   }
   .spinners{
     display: inline-table;    
@@ -37,6 +37,19 @@
   .card{
       background-color: rgba(225,255,255, 0.2)
   }
+
+  .box{
+    background-color:#c96d9f;
+    width: 20vw;
+    height: 20vh;
+    margin-left: 4%;
+    -webkit-box-shadow: 0 1px 3px 0px rgba(0,0,0,0.67);
+    -moz-box-shadow: 0 1px 3px 0px rgba(0,0,0,0.67);
+    box-shadow: 0 1px 3px 0px rgba(0,0,0,0.67);
+    /* margin-left: 2%; */
+    border-radius: 3px;
+    font-size: 2.3vh;
+}
   .line{
     width: 100%; 
     height: 1px;
@@ -45,3 +58,15 @@
     background: linear-gradient(to right, rgba(255,255,255,1) 0%,rgba(255,255,255,0.96) 4%,rgba(201,109,159,0.5) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
     }
+
+
+  a:hover{
+    cursor: pointer;
+  }
+  .menuItem{
+    color:white !important;
+    padding: 5px;
+  }
+  .menuItem:hover{
+    color:black !important;
+  }

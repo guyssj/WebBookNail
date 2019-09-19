@@ -1,12 +1,58 @@
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<!-- Top Background Image Wrapper -->
-<app-navbar></app-navbar>
-<!-- End Top Background Image Wrapper -->
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
-<!-- ################################################################################################ -->
+<app-navbar [localRes]="localRes"></app-navbar>
+
+<div class="bgded overlay" style="background-image:url('assets/background.jpg');">
+<div id="pageintro" class="hoc clear">
+    <div class="">
+      <!-- ################################################################################################ -->
+      <article>
+        <h1>{{localRes?.BookNow}}</h1>
+        <footer>
+          <!-- Button trigger modal -->
+          <a class="btn pink" data-toggle="modal" style="padding: 15px;" data-target=".bd-example-modal-lg"
+            href="">{{localRes?.clickBook}}</a>
+        </footer>
+
+      </article>
+
+      <!-- ################################################################################################ -->
+    </div>
+  </div>
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <!-- ################################################################################################ -->
+  <div id="introblocks" class="hoc clear">
+    <ul class="nospace">
+      <!-- ################################################################################################ -->
+      <li>
+        <div>
+          <i class="far fa-3x fa-clock"></i>
+          <h4 class="heading">{{localRes?.WorkingHours}}</h4>
+          <p>08.00 - 18.30 / ראשון - שישי</p>
+        </div>
+      </li>
+      <li>
+        <a class="nav-link text-white" href="tel:050-0000000">
+        <div>
+          <i class="fas fa-3x fa-phone"></i>
+          <h4 class="heading">{{localRes?.CallNow}}</h4>
+          <p>050-0000000</p>
+        </div>
+      </a>
+      </li>
+      <li>
+        <a class="nav-link text-white" href="https://www.waze.com/ul?ll=32.81125439%2C35.48488498&navigate=yes&zoom=17">
+        <div>
+          <i class="fab fa-3x fa-waze"></i>
+          <h4 class="heading">{{localRes?.Address}}</h4>
+          <p>מושב ארבל, הגפן</p>
+        </div>
+      </a>
+      </li>
+      <!-- ################################################################################################ -->
+    </ul>
+  </div>
+</div>
+
 <div class="wrapper row3">
   <main class="hoc container clear">
     <!-- main body -->
@@ -91,37 +137,37 @@
         <li>
           <i class="fa fa-phone"></i>050-0000000</li>
         <li>
-          <i class="fa fa-envelope-o"></i>Miritush@Miritush.com</li>
+          <i class="fas fa-envelope-o"></i>Miritush@Miritush.com</li>
       </ul>
       <ul class="faico clear">
         <li>
           <a class="faicon-facebook" href="#">
-            <i class="fa fa-facebook"></i>
+            <i class="fab fa-facebook-f"></i>
           </a>
         </li>
         <li>
           <a class="faicon-twitter" href="#">
-            <i class="fa fa-twitter"></i>
+            <i class="fab fa-twitter"></i>
           </a>
         </li>
         <li>
           <a class="faicon-dribble" href="#">
-            <i class="fa fa-dribbble"></i>
+            <i class="fab fa-dribbble"></i>
           </a>
         </li>
         <li>
           <a class="faicon-linkedin" href="#">
-            <i class="fa fa-linkedin"></i>
+            <i class="fab fa-linkedin"></i>
           </a>
         </li>
         <li>
           <a class="faicon-google-plus" href="#">
-            <i class="fa fa-google-plus"></i>
+            <i class="fab fa-google-plus"></i>
           </a>
         </li>
         <li>
           <a class="faicon-vk" href="#">
-            <i class="fa fa-vk"></i>
+            <i class="fab fa-vk"></i>
           </a>
         </li>
       </ul>
@@ -181,7 +227,7 @@
 <a href="javascript:" id="return-to-top" style="z-index: 1">
   <i class="fa fa-angle-up"></i>
 </a>
-<!-- Modal -->
+<!-- Modal SetBook -->
 <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 
   <div class="modal-dialog modal-lg">
@@ -194,7 +240,27 @@
       </div>
       <div class="line"></div>
       <div class="modal-body">
-        <app-set-book></app-set-book>
+        <app-set-book [localRes]="localRes"></app-set-book>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="SerachModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2" aria-hidden="true">
+
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" (click)="clear();" class="float-left close" style="margin: -1rem !important;" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="float-right inline" style="color: rgba(201,109,159,1);">התור שלך</h4>
+      </div>
+      <div class="line"></div>
+      <div class="modal-body">
+        <app-search-book [localRes]="localRes" *ngIf="!hidetheSer" (BookFounded)="whenCustomerFound($event)"></app-search-book>
+        <app-change-book [localRes]="localRes" [book]="bookFound" *ngIf="hidetheSer" ></app-change-book>
       </div>
     </div>
   </div>

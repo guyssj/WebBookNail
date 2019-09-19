@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LocalresService } from './localres.service';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,14 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  localRes:any = {};
   title = 'BookNail';
+  /**
+   *
+   */
+  constructor(private localres:LocalresService) {
+    this.localres.getLocalResoruce("he").subscribe(data => {
+      this.localRes = data;
+    })
+  }
 }
