@@ -1,6 +1,7 @@
+<app-navbar form="Admin" [localRes]="localRes" ></app-navbar>
 <div class="bg">
   <form #f="ngForm" (ngSubmit)="onSubmit(f)" novalidate>
-    <div style="width: 50%;height: 50%;" class="center">
+    <div class=" box center">
       <div class="card">
         <div class="card-title center">
           <h4 class="float-right inline" style="padding: 10px; color: rgba(201,109,159,1);">כניסה לניהול יומן פגישות
@@ -37,7 +38,5 @@
           {{APIResult?.ErrorMessage}}
         </div>
     </div>
-    <button type="button" (click)="Google();">dfdfdfdf</button>
-
   </form>
 </div>

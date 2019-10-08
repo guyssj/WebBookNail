@@ -1,5 +1,5 @@
 <div class="bg" *ngIf="loading2 == false; else loading">
-   
+   <!-- <app-sidebar [localRes]="localRes"></app-sidebar> -->
   <p *ngIf="UserGoogle" style="text-align: left;">Hi {{ UserGoogle?.displayName }}  <fa-icon (click)="signOut()" [icon]="['fa', 'sign-out-alt']" size="1x"></fa-icon></p>
   <div class="col-sm-10" style="position: relative; " *ngIf="loading2 == false;">
     <div class="row">
@@ -38,7 +38,7 @@
     <br />
   </div>
   <div class="row">
-    <div class="center col-sm-8">
+    <div class=" col-sm-9">
       <div style="overflow: auto;">
         <div [ngSwitch]="view" *ngIf="loading2 == false; else loading">
           <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events2" [refresh]="refresh"

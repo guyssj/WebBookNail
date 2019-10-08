@@ -18,6 +18,7 @@ import { NgbDateCustomParserFormatter } from './dateformat';
 import { AuthService } from './auth.service';
 import { LoginComponent } from './components/login/login.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
+import { AdminComponent } from './components/admin/admin.component';
 registerLocaleData(localeHe);
 
 const routes: Routes = [
@@ -25,7 +26,8 @@ const routes: Routes = [
   { path: 'Customers', component: CustomersComponent },
   { path: 'Calendar', component: CalendarViewComponent },
   { path: '', component: HomeComponent },
-  { path: 'Admin', component: LoginComponent },
+  { path: '2', component: LoginComponent },
+  { path: 'Admin', component: AdminComponent },
   { path: 'Gallery', component: GalleryComponent }
 ];
 

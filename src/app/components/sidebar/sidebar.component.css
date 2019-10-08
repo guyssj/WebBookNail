@@ -1,0 +1,58 @@
+.menus{
+    border-radius:12px;
+    width: 150px;
+    height: 45px;
+    text-align: center;
+    border:1px solid #fff;
+    padding: 10px 10px 10px 10px;
+}
+
+@media screen and (min-width: 1370px){
+    .sitebar{
+        /* z-index: 1;
+        position: fixed;
+        top: 7%;
+        width: 250px;
+        height: 100%;
+        overflow-y: hidden;
+        background: rgba(52, 73, 94, 0.897);
+        right:0; */
+        font-family: 'Open Sans Hebrew', sans-serif;
+        font-size: 17px;
+        border-radius: 0;
+        position: fixed;
+        z-index: 1000;
+        top: 59px;
+        right:0px;
+        width: 235px;
+        margin-right: 0px;
+        border: none;
+        border-radius: 0;
+        overflow-y: auto;
+        background-color:rgb(52, 73, 94);
+        bottom: 0;
+        overflow-x: hidden;
+        padding-bottom: 40px;
+        -webkit-transition: all 0.2s ease-in-out;
+        -moz-transition: all 0.2s ease-in-out;
+        -ms-transition: all 0.2s ease-in-out;
+        -o-transition: all 0.2s ease-in-out;
+        transition: all 0.2s ease-in-out;
+    }
+}
+@media screen and (max-width: 1370px) and (min-width: 767px){
+    .togglerx{
+        padding: .25rem .75rem;
+        font-size: 1.25rem;
+        line-height: 1;
+        overflow-y: hidden;
+        background-color: transparent;
+        border: 1px solid transparent;
+        border-radius: .25rem;
+    }
+}
+@media screen and (max-width: 767px) , (min-width:1370px){
+    .div2{
+        display: none;
+    }
+}

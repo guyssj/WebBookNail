@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { LocalresService } from '../../localres.service';
 import { ApiServiceService } from '../../api-service.service';
 import { Observable, timer } from 'node_modules/rxjs';
@@ -15,7 +15,12 @@ export class NavbarComponent implements OnInit {
 
   constructor(private localres:LocalresService,private dialog:MatDialog) { }
   @Input() localRes:any;
+  @Input() form:any;
+  scroll:boolean;
   ngOnInit() {
+    if(this.form == 'Admin'){
+      this.scroll = true;
+    }
   }
 
   openDialog(message,time){
@@ -28,6 +33,18 @@ export class NavbarComponent implements OnInit {
       take(1)).subscribe(x=>{
         this.dialog.closeAll();
        })
+  }
+
+
+  @HostListener("window:scroll", [])
+  onWindowScroll() {
+
+    const number = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    if (number > 300) {
+      this.scroll = true;
+    } else if (number < 300) {
+       this.scroll = false;
+    }
   }
 
 }

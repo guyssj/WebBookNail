@@ -31,6 +31,9 @@ import { DialogForClickEvent } from './components/calendar-view/calendar-view.co
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { ChangeBookComponent } from './components/change-book/change-book.component';
 import { SearchBookComponent } from './components/search-book/search-book.component';
+import { SidebarComponent } from './components/sidebar/sidebar.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { AdminRoutingModule } from './components/admin/admin-routing.module';
 
 registerLocaleData(localeHe);
 
@@ -46,7 +49,9 @@ registerLocaleData(localeHe);
     DialogForClickEvent,
     GalleryComponent,
     ChangeBookComponent,
-    SearchBookComponent
+    SearchBookComponent,
+    SidebarComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
@@ -69,6 +74,7 @@ registerLocaleData(localeHe);
     ReactiveFormsModule,
     FormsModule,
     AngularFireAuthModule,
+    AdminRoutingModule,
     FontAwesomeModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
