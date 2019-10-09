@@ -107,6 +107,9 @@ export class CalendarViewComponent implements OnInit {
   ngOnInit() {
     this.auth.auth2().subscribe((res) => {
       this.UserGoogle = res;
+      res.getIdTokenResult().then(res=>{
+        sessionStorage.setItem('gToken',res.token) 
+      });
     })
     this.Localres.getLocalResoruce("he").subscribe(res => {
       this.localRes = res;
@@ -160,7 +163,7 @@ export class CalendarViewComponent implements OnInit {
                 take(1)).subscribe(x => {
                   this.getEvent(this.Books);
                 })
-              window.history.replaceState({}, document.title, "/#/" + "Calendar");
+              //window.history.replaceState({}, document.title, "/#/" + "Calendar");
             })
           }
           else {
@@ -192,7 +195,7 @@ export class CalendarViewComponent implements OnInit {
             })
           }
           else {
-            this.router.navigate(['/Admin']);
+            this.router.navigate(['/Login']);
           }
         }
       });

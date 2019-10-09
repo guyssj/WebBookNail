@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
     if (f.valid) {
       this.API.login(f.value).subscribe(res => {
         var tokens = res.headers.get('X-Token');
-        this.router.navigate(['/Calendar'], { queryParams: { TokenApi: tokens } });
+        this.router.navigate(['Admin/Calendar'], { queryParams: { TokenApi: tokens } });
       }, error => {
         this.APIResult = error.error;
         console.log(this.APIResult);

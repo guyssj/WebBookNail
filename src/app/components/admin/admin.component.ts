@@ -5,6 +5,7 @@ import { Book } from 'src/app/classes/Book';
 import { CalendarEvent } from 'angular-calendar';
 import { GoogleEvent } from 'src/app/classes/GoogleEvents';
 import { ApiServiceService } from 'src/app/services/api-service.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -13,12 +14,20 @@ import { ApiServiceService } from 'src/app/services/api-service.service';
 })
 export class AdminComponent implements OnInit {
   localRes:any;
-  constructor(private Localres:LocalresService,private API:ApiServiceService) { }
+  constructor(private Localres:LocalresService,
+    private API:ApiServiceService,
+    private router:Router) { }
 
   ngOnInit() {
     this.Localres.getLocalResoruce("he").subscribe(res => {
       this.localRes = res;
     })
+    if(this.API.getCookie('userToken')){
+    this.router.navigate(['Admin/Calendar']);
+    }
+    else{
+      this.router.navigate(['Login']);
+    }
   }
 
 
