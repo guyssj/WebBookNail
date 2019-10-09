@@ -1,15 +1,15 @@
 import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDatepickerInputEvent, MatDialog } from '@angular/material';
 import { MessageConfig, typeMessage } from '../MessageConfig';
-import { Book } from 'src/app/Book';
-import { Customer } from 'src/app/Customer';
-import { ApiServiceService } from 'src/app/api-service.service';
+import { Book } from 'src/app/classes/Book';
+import { Customer } from 'src/app/classes/Customer';
+import { ApiServiceService } from 'src/app/services/api-service.service';
 import { addDays, addMinutes } from 'date-fns';
 import { CustomersComponent } from '../customers/customers.component';
-import { TimeSlots } from 'src/app/TimeSlots';
+import { TimeSlots } from 'src/app/classes/TimeSlots';
 import { Observable, timer } from 'rxjs';
-import { Services } from 'src/app/Services';
-import { ServiceTypes } from 'src/app/servicetypes';
+import { Services } from 'src/app/classes/Services';
+import { ServiceTypes } from 'src/app/classes/servicetypes';
 import { DialogContentExampleDialog } from '../set-book/set-book.component';
 import { take } from 'rxjs/operators';
 

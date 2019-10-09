@@ -1,0 +1,6 @@
+.cont{
+    width: calc(100% - 222px);
+    background-image: url('/assets/212.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+}

@@ -1,8 +1,8 @@
-import { Component, OnInit, Inject } from "@angular/core";
+import { Component, OnInit, Inject, Input } from "@angular/core";
 import * as $ from "jquery";
 import "fullcalendar";
-import { Book } from "../../Book";
-import { ApiServiceService } from "../../api-service.service";
+import { Book } from "../../classes/Book";
+import { ApiServiceService } from "../../services/api-service.service";
 import { map, take } from "rxjs/operators";
 import { CalendarEvent, CalendarView, CalendarEventAction } from "angular-calendar";
 import {
@@ -22,12 +22,12 @@ import { ActivatedRoute, Router } from "@angular/router";
 import { addDays, addMinutes } from 'date-fns';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
 import { DialogContentExampleDialog } from "../set-book/set-book.component";
-import { AuthService } from "src/app/auth.service";
-import { GoogleEvent } from "src/app/GoogleEvents";
-import { LocalresService } from 'src/app/localres.service';
-import { Customer } from 'src/app/Customer';
-import { Services } from 'src/app/Services';
-import { ServiceTypes } from 'src/app/servicetypes';
+import { AuthService } from "src/app/services/auth.service";
+import { GoogleEvent } from "src/app/classes/GoogleEvents";
+import { LocalresService } from 'src/app/services/localres.service';
+import { Customer } from 'src/app/classes/Customer';
+import { Services } from 'src/app/classes/Services';
+import { ServiceTypes } from 'src/app/classes/servicetypes';
 import { MessageConfig, typeMessage } from '../MessageConfig';
 
 const timezoneOffset = new Date().getTimezoneOffset();
@@ -100,7 +100,7 @@ export class CalendarViewComponent implements OnInit {
   refresh: Subject<any> = new Subject();
   localRes: any;
   locale: string = 'he';
-  UserGoogle: any;
+  @Input() UserGoogle:any;
   BookEditing: Book = new Book();
   hidetheSer: boolean = false;
   successEvents = [];

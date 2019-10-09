@@ -1,13 +1,10 @@
 .bg {
-  /* direction: rtl; */
-    /* Set rules to fill background */
-    /* min-width: 1024px; */
-      /* background-color: #7f8c8d; */
-      background-repeat: no-repeat;
+  direction: rtl;
+      /* background-repeat: no-repeat;
       background-image: url('/assets/212.jpg');
       background-size: cover;
-          /* Set up proportionate scaling */
-    width: 100%;
+      */
+    width: calc(100% - 22px); 
     height: auto;
       
     /* Set up positioning */

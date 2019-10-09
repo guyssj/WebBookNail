@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -10,7 +11,8 @@ export class SidebarComponent implements OnInit {
   showMenu: string = '';
   pushRightClass: string = 'push-right';
   @Input() localRes:any;
-  constructor() { }
+  userGoogle:any;
+  constructor(private auth:AuthService) { }
 
   ngOnInit() {
   }
@@ -23,6 +25,18 @@ export class SidebarComponent implements OnInit {
   toggleSidebar() {
     const dom: any = document.querySelector('body');
     dom.classList.toggle(this.pushRightClass);
+  }
+
+  SignInToGoogle() {
+    this.auth.login().then(user => {
+      console.log(user);
+
+      this.userGoogle = user;
+    });
+  }
+
+  signOut() {
+    this.auth.logout();
   }
 
 }

@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
 import * as $ from "jquery";
-import { LocalresService } from '../../localres.service';
+import { LocalresService } from '../../services/localres.service';
 import { SetBookComponent } from '../set-book/set-book.component';
 import { isObject } from 'util';
-import { Customer } from 'src/app/Customer';
-import { Book } from 'src/app/Book';
+import { Customer } from 'src/app/classes/Customer';
+import { Book } from 'src/app/classes/Book';
 import { FormGroup } from '@angular/forms';
 
 

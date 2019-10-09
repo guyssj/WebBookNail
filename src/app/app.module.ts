@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatProgressBarModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -11,19 +11,19 @@ import { AppComponent } from './app.component';
 import { SetBookComponent, DialogContentExampleDialog } from './components/set-book/set-book.component';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { CustomersComponent } from './components/customers/customers.component';
-import { ApiServiceService } from './api-service.service';
+import { ApiServiceService } from './services/api-service.service';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
-import { LocalresService } from './localres.service';
+import { LocalresService } from './services/localres.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule, NgbDateAdapter, NgbDateNativeAdapter, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
-import { NgbDateCustomParserFormatter } from './dateformat';
+import { NgbDateCustomParserFormatter } from './classes/dateformat';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth'
 import { environment } from '../environments/environment';
-import { AuthService } from './auth.service';
+import { AuthService } from './services/auth.service';
 import { LoginComponent } from './components/login/login.component';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -34,6 +34,8 @@ import { SearchBookComponent } from './components/search-book/search-book.compon
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { AdminRoutingModule } from './components/admin/admin-routing.module';
+import { ServicesComponent } from './components/services/services.component';
+import { ServiceTypesComponent } from './components/service-types/service-types.component';
 
 registerLocaleData(localeHe);
 
@@ -51,7 +53,9 @@ registerLocaleData(localeHe);
     ChangeBookComponent,
     SearchBookComponent,
     SidebarComponent,
-    AdminComponent
+    AdminComponent,
+    ServicesComponent,
+    ServiceTypesComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +71,8 @@ registerLocaleData(localeHe);
     MatProgressBarModule,
     MatFormFieldModule,
     MatInputModule,
+    MatTableModule,
+    MatPaginatorModule,
     MatDialogModule,
     MatIconModule,
     MatDatepickerModule,

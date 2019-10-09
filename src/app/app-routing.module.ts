@@ -4,18 +4,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { SetBookComponent } from './components/set-book/set-book.component';
 import { CustomersComponent } from './components/customers/customers.component';
 import { CalendarViewComponent } from './components/calendar-view/calendar-view.component';
-import { ApiServiceService } from './api-service.service';
+import { ApiServiceService } from './services/api-service.service';
 import { HttpClientModule } from '@angular/common/http';
 import localeHe from '@angular/common/locales/he';
 import { registerLocaleData } from '@angular/common';
 import { HomeComponent } from './components/home/home.component';
-import { LocalresService } from './localres.service';
+import { LocalresService } from './services/localres.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
 import {NgbModule, NgbDateAdapter, NgbDateNativeAdapter, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
-import {NgbPaginationModule, NgbAlertModule} from '@ng-bootstrap/ng-bootstrap';
-import { NgbDateCustomParserFormatter } from './dateformat';
-import { AuthService } from './auth.service';
+import { NgbDateCustomParserFormatter } from './classes/dateformat';
+import { AuthService } from './services/auth.service';
 import { LoginComponent } from './components/login/login.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { AdminComponent } from './components/admin/admin.component';
@@ -23,10 +22,9 @@ registerLocaleData(localeHe);
 
 const routes: Routes = [
   { path: 'Setbook', component: SetBookComponent },
-  { path: 'Customers', component: CustomersComponent },
   { path: 'Calendar', component: CalendarViewComponent },
   { path: '', component: HomeComponent },
-  { path: '2', component: LoginComponent },
+  { path: 'Login', component: LoginComponent },
   { path: 'Admin', component: AdminComponent },
   { path: 'Gallery', component: GalleryComponent }
 ];

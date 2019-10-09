@@ -6,7 +6,7 @@
 
 div{
     text-align: right;
-}
+} 
 
 
 .btn,.btn.pink, .btn.inverse:hover{color:#FFFFFF; background-color:#C96D9F; border-color:#C96D9F;}
@@ -45,7 +45,7 @@ div{
 
 .cal-days{
   height: 81.5vh !important;
-  width: 66.7vw !important;
+  /*width: 66.7vw !important;*/
 }
 .cal-week-view{
   height: 76.5vh !important;
@@ -60,6 +60,11 @@ div{
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
   }
 
-  .cal-month-view .cal-cell-row {
-    width: 66.6vw !important;
+  .cal-week-view .cal-day-headers{
+    padding-left: 0;
+    padding-right: 65px;
   }
+
+  /* .cal-month-view .cal-cell-row {
+    width: 66.6vw !important;
+  } */

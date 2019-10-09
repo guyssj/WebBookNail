@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, HostListener } from '@angular/core';
-import { LocalresService } from '../../localres.service';
-import { ApiServiceService } from '../../api-service.service';
+import { LocalresService } from '../../services/localres.service';
+import { ApiServiceService } from '../../services/api-service.service';
 import { Observable, timer } from 'node_modules/rxjs';
 import { MatDialog } from '@angular/material';
 import { DialogContentExampleDialog } from '../set-book/set-book.component';

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { LocalresService } from './localres.service';
+import { LocalresService } from './services/localres.service';
 
 @Component({
   selector: 'app-root',

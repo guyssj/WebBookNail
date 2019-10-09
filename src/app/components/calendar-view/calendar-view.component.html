@@ -1,20 +1,44 @@
 <div class="bg" *ngIf="loading2 == false; else loading">
-   <!-- <app-sidebar [localRes]="localRes"></app-sidebar> -->
-  <p *ngIf="UserGoogle" style="text-align: left;">Hi {{ UserGoogle?.displayName }}  <fa-icon (click)="signOut()" [icon]="['fa', 'sign-out-alt']" size="1x"></fa-icon></p>
-  <div class="col-sm-10" style="position: relative; " *ngIf="loading2 == false;">
+  <div>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item" *ngIf="UserGoogle">
+        <p class="nav-link">
+          <i class="fab fa-google"></i>
+          שלום, {{ UserGoogle?.displayName }}
+          <a>
+            <fa-icon (click)="signOut()" title="התנתק" [icon]="['fa', 'sign-out-alt']" size="1x"></fa-icon>
+          </a>
+        </p>
+      </li>
+      <li class="nav-item" *ngIf="!UserGoogle">
+        <a class="nav-link" (click)="SignInToGoogle()">
+          <i class="fab fa-google"></i>
+          {{localRes?.SignIn}}
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="UserGoogle">
+        <a class="nav-link" (click)="SyncAllEvents(events2);">
+          <i class="fas fa-calendar"></i>
+
+          {{localRes?.SyncGoogle}}
+        </a>
+      </li>
+    </ul>
+  </div>
+  <div class="col-sm-10" style="position: relative; " *ngIf="loading2 == false;" dir="ltr">
     <div class="row">
       <div class="col-sm-4">
         <div class="btn-group">
           <div class="btn pink" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
             (viewDateChange)="closeOpenMonthViewDay()">
-            Previous
+            {{localRes?.Previous}}
           </div>
           <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate">
-            Today
+            {{localRes?.Today}}
           </div>
           <div class="btn pink" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
             (viewDateChange)="closeOpenMonthViewDay()">
-            Next
+            {{localRes?.Next}}
           </div>
         </div>
       </div>
@@ -24,13 +48,13 @@
       <div class="col-sm-2">
         <div class="btn-group">
           <div class="btn pink" (click)="setView(CalendarView.Month)" [class.active]="view === CalendarView.Month">
-            Month
+            {{localRes?.Month}}
           </div>
           <div class="btn pink" (click)="setView(CalendarView.Week)" [class.active]="view === CalendarView.Week">
-            Week
+            {{localRes?.Week}}
           </div>
           <div class="btn pink" (click)="setView(CalendarView.Day)" [class.active]="view === CalendarView.Day">
-            Day
+            {{localRes?.Day}}
           </div>
         </div>
       </div>
@@ -38,7 +62,7 @@
     <br />
   </div>
   <div class="row">
-    <div class=" col-sm-9">
+    <div class=" col-sm-12">
       <div style="overflow: auto;">
         <div [ngSwitch]="view" *ngIf="loading2 == false; else loading">
           <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events2" [refresh]="refresh"
@@ -51,7 +75,7 @@
           </mwl-calendar-week-view>
         </div>
 
-        
+
         <!-- modal settings -->
         <a class="nav-link" data-toggle="modal" id="edit2" data-target="#EditModal" href=""></a>
         <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2"
@@ -74,21 +98,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div class="box col-sm-3">
-      <div class="row">
-        <div *ngIf="!UserGoogle" class="col-sm-12" style="padding: 30px;">
-            <a class="menuItem" (click)="SignInToGoogle();">
-                {{localRes?.SignIn}} <fa-icon [icon]="['fa', 'sync-alt']" size="1x"></fa-icon>
-              </a>
-        </div>
-        <div *ngIf="UserGoogle" class="col-sm-12" style="padding: 30px;">
-          <a class="menuItem" (click)="SyncAllEvents(events2);">
-            {{localRes?.SyncGoogle}} <fa-icon [icon]="['fa', 'sync-alt']" size="1x"></fa-icon>
-          </a>
-        </div>
-      </div>
-
     </div>
   </div>
 </div>

@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { ApiServiceService } from 'src/app/api-service.service';
-import { Customer } from 'src/app/Customer';
-import { Book } from 'src/app/Book';
+import { ApiServiceService } from 'src/app/services/api-service.service';
+import { Customer } from 'src/app/classes/Customer';
+import { Book } from 'src/app/classes/Book';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MessageConfig, typeMessage } from '../MessageConfig';
 import { DialogContentExampleDialog } from '../set-book/set-book.component';

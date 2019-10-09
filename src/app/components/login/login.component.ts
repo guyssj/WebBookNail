@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import { ApiServiceService } from 'src/app/api-service.service';
+import { ApiServiceService } from 'src/app/services/api-service.service';
 import { Router } from '@angular/router';
-import { LocalresService } from 'src/app/localres.service';
-import { resultsAPI } from 'src/app/results';
-import { AuthService } from 'src/app/auth.service';
+import { LocalresService } from 'src/app/services/localres.service';
+import { resultsAPI } from 'src/app/classes/results';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -36,14 +36,6 @@ export class LoginComponent implements OnInit {
     this.localres.getLocalResoruce("he").subscribe(data => {
       this.localRes = data;
       console.log(this.localRes)
-    })
-  }
-
-  Google(){
-    //this.auth.doGoogleLogin();
-    //this.auth.login();
-    this.API.getBooks().subscribe(books => {
-      this.API.SyncGoogle(books.Result[0]);
     })
   }
 
