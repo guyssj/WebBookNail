@@ -8,7 +8,7 @@
 }
 
     .sitebar{
-        font-family: 'Open Sans Hebrew', sans-serif;
+        font-family: 'Varela Round', sans-serif;
         font-size: 17px;
         position: fixed;
         z-index: 1000;
@@ -40,8 +40,9 @@
         border-radius: .25rem;
     }
 }
-@media screen and (max-width: 767px) , (min-width:1370px){
-    .div2{
+@media screen  and (max-width: 767px){
+    .sitebar{
+        transition: right .3s ease;
         display: none;
     }
 }

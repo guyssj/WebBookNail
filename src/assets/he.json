@@ -50,6 +50,9 @@
     "Week":"שבועי",
     "Day":"יומי",
     "Calendar":"יומן טיפולים",
-    "Search":"חיפוש"
+    "Search":"חיפוש",
+    "Description":"תיאור",
+    "Price":"מחיר",
+    "Duration":"משך התור"
 
 }

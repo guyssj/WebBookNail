@@ -1,29 +1,28 @@
+body,html{
+  height: 100% !important;
+}
+
 div.bg {
     /* Set rules to fill background */
       /* background-color: #7f8c8d; */
       background-repeat: no-repeat;
       background-image: url('/assets/212.jpg');
+      
       background-size: cover;
           /* Set up proportionate scaling */
-    width: calc(100%);
-    height: calc(102vh - 100px);
-    position: relative;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    background-attachment : fixed;
+    background-position   : 50% 50%; 
   }
-  
-  /* @media screen and (max-width: 1024px) { 
-    div.bg {
-      left: 50%;
-      margin-left: -512px;   
-    }
-  }
-   */
 
   .center {
     margin: auto;
     padding: 10px;
   }
   .box{
-    width: 80%;height: auto;
+    width: 60%;height: auto;
   }
 
   .card{

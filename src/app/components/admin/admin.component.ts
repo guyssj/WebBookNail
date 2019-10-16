@@ -13,21 +13,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./admin.component.css']
 })
 export class AdminComponent implements OnInit {
-  localRes:any;
-  constructor(private Localres:LocalresService,
-    private API:ApiServiceService,
-    private router:Router) { }
+  localRes: any;
+  constructor(private Localres: LocalresService,
+    private API: ApiServiceService,
+    private router: Router) { }
 
   ngOnInit() {
     this.Localres.getLocalResoruce("he").subscribe(res => {
       this.localRes = res;
     })
-    if(this.API.getCookie('userToken')){
-    this.router.navigate(['Admin/Calendar']);
-    }
-    else{
-      this.router.navigate(['Login']);
-    }
   }
 
 

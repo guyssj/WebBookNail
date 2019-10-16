@@ -15,13 +15,13 @@ import { addMinutes } from 'date-fns';
   providedIn: 'root'
 })
 export class ApiServiceService {
-  _baseUrl: string = 'http://localhost/NailBook/public/api/';
-  _baseUrl2: string = 'http://localhost/NailBook/public/admin/';
+  _baseUrl: string = 'http://192.168.0.25/NailBook/public/api/';
+  _baseUrl2: string = 'http://192.168.0.25/NailBook/public/admin/';
   constructor(private http: HttpClient) { }
 
 
   login(obj) {
-    return this.http.post("http://localhost/NailBook/public/login", obj, { observe: 'response' });
+    return this.http.post("http://192.168.0.25/NailBook/public/login", obj, { observe: 'response' });
   }
 
   addCustomer(customer: Customer): Observable<resultsAPI<number>> {

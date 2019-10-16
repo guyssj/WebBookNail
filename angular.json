@@ -50,6 +50,9 @@
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true
+            },
+            "es5":{
+              "tsConfig": "src/tsconfig-es5.app.json"
             }
           }
         },
@@ -61,6 +64,9 @@
           "configurations": {
             "production": {
               "browserTarget": "BookNail:build:production"
+            },
+            "es5":{
+              "browserTarget": "BookNail:build:es5"
             }
           }
         },

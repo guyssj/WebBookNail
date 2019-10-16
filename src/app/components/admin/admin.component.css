@@ -1,6 +1,24 @@
 .cont{
     width: calc(100% - 222px);
-    background-image: url('/assets/212.jpg');
     background-repeat: no-repeat;
+    background-image: url('/assets/212.jpg');
+    
     background-size: cover;
+        /* Set up proportionate scaling */
+  
+  height: 100%;
+  position: fixed;
+  background-attachment : fixed;
+  background-position   : 50% 50%; 
+}
+
+body,html{
+    height: 100% !important;
+  }
+  
+  @media screen and (max-width: 767px){
+    .cont{
+        transition: left .3s ease;
+        width: 100%;
+    }
 }

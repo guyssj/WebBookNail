@@ -35,6 +35,7 @@ const hoursOffset = String(Math.floor(Math.abs(timezoneOffset / 60))).padStart(
   2,
   "0"
 );
+
 const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, "0");
 const direction = timezoneOffset > 0 ? "-" : "+";
 const timezoneOffsetString = `T00:00:00${direction}${hoursOffset}${minutesOffset}`;
@@ -107,9 +108,6 @@ export class CalendarViewComponent implements OnInit {
   ngOnInit() {
     this.auth.auth2().subscribe((res) => {
       this.UserGoogle = res;
-      res.getIdTokenResult().then(res=>{
-        sessionStorage.setItem('gToken',res.token) 
-      });
     })
     this.Localres.getLocalResoruce("he").subscribe(res => {
       this.localRes = res;
@@ -163,7 +161,7 @@ export class CalendarViewComponent implements OnInit {
                 take(1)).subscribe(x => {
                   this.getEvent(this.Books);
                 })
-              //window.history.replaceState({}, document.title, "/#/" + "Calendar");
+              window.history.replaceState({}, document.title, "/#/Admin/Calendar");
             })
           }
           else {

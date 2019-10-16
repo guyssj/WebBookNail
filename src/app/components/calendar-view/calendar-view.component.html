@@ -2,7 +2,7 @@
   <div>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item" *ngIf="UserGoogle">
-        <p class="nav-link">
+        <p class="">
           <i class="fab fa-google"></i>
           שלום, {{ UserGoogle?.displayName }}
           <a>
@@ -11,15 +11,14 @@
         </p>
       </li>
       <li class="nav-item" *ngIf="!UserGoogle">
-        <a class="nav-link" (click)="SignInToGoogle()">
+        <a class="" (click)="SignInToGoogle()">
           <i class="fab fa-google"></i>
           {{localRes?.SignIn}}
         </a>
       </li>
       <li class="nav-item" *ngIf="UserGoogle">
-        <a class="nav-link" (click)="SyncAllEvents(events2);">
+        <a class="" (click)="SyncAllEvents(events2);">
           <i class="fas fa-calendar"></i>
-
           {{localRes?.SyncGoogle}}
         </a>
       </li>

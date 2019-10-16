@@ -23,11 +23,10 @@
               formControlName="phoneNumber" required>
             <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
           </mat-form-field>
-          <!-- {{customer | json}} -->
           <mat-form-field class="col-md-6">
               <input matInput [min]="dateNow" required formControlName="date" [max]="maxDate" (dateChange)="dateChange($event)" [matDatepicker]="picker" placeholder="{{localRes?.selectedDate}}">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
+              <mat-datepicker touchUi #picker></mat-datepicker>
               <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
             </mat-form-field>
         </div>
@@ -40,6 +39,7 @@
           bindLabel="timeSlot"
           clearAllText="Clear"
           autofocus 
+          [searchable]="false"
           formControlName="timeSlot"
           bindValue="timeSlot"
           placeholder="{{localRes?.selectedTime}}"
@@ -54,6 +54,7 @@
             placeholder="{{localRes?.selectedService}}"
             bindLabel="ServiceName" 
             autofocus
+            [searchable]="false"
             (change)="onServiceChange($event)"
             formControlName="service">
           </ng-select>
@@ -65,6 +66,7 @@
           <ng-select 
             #select
             [items]="ServicesTypes$" 
+            [searchable]="false"
             bindLabel="ServiceTypeName" 
             placeholder="{{localRes?.selectedType}}"
             dir="rtl"

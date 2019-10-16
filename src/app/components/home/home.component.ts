@@ -6,6 +6,7 @@ import { isObject } from 'util';
 import { Customer } from 'src/app/classes/Customer';
 import { Book } from 'src/app/classes/Book';
 import { FormGroup } from '@angular/forms';
+import { ApiServiceService } from 'src/app/services/api-service.service';
 
 
 @Component({
@@ -18,12 +19,12 @@ export class HomeComponent implements OnInit ,AfterViewInit {
   hidetheSer:boolean;
   bookFound:Book = new Book();
   @ViewChild(SetBookComponent, { static: true }) setBookCom;
-  constructor(private localres:LocalresService) { }
+  constructor(private localres:LocalresService, private API:ApiServiceService) { }
 
   ngOnInit() {
     this.localres.getLocalResoruce("he").subscribe(data => {
       this.localRes = data;
-      console.log(this.localRes)
+      console.log(this.localRes);
     })
     $(function () {
       // ===== Scroll to Top ==== 
@@ -47,7 +48,6 @@ export class HomeComponent implements OnInit ,AfterViewInit {
   }
 
   whenCustomerFound(event){
-    debugger;
     if(isObject(event)){
       this.bookFound = event;
       this.hidetheSer = true;

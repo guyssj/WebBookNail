@@ -25,3 +25,9 @@ th, td {
     border-bottom: 2px solid white; 
     vertical-align: middle !important;
   }
+
+  .mat-paginator{
+      background: transparent;
+      direction: ltr;
+      float: left;
+  }

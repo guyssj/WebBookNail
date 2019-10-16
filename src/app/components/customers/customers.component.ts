@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiServiceService } from 'src/app/services/api-service.service';
 import { Customer } from 'src/app/classes/Customer';
-import { MatTableDataSource } from '@angular/material';
+import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { LocalresService } from 'src/app/services/localres.service';
 
 @Component({
@@ -13,6 +13,7 @@ export class CustomersComponent implements OnInit {
 
   constructor(private API:ApiServiceService, private localres:LocalresService) { }
   Customers:Customer[] = [];
+  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   displayedColumns: string[] = ['firstname', 'lastname', 'phonenumber'];
   resultsLen:any;
   localRes:any;
@@ -28,6 +29,7 @@ export class CustomersComponent implements OnInit {
     this.Customers = await this.API.GetAllCustomers();
     this.dataSource = new MatTableDataSource(this.Customers);
     this.resultsLen = this.Customers.length;
+    this.dataSource.paginator = this.paginator;
   }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();
