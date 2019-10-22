@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { LocalresService } from 'src/app/services/localres.service';
 import { resultsAPI } from 'src/app/classes/results';
 import { AuthService } from 'src/app/services/auth.service';
+import { AuthTokenService } from 'src/app/services/auth-token.service';
+import { first } from 'rxjs/operators';
 
 
 @Component({
@@ -17,18 +19,19 @@ export class LoginComponent implements OnInit {
   key: string = "";
   userName: string = "";
   APIResult: resultsAPI<string>;
-  constructor(private API: ApiServiceService, private localres: LocalresService, private router: Router,
-    public auth:AuthService) { }
+  constructor(private AuthLogin: AuthTokenService, private localres: LocalresService, private router: Router) { }
 
   onSubmit(f: NgForm) {
     if (f.valid) {
-      this.API.login(f.value).subscribe(res => {
-        var tokens = res.headers.get('X-Token');
-        this.router.navigate(['Admin/Calendar'], { queryParams: { TokenApi: tokens } });
-      }, error => {
-        this.APIResult = error.error;
-        console.log(this.APIResult);
-      });
+      this.AuthLogin.login(f.value)
+      .pipe(first())
+      .subscribe(
+          data => {
+              this.router.navigate(['Admin/Calendar']);
+          },
+          error => {
+            this.APIResult.ErrorMessage = error.error;
+          });
     }
   }
 

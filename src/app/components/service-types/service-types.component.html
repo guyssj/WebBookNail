@@ -33,5 +33,7 @@
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <a class="btn pink" style="padding: 15px;" (click)="addNewServiceType()">{{localRes?.AddServiceType}}</a>
+
   </div>
 </div>

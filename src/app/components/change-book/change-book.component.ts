@@ -59,6 +59,7 @@ export class ChangeBookComponent implements OnInit {
    */
   UpdateBook(book: Book) {
     this.API.UpdateBook(book).subscribe(res => {
+      debugger;
       if (res.Result) {
         this.openDialog({message: this.localRes.SuccessApp , type:typeMessage.Success},3000)
       } else {

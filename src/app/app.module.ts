@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
-import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule } from '@angular/material';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule, MatOptionModule, MatSelectModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -35,7 +35,10 @@ import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { AdminRoutingModule } from './components/admin/admin-routing.module';
 import { ServicesComponent } from './components/services/services.component';
-import { ServiceTypesComponent } from './components/service-types/service-types.component';
+import { ServiceTypesComponent, AddNewServiceType } from './components/service-types/service-types.component';
+import { AuthTokenService } from './services/auth-token.service';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
+import { DialogComponent } from './components/dialog/dialog.component';
 
 registerLocaleData(localeHe);
 
@@ -55,7 +58,9 @@ registerLocaleData(localeHe);
     SidebarComponent,
     AdminComponent,
     ServicesComponent,
-    ServiceTypesComponent
+    ServiceTypesComponent,
+    DialogComponent,
+    AddNewServiceType
   ],
   imports: [
     BrowserModule,
@@ -75,6 +80,8 @@ registerLocaleData(localeHe);
     MatPaginatorModule,
     MatDialogModule,
     MatIconModule,
+    MatOptionModule,
+    MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
     ReactiveFormsModule,
@@ -87,9 +94,17 @@ registerLocaleData(localeHe);
       useFactory: adapterFactory
     })
   ],
-  providers: [ApiServiceService, LocalresService, AuthService , { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter }, { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter }],
+  providers: [
+    ApiServiceService, 
+    LocalresService,
+    AuthTokenService,
+    AuthService,
+    { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
+    { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter },
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
-  entryComponents:[DialogContentExampleDialog,DialogForClickEvent]
+  entryComponents:[DialogContentExampleDialog,DialogForClickEvent,DialogComponent,AddNewServiceType]
 })
 export class AppModule { 
   constructor() {

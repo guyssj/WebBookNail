@@ -5,7 +5,7 @@ import { SetBookComponent } from './components/set-book/set-book.component';
 import { CustomersComponent } from './components/customers/customers.component';
 import { CalendarViewComponent } from './components/calendar-view/calendar-view.component';
 import { ApiServiceService } from './services/api-service.service';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import localeHe from '@angular/common/locales/he';
 import { registerLocaleData } from '@angular/common';
 import { HomeComponent } from './components/home/home.component';
@@ -18,6 +18,9 @@ import { AuthService } from './services/auth.service';
 import { LoginComponent } from './components/login/login.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { AdminComponent } from './components/admin/admin.component';
+import { AuthTokenService } from './services/auth-token.service';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
+import { AuthGuard } from './guards/auth.guard';
 registerLocaleData(localeHe);
 
 const routes: Routes = [
@@ -25,7 +28,7 @@ const routes: Routes = [
   { path: 'Calendar', component: CalendarViewComponent },
   { path: '', component: HomeComponent },
   { path: 'Login', component: LoginComponent },
-  { path: 'Admin', component: AdminComponent },
+  { path: 'Admin', component: AdminComponent ,canActivate:[AuthGuard] },
   { path: 'Gallery', component: GalleryComponent }
 ];
 
@@ -38,7 +41,16 @@ const routes: Routes = [
     NgbModule,
     RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers:[ApiServiceService,LocalresService,AuthService,{provide:LocationStrategy,useClass:HashLocationStrategy},{provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},{provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter}]
+  providers:[
+    ApiServiceService,
+    AuthTokenService,
+    LocalresService,
+    AuthService,
+    {provide:LocationStrategy,useClass:HashLocationStrategy},
+    {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},
+    {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
+  ]
 })
 export class AppRoutingModule { }
 export const routingComponents = [SetBookComponent, CustomersComponent, CalendarViewComponent,LoginComponent];

@@ -19,7 +19,7 @@
         <!-- Phone Number And Date -->
         <div class="form-row">
           <mat-form-field class="col-md-6">
-            <input matInput placeholder="{{localRes?.PhoneNumber}}"
+            <input matInput type="tel" placeholder="{{localRes?.PhoneNumber}}"
               formControlName="phoneNumber" required>
             <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
           </mat-form-field>

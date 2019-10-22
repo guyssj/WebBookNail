@@ -8,13 +8,13 @@
     <div style="display: inline-block; padding: 22px;">
         <div class="form-row">
             <mat-form-field class="col-md-12">
-                <input matInput placeholder="{{localRes?.CustomerAndService}}" [(ngModel)]="data.event.title" disabled>
+                <input matInput placeholder="{{data.localRes?.CustomerAndService}}" [(ngModel)]="data.event.title" disabled>
             </mat-form-field>
             <mat-form-field class="col-md-6">
-                <input matInput placeholder="{{localRes?.endTime}}" [(ngModel)]="newEnd" disabled>
+                <input matInput placeholder="{{data.localRes?.endTime}}" [(ngModel)]="newEnd" disabled>
             </mat-form-field>
             <mat-form-field class="col-md-6">
-                <input matInput placeholder="{{localRes?.startTime}}" [(ngModel)]="newStart" disabled>
+                <input matInput placeholder="{{data.localRes?.startTime}}" [(ngModel)]="newStart" disabled>
             </mat-form-field>
 
         </div>

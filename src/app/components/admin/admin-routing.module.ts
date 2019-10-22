@@ -6,6 +6,7 @@ import { CalendarViewComponent } from '../calendar-view/calendar-view.component'
 import { CustomersComponent } from '../customers/customers.component';
 import { ServicesComponent } from '../services/services.component';
 import { ServiceTypesComponent } from '../service-types/service-types.component';
+import { AuthGuard } from 'src/app/guards/auth.guard';
 
 const routes: Routes = [
   {
@@ -14,7 +15,8 @@ const routes: Routes = [
     children: [
       {
         path: 'Calendar',
-        component: CalendarViewComponent
+        component: CalendarViewComponent,
+        canActivate:[AuthGuard]
       },
       {
         path: 'Customers',

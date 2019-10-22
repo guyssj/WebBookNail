@@ -12,7 +12,8 @@ export const environment = {
     storageBucket: "",
     messagingSenderId: "107195644423",
     appId: "1:107195644423:web:9163ca906432b687"
-  }
+  },
+  apiUrl:'http://192.168.0.25/NailBook/public/'
 };
 
 /*

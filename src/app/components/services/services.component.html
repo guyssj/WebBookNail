@@ -1,1 +1,24 @@
-<p>services works!</p>
+<div class="table row">
+  <mat-form-field class="col-md-10">
+    <input matInput (keyup)="applyFilter($event.target.value)" [placeholder]="localRes?.Search">
+  </mat-form-field>
+  <div class="col-md-10">
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+      <ng-container matColumnDef="ServiceID">
+        <th mat-header-cell *matHeaderCellDef> {{localRes?.ServiceID}} </th>
+        <td mat-cell *matCellDef="let element"> {{element.ServiceID}} </td>
+      </ng-container>
+
+      <ng-container matColumnDef="ServiceName">
+        <th mat-header-cell *matHeaderCellDef> {{localRes?.Service}} </th>
+        <td mat-cell *matCellDef="let element"> {{element.ServiceName}} </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    <!-- Button trigger modal -->
+    <a class="btn pink" style="padding: 15px;" href="">{{localRes?.AddServiceType}}</a>
+  </div>
+</div>

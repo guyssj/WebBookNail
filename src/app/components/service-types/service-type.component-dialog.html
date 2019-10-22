@@ -1,0 +1,44 @@
+<div mat-dialog-title>
+        <button type="button" (click)="closeDialog();" class="float-left close"
+        aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <h4 class="float-right inline" style="color: rgba(201,109,159,1);">{{data?.AddServiceType}}</h4>
+    <div class="line" style="display: flex;"></div>
+
+</div>
+
+<mat-dialog-content class="mat-typography">
+    <form [formGroup]="ServiceTypeForm" (ngSubmit)="saveServiceType()">
+        <div style="display: inline-block; padding: 22px; direction: rtl;">
+            <div class="form-row">
+                <mat-form-field class="col-md-6">
+                    <input matInput placeholder="{{data?.ServiceTypeName}}" required formControlName="ServiceTypeName">
+                </mat-form-field>
+                <mat-form-field class="col-md-6">
+                    <mat-label>{{data?.Service}}</mat-label>
+                    <mat-select formControlName="ServiceID" name="service" required>
+                        <mat-option *ngFor="let service of Services" [value]="service.ServiceID">
+                            {{service.ServiceName}}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="ServiceTypeForm.get('ServiceID').hasError('required')">אנא בחרי טיפול</mat-error>
+                </mat-form-field>
+                <mat-form-field class="col-md-6">
+                    <input matInput placeholder="{{data?.Duration}}" required formControlName="Duration">
+                    <mat-error *ngIf="ServiceTypeForm.get('Duration').hasError('required')">אנא בחרי טיפול</mat-error>
+                </mat-form-field>
+                <mat-form-field class="col-md-6">
+                    <input matInput placeholder="{{data?.Price}}" formControlName="Price">
+                </mat-form-field>
+                <mat-form-field class="col-md-12">
+                    <input matInput placeholder="{{data?.Description}}" formControlName="Description">
+                </mat-form-field>
+
+            </div>
+        </div>
+    </form>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+    <button mat-button (click)="saveServiceType();" cdkFocusInitial class="btn pink"> שמור </button>
+</mat-dialog-actions>
