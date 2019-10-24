@@ -13,6 +13,8 @@ import { ServiceTypes } from 'src/app/classes/servicetypes';
 import { DialogContentExampleDialog } from '../set-book/set-book.component';
 import { take } from 'rxjs/operators';
 
+
+declare var $: any 
 @Component({
   selector: 'app-change-book',
   templateUrl: './change-book.component.html',
@@ -21,33 +23,37 @@ import { take } from 'rxjs/operators';
 export class ChangeBookComponent implements OnInit {
   @Input() book: Book;
   @Input() localRes: any;
-  customer:Customer = {
-    FirstName:'',
-    LastName:'',
-    PhoneNumber:''
+  customer: Customer = {
+    FirstName: '',
+    LastName: '',
+    PhoneNumber: ''
   };
+
+  @Output() Clear = new EventEmitter<boolean>();
   dateNow: Date = new Date(Date.now());
   maxDate: Date = addDays(this.dateNow, 30);
   newStart: string;
   newEnd: string;
-  Time$:Observable<TimeSlots[]>;
+  Time$: Observable<TimeSlots[]>;
   finishStartDate: Date;
   TimeSlotSelected: TimeSlots;
   ServiceSelected: Services;
   ServcieTypeSelected: ServiceTypes;
-  editMode:boolean = false;
-  constructor(private API: ApiServiceService,private dialog: MatDialog) {
+  editMode: boolean = false;
+  constructor(private API: ApiServiceService, private dialog: MatDialog) {
 
   }
 
   ngOnInit() {
-    this.API.getCustomerById(this.book.CustomerID).subscribe(res =>{
+    this.API.getCustomerById(this.book.CustomerID).subscribe(res => {
       debugger;
       this.newStart = this.MinToTime(this.book.StartAt);
       this.newEnd = this.MinToTime(this.book.StartAt + this.book.Durtion);
       this.customer = res.Result;
     })
-   this.Time$ = this.API.getTimeByDate(this.book.StartDate);
+    this.Time$ = this.API.getTimeByDate(this.book.StartDate);
+
+
   }
 
 
@@ -58,12 +64,18 @@ export class ChangeBookComponent implements OnInit {
    * 
    */
   UpdateBook(book: Book) {
+    
     this.API.UpdateBook(book).subscribe(res => {
       debugger;
       if (res.Result) {
-        this.openDialog({message: this.localRes.SuccessApp , type:typeMessage.Success},3000)
+        this.openDialog({ message: this.localRes.SuccessApp, type: typeMessage.Success }, 3000);
+        this.Clear.emit(true);
+        $(function () {
+          $('#SerachModal').modal('toggle');
+          $('#SerachModal').modal('hide');       
+        })
       } else {
-        this.openDialog({message: this.localRes.notEnoughtime , type:typeMessage.Error},3000)
+        this.openDialog({ message: this.localRes.notEnoughtime, type: typeMessage.Error }, 3000)
       }
     })
   }
@@ -83,9 +95,9 @@ export class ChangeBookComponent implements OnInit {
     let seconds = Math.floor((TimeMin * 60) - (hours * 3600) - (minutes * 60));
 
     // Appends 0 when unit is less than 10
-    if (hours < 10) { 
-      var newH = "0" + hours; 
-    }else{
+    if (hours < 10) {
+      var newH = "0" + hours;
+    } else {
       newH = hours.toString();
     }
     if (minutes < 10) {
@@ -105,8 +117,8 @@ export class ChangeBookComponent implements OnInit {
    * Save the time when selected in minutes
    * @param event TimeSlots
    */
-  onTimeChange(event:TimeSlots) {
-    if(event){
+  onTimeChange(event: TimeSlots) {
+    if (event) {
       this.book.StartAt = event.id;
     }
   }
@@ -122,15 +134,15 @@ export class ChangeBookComponent implements OnInit {
     this.finishStartDate = this.clearTime(this.finishStartDate);
     this.finishStartDate = addMinutes(this.finishStartDate, 0);
     this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
-    console.log(this.finishStartDate.getFullYear()+"-"+(this.finishStartDate.getMonth()+1)+"-"+this.finishStartDate.getDate());
-    this.Time$ = this.API.getTimeByDate(this.finishStartDate.getFullYear()+"-"+(this.finishStartDate.getMonth()+1)+"-"+this.finishStartDate.getDate());
-    
+    console.log(this.finishStartDate.getFullYear() + "-" + (this.finishStartDate.getMonth() + 1) + "-" + this.finishStartDate.getDate());
+    this.Time$ = this.API.getTimeByDate(this.finishStartDate.getFullYear() + "-" + (this.finishStartDate.getMonth() + 1) + "-" + this.finishStartDate.getDate());
+
   }
-    /**
-   * Clear dateTime from Date
-   * 
-   * @param DateTime Date
-   */
+  /**
+ * Clear dateTime from Date
+ * 
+ * @param DateTime Date
+ */
   clearTime(DateTime: Date): Date {
     DateTime.setMinutes(0);
     DateTime.setHours(0);
@@ -148,9 +160,9 @@ export class ChangeBookComponent implements OnInit {
    * 
    * @param time 
    */
-  openDialog(messageObj:MessageConfig, time) {
+  openDialog(messageObj: MessageConfig, time) {
     this.dialog.open(DialogContentExampleDialog, {
-      data:messageObj
+      data: messageObj
     });
     timer(time, 1000).pipe(
       take(1)).subscribe(x => {

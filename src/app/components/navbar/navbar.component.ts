@@ -40,9 +40,9 @@ export class NavbarComponent implements OnInit {
   onWindowScroll() {
 
     const number = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    if (number > 300) {
+    if (number > 50) {
       this.scroll = true;
-    } else if (number < 300) {
+    } else if (number < 50) {
        this.scroll = false;
     }
   }

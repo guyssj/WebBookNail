@@ -7,6 +7,8 @@ import { Customer } from 'src/app/classes/Customer';
 import { Book } from 'src/app/classes/Book';
 import { FormGroup } from '@angular/forms';
 import { ApiServiceService } from 'src/app/services/api-service.service';
+import { Settings } from 'src/app/classes/StoreSettings';
+import { SettingsService } from 'src/app/services/settings.service';
 
 
 @Component({
@@ -14,19 +16,24 @@ import { ApiServiceService } from 'src/app/services/api-service.service';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit ,AfterViewInit {
-  localRes:any = {};
-  hidetheSer:boolean;
-  bookFound:Book = new Book();
+export class HomeComponent implements OnInit, AfterViewInit {
+  localRes: any = {};
+  settings:Settings;
+  hidetheSer: boolean;
+  bookFound: Book = new Book();
   @ViewChild(SetBookComponent, { static: true }) setBookCom;
-  constructor(private localres:LocalresService, private API:ApiServiceService) { }
+  constructor(private localres: LocalresService, private API: ApiServiceService, private Set:SettingsService) { }
 
   ngOnInit() {
     this.localres.getLocalResoruce("he").subscribe(data => {
       this.localRes = data;
       console.log(this.localRes);
     })
+    this.Set.getSettings().subscribe(res=>{
+      this.settings = res;
+    })
     $(function () {
+
       // ===== Scroll to Top ==== 
       $(window).scroll(function () {
         if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
@@ -41,24 +48,26 @@ export class HomeComponent implements OnInit ,AfterViewInit {
         }, 500);
       });
     });
-    
+
   }
 
-  ngAfterViewInit(){
+  ngAfterViewInit() {
   }
 
-  whenCustomerFound(event){
-    if(isObject(event)){
+  whenCustomerFound(event) {
+    if (isObject(event)) {
       this.bookFound = event;
       this.hidetheSer = true;
     }
-    else{
+    else {
       console.log(event);
     }
   }
 
-  clear(){
-    this.bookFound= null;
-    this.hidetheSer = false;
+  clear(event) {
+    if (event) {
+      this.bookFound = null;
+      this.hidetheSer = false;
+    }
   }
 }

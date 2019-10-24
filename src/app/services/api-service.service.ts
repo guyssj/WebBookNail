@@ -66,7 +66,8 @@ export class ApiServiceService {
   }
 
   GetBookByCustomer(Customer: Customer) {
-    return this.http.get<resultsAPI<Book>>(`${environment.apiUrl}api/GetBookByCustomer?CustomerID=${Customer.CustomerID}`);
+    debugger;
+    return this.http.get<resultsAPI<Book>>(`${environment.apiUrl}api/GetBookByCustomer?CustomerID=${Customer[0].CustomerID}`);
   }
 
   UpdateBook(Book: Book): Observable<resultsAPI<any>> {

@@ -27,24 +27,24 @@
         <div>
           <i class="far fa-3x fa-clock"></i>
           <h4 class="heading">{{localRes?.WorkingHours}}</h4>
-          <p>08.00 - 18.30 / ראשון - שישי</p>
+          <p>{{settings?.WorkingHours}}</p>
         </div>
       </li>
       <li>
-        <a class="nav-link text-white" href="tel:050-0000000">
+        <a class="nav-link text-white" href="tel:{{settings?.PhoneNumber}}">
         <div>
           <i class="fas fa-3x fa-phone"></i>
           <h4 class="heading">{{localRes?.CallNow}}</h4>
-          <p>050-0000000</p>
+          <p>{{settings?.PhoneNumber}}</p>
         </div>
       </a>
       </li>
       <li>
-        <a class="nav-link text-white" href="https://www.waze.com/ul?ll=32.81125439%2C35.48488498&navigate=yes&zoom=17">
+        <a class="nav-link text-white" [href]="settings?.WazeLink">
         <div>
           <i class="fab fa-3x fa-waze"></i>
           <h4 class="heading">{{localRes?.Address}}</h4>
-          <p>מושב ארבל, הגפן</p>
+          <p>{{settings?.Address}}</p>
         </div>
       </a>
       </li>
@@ -124,56 +124,41 @@
 <!-- ################################################################################################ -->
 <div class="wrapper row4">
   <footer id="footer" class="hoc clear">
+      <div class="one_third float-left">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1676.6424620671141!2d35.48589961714824!3d32.81121479656767!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151c3ece8a87ec4b%3A0x1aa67c5155f3911f!2z15TXktek158sINeQ16jXkdec!5e0!3m2!1siw!2sil!4v1571944050463!5m2!1siw!2sil" width="400" height="300" frameborder="0" style="border:0;" allowfullscreen=""></iframe>
+      </div>
     <!-- ################################################################################################ -->
-    <div class="one_third first">
+    <div class="one_third float-right">
       <h6 class="heading">{{localRes?.Contact}}</h6>
       <ul class="nospace btmspace-30 linklist contact">
         <li>
           <i class="fa fa-map-marker"></i>
           <address>
-            מושב ארבל ד.נ גליל תחתון
+           {{settings?.Address}}
           </address>
         </li>
         <li>
-          <i class="fa fa-phone"></i>050-0000000</li>
+          <i class="fa fa-phone"></i>{{settings?.PhoneNumber}}</li>
         <li>
-          <i class="fas fa-envelope-o"></i>Miritush@Miritush.com</li>
+          <i class="fas fa-envelope-o"></i>{{settings?.Email}}</li>
       </ul>
       <ul class="faico clear">
         <li>
-          <a class="faicon-facebook" href="#">
+          <a class="faicon-facebook" [href]="settings?.FacebookLink">
             <i class="fab fa-facebook-f"></i>
           </a>
         </li>
         <li>
-          <a class="faicon-twitter" href="#">
-            <i class="fab fa-twitter"></i>
-          </a>
-        </li>
-        <li>
-          <a class="faicon-dribble" href="#">
-            <i class="fab fa-dribbble"></i>
-          </a>
-        </li>
-        <li>
-          <a class="faicon-linkedin" href="#">
-            <i class="fab fa-linkedin"></i>
-          </a>
-        </li>
-        <li>
-          <a class="faicon-google-plus" href="#">
-            <i class="fab fa-google-plus"></i>
-          </a>
-        </li>
-        <li>
-          <a class="faicon-vk" href="#">
-            <i class="fab fa-vk"></i>
-          </a>
-        </li>
+            <a class="faicon-facebook" [href]="settings?.InstegramLink">
+                <i class="fab fa-instagram"></i>
+              </a>
+          </li>
       </ul>
     </div>
     <!-- ################################################################################################ -->
+
   </footer>
+  
 </div>
 <!-- ################################################################################################ -->
 <!-- ################################################################################################ -->
@@ -186,7 +171,7 @@
     </p>
     <p class="fl_right">Template by
       <a target="_blank" href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a>
-      <a href='https://www.freepik.com/free-vector/pedicure-illustration_753439.htm'>&nbsp; Designed by Freepik</a>
+      <a href='https://www.freepik.com/free-vector/pedicure-illustration_753439.htm'>&nbsp; Photos by Freepik</a>
     </p>
     <!-- ################################################################################################ -->
   </div>
@@ -199,7 +184,7 @@
   <i class="fa fa-angle-up"></i>
 </a>
 <!-- Modal SetBook -->
-<div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
@@ -207,7 +192,7 @@
         <button type="button" class="float-left close" style="margin: -1rem !important;" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="float-right inline" style="color: rgba(201,109,159,1);">קביעת תור למיריתוש</h4>
+        <h4 class="float-right inline" style="color: rgba(201,109,159,1);">קביעת תור {{settings?.StoreName}}</h4>
       </div>
       <div class="line"></div>
       <div class="modal-body">
@@ -223,7 +208,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" (click)="clear();" class="float-left close" style="margin: -1rem !important;" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clear(true);" class="float-left close" style="margin: -1rem !important;" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
         <h4 class="float-right inline" style="color: rgba(201,109,159,1);">התור שלך</h4>
@@ -231,7 +216,7 @@
       <div class="line"></div>
       <div class="modal-body">
         <app-search-book [localRes]="localRes" *ngIf="!hidetheSer" (BookFounded)="whenCustomerFound($event)"></app-search-book>
-        <app-change-book [localRes]="localRes" [book]="bookFound" *ngIf="hidetheSer" ></app-change-book>
+        <app-change-book [localRes]="localRes" [book]="bookFound" (Clear)=clear($event) *ngIf="hidetheSer" ></app-change-book>
       </div>
     </div>
   </div>
