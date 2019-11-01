@@ -1,10 +1,10 @@
 {
   "name": "book-nail",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve --host 0.0.0.0 --configuration es5",
-    "build": "ng build",
+    "build": "ng build --prod --configuration es5",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

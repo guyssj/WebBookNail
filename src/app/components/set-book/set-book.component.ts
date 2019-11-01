@@ -51,6 +51,10 @@ export class SetBookComponent implements OnInit {
     service: new FormControl(null, Validators.required),
     ServcieType: new FormControl(null, Validators.required)
   });
+  FilterWeekend = (d: Date): boolean => {
+    const day = d.getDay();
+    return day !== 5 && day !== 6;
+  }
   constructor(private localres: LocalresService,
               private dialog: MatDialog, 
               private API: ApiServiceService, 
@@ -217,6 +221,8 @@ export class SetBookComponent implements OnInit {
       ServcieType: new FormControl(null, Validators.required)
     });
     this.customer = null;
+    this.ServiceSelected = null;
+    this.ServcieTypeSelected = null;
   }
 
   openDialog(messageObj:MessageConfig, time) {

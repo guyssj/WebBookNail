@@ -24,9 +24,20 @@
             <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
           </mat-form-field>
           <mat-form-field class="col-md-6">
-              <input matInput [min]="dateNow" required formControlName="date" [max]="maxDate" (dateChange)="dateChange($event)" [matDatepicker]="picker" placeholder="{{localRes?.selectedDate}}">
+              <input (click)="picker.open()"
+               (keydown)="false"
+                matInput
+                [matDatepickerFilter]="FilterWeekend"
+                readonly
+                required
+                [min]="dateNow"
+                formControlName="date"
+                [max]="maxDate"
+                (dateChange)="dateChange($event)"
+                [matDatepicker]="picker"
+                placeholder="{{localRes?.selectedDate}}">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker touchUi #picker></mat-datepicker>
+              <mat-datepicker touchUi disabled="false" #picker></mat-datepicker>
               <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
             </mat-form-field>
         </div>
@@ -75,6 +86,11 @@
             formControlName="ServcieType">
           </ng-select>
           <mat-error *ngIf="notEnoughtime">{{localRes?.notEnoughtime}}</mat-error>
+        </div>
+        <div class="col-md-6" *ngIf="ServcieTypeSelected">
+          <div style="padding: 5px;">
+          {{ServcieTypeSelected.Description}}
+          </div>
         </div>
       </div>
          <div>

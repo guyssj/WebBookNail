@@ -55,6 +55,7 @@
     "Description":"תיאור",
     "Price":"מחיר",
     "Duration":"משך התור",
-    "ServiceTypeName":"שם סוג הטיפול"
+    "ServiceTypeName":"שם סוג הטיפול",
+    "SendMessage":"שלח/י הודעה"
 
 }
