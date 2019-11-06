@@ -37,7 +37,7 @@ export class SetBookComponent implements OnInit {
   customer: Customer;
   ServicesTypes$: ServiceTypes[];
   dateNow: Date = new Date(Date.now());
-  maxDate: Date = addDays(this.dateNow, 30);
+  maxDate: Date = addDays(this.dateNow, 90);
   formBuilder: any;
   finishStartDate: Date;
   Books: Book;
@@ -53,7 +53,7 @@ export class SetBookComponent implements OnInit {
   });
   FilterWeekend = (d: Date): boolean => {
     const day = d.getDay();
-    return day !== 5 && day !== 6;
+    return day !== 6;
   }
   constructor(private localres: LocalresService,
               private dialog: MatDialog, 
@@ -189,6 +189,8 @@ export class SetBookComponent implements OnInit {
         else{
           this.openDialog({message: results.ErrorMessage , type:typeMessage.Error},5000)
         }
+      },error =>{
+        this.openDialog({message: error.ErrorMessage , type:typeMessage.Error},5000)
       })
 
     });

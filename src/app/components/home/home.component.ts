@@ -27,7 +27,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
   ngOnInit() {
     this.localres.getLocalResoruce("he").subscribe(data => {
       this.localRes = data;
-      console.log(this.localRes);
     })
     this.Set.getSettings().subscribe(res=>{
       this.settings = res;

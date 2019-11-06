@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
   localRes: any;
   key: string = "";
   userName: string = "";
-  APIResult: resultsAPI<string>;
+  APIResult: resultsAPI<string> = new resultsAPI<string>();
   constructor(private AuthLogin: AuthTokenService, private localres: LocalresService, private router: Router) { }
 
   onSubmit(f: NgForm) {
@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
               this.router.navigate(['Admin/Calendar']);
           },
           error => {
-            this.APIResult.ErrorMessage = error.error;
+            this.APIResult = error.error;
           });
     }
   }
@@ -38,7 +38,6 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     this.localres.getLocalResoruce("he").subscribe(data => {
       this.localRes = data;
-      console.log(this.localRes)
     })
   }
 

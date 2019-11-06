@@ -23,17 +23,6 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-  openDialog(message,time){
-    this.dialog.open(DialogContentExampleDialog,{
-      data:{
-        message:'guygold'
-      }
-    });
-    timer(time, 1000).pipe(
-      take(1)).subscribe(x=>{
-        this.dialog.closeAll();
-       })
-  }
 
 
   @HostListener("window:scroll", [])

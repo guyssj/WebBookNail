@@ -41,9 +41,7 @@ export class AuthService {
   
 
   async login() {
-    console.log(gapi.client);
     const googleAuth = gapi.auth2.getAuthInstance();
-    console.log(googleAuth);
     const googleUser = await googleAuth.signIn();
     const token = googleUser.getAuthResponse().id_token;
     // Alternative approach, use the Firebase login with scopes and make RESTful API calls
@@ -62,7 +60,6 @@ export class AuthService {
 
   authState(){
     this.afAuth.authState.subscribe((res) => {
-      console.log(res.displayName);
       return res;
     })
   }
