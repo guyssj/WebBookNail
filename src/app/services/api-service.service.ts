@@ -11,6 +11,7 @@ import { Customer } from '../classes/Customer';
 import { CalendarEvent } from 'angular-calendar';
 import { addMinutes } from 'date-fns';
 import { environment } from 'src/environments/environment';
+import { CloseDays } from '../classes/CloseDays';
 
 @Injectable({
   providedIn: 'root'
@@ -51,6 +52,12 @@ export class ApiServiceService {
   async GetAllCustomers() {
     let customers = await this.http.get<resultsAPI<Customer[]>>(`${environment.apiUrl}admin/GetAllCustomers`, { withCredentials: true }).toPromise();
     return customers.Result;
+  }
+
+
+  async getAllCloseDays() {
+    let CloseDays = await this.http.get<resultsAPI<CloseDays[]>>(`${environment.apiUrl}api/GetDateClosed`).toPromise();
+    return CloseDays.Result;
   }
 
   getCustomerById(id) {

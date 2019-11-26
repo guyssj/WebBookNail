@@ -16,6 +16,7 @@ import { MessageConfig, typeMessage } from '../MessageConfig';
 import { timeInterval, take } from 'rxjs/operators';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
+import { CloseDays } from 'src/app/classes/CloseDays';
 
 
 @Component({
@@ -51,19 +52,41 @@ export class SetBookComponent implements OnInit {
     service: new FormControl(null, Validators.required),
     ServcieType: new FormControl(null, Validators.required)
   });
+  closeDays:CloseDays[] =[];
   FilterWeekend = (d: Date): boolean => {
-    const day = d.getDay();
-    return day !== 6;
+    let days
+    if(d.getDate() < 10){
+      days = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+"0"+d.getDate()
+    }
+    else{
+      days = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()
+    }
+    const sat = d.getDay();
+    let DaytoClose = this.closeDays.filter(date=> date.Date == days)
+    if(DaytoClose.length > 0 || sat == 6){
+      return false;
+    }
+    else{
+      return true;
+    }
+    // console.log(this.dates[d.toLocaleDateString("he-IL")])
+    // return !this.dates[d.toLocaleDateString("he-IL")];
   }
+
   constructor(private localres: LocalresService,
               private dialog: MatDialog, 
               private API: ApiServiceService, 
               private adapter: DateAdapter<any>) { }
 
   ngOnInit() {
+    this.getAllCloseDays();
     this.adapter.setLocale('he');
     this.Time$ = this.API.getAllTimes();
     this.Services$ = this.API.getAllServices();
+  }
+
+  async getAllCloseDays(){
+    this.closeDays = await this.API.getAllCloseDays()
   }
 
   /**
@@ -78,7 +101,6 @@ export class SetBookComponent implements OnInit {
     this.finishStartDate = this.clearTime(this.finishStartDate);
     this.finishStartDate = addMinutes(this.finishStartDate, 0);
     this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
-    console.log(this.finishStartDate.getFullYear()+"-"+(this.finishStartDate.getMonth()+1)+"-"+this.finishStartDate.getDate());
     this.Time$ = this.API.getTimeByDate(this.finishStartDate.getFullYear()+"-"+(this.finishStartDate.getMonth()+1)+"-"+this.finishStartDate.getDate());
     
   }
@@ -141,7 +163,6 @@ export class SetBookComponent implements OnInit {
    * @param event ServiceTypes
    */
   onServiceTypeChange(event:ServiceTypes,select:NgSelectComponent) {
-    debugger;
     this.ServcieTypeSelected = event;
     //in this request from server to check all time exist in date choosed
     this.API.TimeExist(this.finishStartDate.getFullYear()+"-"+(this.finishStartDate.getMonth()+1)+"-"+this.finishStartDate.getDate()).subscribe(arry => {

@@ -6,5 +6,6 @@ export class Book {
     ServiceID: number;
     Durtion: number;
     ServiceTypeID:number;
+    Notes?:string;
 }
 

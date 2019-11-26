@@ -26,7 +26,8 @@ export class ChangeBookComponent implements OnInit {
   customer: Customer = {
     FirstName: '',
     LastName: '',
-    PhoneNumber: ''
+    PhoneNumber: '',
+    Notes:''
   };
 
   @Output() Clear = new EventEmitter<boolean>();
@@ -46,7 +47,6 @@ export class ChangeBookComponent implements OnInit {
 
   ngOnInit() {
     this.API.getCustomerById(this.book.CustomerID).subscribe(res => {
-      debugger;
       this.newStart = this.MinToTime(this.book.StartAt);
       this.newEnd = this.MinToTime(this.book.StartAt + this.book.Durtion);
       this.customer = res.Result;
@@ -64,9 +64,7 @@ export class ChangeBookComponent implements OnInit {
    * 
    */
   UpdateBook(book: Book) {
-    
     this.API.UpdateBook(book).subscribe(res => {
-      debugger;
       if (res.Result) {
         this.openDialog({ message: this.localRes.SuccessApp, type: typeMessage.Success }, 3000);
         this.Clear.emit(true);
@@ -120,6 +118,7 @@ export class ChangeBookComponent implements OnInit {
   onTimeChange(event: TimeSlots) {
     if (event) {
       this.book.StartAt = event.id;
+      this.editMode = true;
     }
   }
 

@@ -39,6 +39,7 @@ import { ServiceTypesComponent, AddNewServiceType } from './components/service-t
 import { AuthTokenService } from './services/auth-token.service';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { DialogComponent } from './components/dialog/dialog.component';
+import { MinToTimePipe } from './pipes/min-to-time.pipe';
 
 registerLocaleData(localeHe);
 
@@ -60,7 +61,8 @@ registerLocaleData(localeHe);
     ServicesComponent,
     ServiceTypesComponent,
     DialogComponent,
-    AddNewServiceType
+    AddNewServiceType,
+    MinToTimePipe
   ],
   imports: [
     BrowserModule,
