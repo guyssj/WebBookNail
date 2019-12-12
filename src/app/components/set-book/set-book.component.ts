@@ -1,4 +1,4 @@
-import { Component, OnInit, Injectable, OnChanges, Inject, Input } from '@angular/core';
+import { Component, OnInit, Injectable, OnChanges, Inject, Input, ViewChild } from '@angular/core';
 import { LocalresService } from '../../services/localres.service';
 import { ApiServiceService } from '../../services/api-service.service';
 import { Observable, timer } from 'node_modules/rxjs';
@@ -17,6 +17,7 @@ import { timeInterval, take } from 'rxjs/operators';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { CloseDays } from 'src/app/classes/CloseDays';
+import { WorkingHours } from 'src/app/classes/workinghours';
 
 
 @Component({
@@ -26,6 +27,8 @@ import { CloseDays } from 'src/app/classes/CloseDays';
 })
 export class SetBookComponent implements OnInit {
   @Input() localRes:any;
+  @ViewChild('select',{static:false}) public ngSelect: NgSelectComponent;
+
   faCalendarAlt = faCalendarAlt;
   Time$: Observable<TimeSlots[]>;
   Services$: Observable<Services[]>;
@@ -38,10 +41,13 @@ export class SetBookComponent implements OnInit {
   customer: Customer;
   ServicesTypes$: ServiceTypes[];
   dateNow: Date = new Date(Date.now());
+  calendarPickerMinDate: Date = addDays(this.dateNow,2);
   maxDate: Date = addDays(this.dateNow, 90);
   formBuilder: any;
   finishStartDate: Date;
   Books: Book;
+  LockHour:any;
+  WorkDay:WorkingHours;
   notEnoughtime:boolean = false;
   reactiveForm = new FormGroup({
     firstName: new FormControl(null, Validators.required),
@@ -89,6 +95,14 @@ export class SetBookComponent implements OnInit {
     this.closeDays = await this.API.getAllCloseDays()
   }
 
+  async getWorkHoursByDay(day){
+    this.WorkDay = await this.API.getWorkHoursByDay(day);
+  }
+
+  async getLockHoursByDate(date){
+    this.LockHour = await this.API.getLockHoursByDate(date);
+  }
+
   /**
    * 
    * Event when selected DatePicker
@@ -102,6 +116,8 @@ export class SetBookComponent implements OnInit {
     this.finishStartDate = addMinutes(this.finishStartDate, 0);
     this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
     this.Time$ = this.API.getTimeByDate(this.finishStartDate.getFullYear()+"-"+(this.finishStartDate.getMonth()+1)+"-"+this.finishStartDate.getDate());
+    this.getWorkHoursByDay(this.finishStartDate.getDay());
+    this.getLockHoursByDate(this.finishStartDate.getFullYear()+"-"+(this.finishStartDate.getMonth()+1)+"-"+this.finishStartDate.getDate());
     
   }
 
@@ -130,6 +146,13 @@ export class SetBookComponent implements OnInit {
    * @param event TimeSlots
    */
   onTimeChange(event:TimeSlots) {
+    if (!event)
+      return;
+    if(this.ServcieTypeSelected){
+      this.reactiveForm.value.ServcieType = null;
+      this.ngSelect.clearModel();
+      this.ServcieTypeSelected = null;
+    }
     if (this.finishStartDate) {
       this.StartAt = event.id;
     }
@@ -163,19 +186,46 @@ export class SetBookComponent implements OnInit {
    * @param event ServiceTypes
    */
   onServiceTypeChange(event:ServiceTypes,select:NgSelectComponent) {
+    if(!event){
+      return;
+    }
     this.ServcieTypeSelected = event;
     //in this request from server to check all time exist in date choosed
     this.API.TimeExist(this.finishStartDate.getFullYear()+"-"+(this.finishStartDate.getMonth()+1)+"-"+this.finishStartDate.getDate()).subscribe(arry => {
       var timeTotal = this.StartAt + this.ServcieTypeSelected.Duration
+
       this.notEnoughtime = false;
-      for (let i = 0; i < arry.Result.length; i++) {
-        if(arry.Result[i] == timeTotal){
-          this.notEnoughtime = true;
-          this.reactiveForm.value.ServcieType = null;
-          this.ServcieTypeSelected = null;
-          select.clearModel();
+      for (let i = this.StartAt; i < timeTotal; i++) {
+        for (let j = 0; j < arry.Result.length-1; j++) {
+          if(arry.Result[j] == i){
+            this.notEnoughtime = true;
+            this.reactiveForm.value.ServcieType = null;
+            this.ServcieTypeSelected = null;
+            select.clearModel();
+            break;
+
+          }
         }
       }
+
+      //Check if Lock time is end of close time
+      if(this.WorkDay.CloseTime < this.LockHour){
+        this.notEnoughtime = true;
+        this.reactiveForm.value.ServcieType = null;
+        this.ServcieTypeSelected = null;
+        select.clearModel();
+        return;
+      }
+
+      //check if close time + 120 bigger from time total of app
+      else if(this.WorkDay.CloseTime+120 < timeTotal){
+        this.notEnoughtime = true;
+        this.reactiveForm.value.ServcieType = null;
+        this.ServcieTypeSelected = null;
+        select.clearModel();
+        return;
+      }
+
     })
     
   }

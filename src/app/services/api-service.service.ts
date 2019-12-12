@@ -12,6 +12,7 @@ import { CalendarEvent } from 'angular-calendar';
 import { addMinutes } from 'date-fns';
 import { environment } from 'src/environments/environment';
 import { CloseDays } from '../classes/CloseDays';
+import { WorkingHours } from '../classes/workinghours';
 
 @Injectable({
   providedIn: 'root'
@@ -73,7 +74,6 @@ export class ApiServiceService {
   }
 
   GetBookByCustomer(Customer: Customer) {
-    debugger;
     return this.http.get<resultsAPI<Book>>(`${environment.apiUrl}api/GetBookByCustomer?CustomerID=${Customer[0].CustomerID}`);
   }
 
@@ -92,6 +92,16 @@ export class ApiServiceService {
 
   addServiceType(serviceType):Observable<resultsAPI<any>>{
     return this.http.post<resultsAPI<any>>(`${environment.apiUrl}api/AddServiceType`,serviceType,{withCredentials:true});
+  }
+
+  async getWorkHoursByDay(day){
+    let workday = await this.http.get<resultsAPI<WorkingHours>>(`${environment.apiUrl}api/GetWorkHoursByDay?dayOfWeek=${day}`,{withCredentials:true}).toPromise();
+    return workday.Result;
+  }
+
+  async getLockHoursByDate(date){
+    let LockHours = await this.http.get<resultsAPI<any>>(`${environment.apiUrl}api/GetLockHoursByDate?Date=${date}`,{withCredentials:true}).toPromise();
+    return LockHours.Result;
   }
 
   getCookie(cname) {

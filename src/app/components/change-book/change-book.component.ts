@@ -12,6 +12,7 @@ import { Services } from 'src/app/classes/Services';
 import { ServiceTypes } from 'src/app/classes/servicetypes';
 import { DialogContentExampleDialog } from '../set-book/set-book.component';
 import { take } from 'rxjs/operators';
+import { CloseDays } from 'src/app/classes/CloseDays';
 
 
 declare var $: any 
@@ -32,6 +33,7 @@ export class ChangeBookComponent implements OnInit {
 
   @Output() Clear = new EventEmitter<boolean>();
   dateNow: Date = new Date(Date.now());
+  calendarPickerMinDate: Date = addDays(this.dateNow,2)
   maxDate: Date = addDays(this.dateNow, 30);
   newStart: string;
   newEnd: string;
@@ -44,8 +46,33 @@ export class ChangeBookComponent implements OnInit {
   constructor(private API: ApiServiceService, private dialog: MatDialog) {
 
   }
+  closeDays:CloseDays[] =[];
+  FilterWeekend = (d: Date): boolean => {
+    let days
+    if(d.getDate() < 10){
+      days = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+"0"+d.getDate()
+    }
+    else{
+      days = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()
+    }
+    const sat = d.getDay();
+    let DaytoClose = this.closeDays.filter(date=> date.Date == days)
+    if(DaytoClose.length > 0 || sat == 6){
+      return false;
+    }
+    else{
+      return true;
+    }
+    // console.log(this.dates[d.toLocaleDateString("he-IL")])
+    // return !this.dates[d.toLocaleDateString("he-IL")];
+  }
+
+  async getAllCloseDays(){
+    this.closeDays = await this.API.getAllCloseDays()
+  }
 
   ngOnInit() {
+    this.getAllCloseDays();
     this.API.getCustomerById(this.book.CustomerID).subscribe(res => {
       this.newStart = this.MinToTime(this.book.StartAt);
       this.newEnd = this.MinToTime(this.book.StartAt + this.book.Durtion);
@@ -64,6 +91,7 @@ export class ChangeBookComponent implements OnInit {
    * 
    */
   UpdateBook(book: Book) {
+    book.StartDate = this.finishStartDate;
     this.API.UpdateBook(book).subscribe(res => {
       if (res.Result) {
         this.openDialog({ message: this.localRes.SuccessApp, type: typeMessage.Success }, 3000);
@@ -133,6 +161,7 @@ export class ChangeBookComponent implements OnInit {
     this.finishStartDate = this.clearTime(this.finishStartDate);
     this.finishStartDate = addMinutes(this.finishStartDate, 0);
     this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
+    this.book.StartDate = this.finishStartDate.toISOString();
     console.log(this.finishStartDate.getFullYear() + "-" + (this.finishStartDate.getMonth() + 1) + "-" + this.finishStartDate.getDate());
     this.Time$ = this.API.getTimeByDate(this.finishStartDate.getFullYear() + "-" + (this.finishStartDate.getMonth() + 1) + "-" + this.finishStartDate.getDate());
 
