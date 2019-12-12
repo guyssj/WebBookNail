@@ -355,7 +355,6 @@ export class CalendarViewComponent implements OnInit {
     {
       label: '<i class="far fa-edit"></i>',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        debugger;
         this.BookEditing = this.convertEventToBook(event);
         this.hidetheSer = true;
         this.dialog.open(DialogComponent,{

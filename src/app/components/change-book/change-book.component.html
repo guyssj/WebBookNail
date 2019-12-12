@@ -14,7 +14,13 @@
         <input matInput placeholder="{{localRes?.TimeBook}}" [(ngModel)]="newStart" readonly>
     </mat-form-field>
     <mat-form-field class="col-md-6">
-        <input matInput [min]="dateNow" [(ngModel)]="book.StartDate" (dateChange)="dateChange($event)" [max]="maxDate" [matDatepicker]="picker"
+        <input matInput 
+            [min]="calendarPickerMinDate" 
+            [(ngModel)]="book.StartDate"
+            [matDatepickerFilter]="FilterWeekend"
+            (dateChange)="dateChange($event)" 
+            [max]="maxDate" 
+            [matDatepicker]="picker"
             placeholder="{{localRes?.selectedDate}}">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker touchUi #picker></mat-datepicker>

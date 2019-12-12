@@ -25,7 +25,6 @@ export class SearchBookComponent implements OnInit {
   }
 
   SearchByPhone(phone:string){
-    debugger;
     this.API.GetCustomerByPhone(phone).subscribe(res => {
       this.API.GetBookByCustomer(res.Result).subscribe(book =>{
         if(book.Result.BookID > 0){

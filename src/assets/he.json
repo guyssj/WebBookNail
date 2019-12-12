@@ -1,7 +1,7 @@
 {
     "homepage":"דף הבית",
     "services":"שירותים",
-    "clickBook":"לחצ/י כאן כדאי להזמין",
+    "clickBook":"לחצ/י כאן לקביעת תור",
     "BookNow":"הזמנ/י עכשיו תור דרך האתר",
     "WorkingHours":"שעות פעילות",
     "CallNow":"התקשר/י עכשיו",
@@ -13,13 +13,13 @@
     "Time":"שעה",
     "FirstName":"שם פרטי",
     "LastName":"שם משפחה",
-    "PhoneNumber":"מספר פלאפון",
-    "selectedDate":"בחרי תאריך",
-    "selectedTime":"בחרי שעה",
-    "selectedService":"בחרי טיפול",
-    "selectedType":"בחרי סוג הטיפול",
-    "BookSet":"קבעי את הטיפול",
-    "Cancel":"בטלי",
+    "PhoneNumber":"מספר נייד",
+    "selectedDate":"בחר/י תאריך",
+    "selectedTime":"בחר/י שעה",
+    "selectedService":"בחר/י טיפול",
+    "selectedType":"בחר/י סוג הטיפול",
+    "BookSet":"קבע/י את הטיפול",
+    "Cancel":"בטל/י",
     "userName":"שם משתמש",
     "password":"סיסמא",
     "signIn":"התחברי",
@@ -57,6 +57,11 @@
     "Duration":"משך התור",
     "ServiceTypeName":"שם סוג הטיפול",
     "SendMessage":"שלח/י הודעה",
-    "TimeBook":"שעת פגישה מקורית"
+    "TimeBook":"שעת פגישה מקורית",
+    "ValidationPhone":"מספר נייד הוא שדה חובה",
+    "ValidationFirstName":"שם פרטי הוא שדה חובה",
+    "ValidationLastName":"שם משפחה הוא שדה חובה",
+    "ValidationDate":"תאריך הוא שדה חובה"
+
 
 }

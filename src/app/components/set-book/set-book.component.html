@@ -7,12 +7,12 @@
           <mat-form-field class="col-md-6">
             <input matInput placeholder="{{localRes?.FirstName}}"
               formControlName="firstName" required>
-            <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
+            <mat-error *ngIf="reactiveForm.invalid"> {{localRes?.ValidationFirstName}}</mat-error>
           </mat-form-field>
           <mat-form-field class="col-md-6">
             <input matInput placeholder="{{localRes?.LastName}}"
               formControlName="lastName" required>
-            <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
+            <mat-error *ngIf="reactiveForm.invalid"> {{localRes?.ValidationLastName}}</mat-error>
           </mat-form-field>
         </div>
 
@@ -21,7 +21,7 @@
           <mat-form-field class="col-md-6">
             <input matInput type="tel" placeholder="{{localRes?.PhoneNumber}}"
               formControlName="phoneNumber" required>
-            <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
+            <mat-error *ngIf="reactiveForm.invalid">{{localRes?.ValidationPhone}}</mat-error>
           </mat-form-field>
           <mat-form-field class="col-md-6">
               <input (click)="picker.open()"
@@ -30,7 +30,7 @@
                 [matDatepickerFilter]="FilterWeekend"
                 readonly
                 required
-                [min]="dateNow"
+                [min]="calendarPickerMinDate"
                 formControlName="date"
                 [max]="maxDate"
                 (dateChange)="dateChange($event)"
@@ -38,7 +38,7 @@
                 placeholder="{{localRes?.selectedDate}}">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker touchUi disabled="false" #picker></mat-datepicker>
-              <mat-error *ngIf="reactiveForm.invalid"> נא למלא</mat-error>
+              <mat-error *ngIf="reactiveForm.invalid"> {{localRes?.ValidationDate}}</mat-error>
             </mat-form-field>
         </div>
       </div>
@@ -50,6 +50,7 @@
           bindLabel="timeSlot"
           clearAllText="Clear"
           autofocus 
+          [notFoundText]="'לא נמצא זמן פנוי'"
           [searchable]="false"
           formControlName="timeSlot"
           bindValue="timeSlot"
