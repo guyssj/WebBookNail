@@ -29,6 +29,7 @@
 <div class="row">
     <div class="col-md-6">
         <ng-select dir="rtl"
+        #select
         [items]="Time$ | async" 
         bindLabel="timeSlot"
         clearAllText="Clear"
@@ -37,8 +38,9 @@
         bindValue="id"
         [(ngModel)]="book.StartAt"
         placeholder="{{localRes?.selectedTime}}"
-        (change)="onTimeChange($event)">
+        (change)="onTimeChange($event,select)">
         </ng-select>
+        <mat-error *ngIf="notEnoughtime">{{localRes?.notEnoughtime}}</mat-error>
       </div>
 
 </div>

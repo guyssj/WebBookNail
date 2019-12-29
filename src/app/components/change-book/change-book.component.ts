@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Inject, Input, Output, EventEmitter, ViewChild } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDatepickerInputEvent, MatDialog } from '@angular/material';
 import { MessageConfig, typeMessage } from '../MessageConfig';
 import { Book } from 'src/app/classes/Book';
@@ -13,9 +13,11 @@ import { ServiceTypes } from 'src/app/classes/servicetypes';
 import { DialogContentExampleDialog } from '../set-book/set-book.component';
 import { take } from 'rxjs/operators';
 import { CloseDays } from 'src/app/classes/CloseDays';
+import { NgSelectComponent } from '@ng-select/ng-select';
+import { WorkingHours } from 'src/app/classes/workinghours';
 
 
-declare var $: any 
+declare var $: any
 @Component({
   selector: 'app-change-book',
   templateUrl: './change-book.component.html',
@@ -23,17 +25,19 @@ declare var $: any
 })
 export class ChangeBookComponent implements OnInit {
   @Input() book: Book;
+  @ViewChild('select', { static: false }) public ngSelect: NgSelectComponent;
+
   @Input() localRes: any;
   customer: Customer = {
     FirstName: '',
     LastName: '',
     PhoneNumber: '',
-    Notes:''
+    Notes: ''
   };
 
   @Output() Clear = new EventEmitter<boolean>();
   dateNow: Date = new Date(Date.now());
-  calendarPickerMinDate: Date = addDays(this.dateNow,2)
+  calendarPickerMinDate: Date = addDays(this.dateNow, 2)
   maxDate: Date = addDays(this.dateNow, 30);
   newStart: string;
   newEnd: string;
@@ -41,38 +45,53 @@ export class ChangeBookComponent implements OnInit {
   finishStartDate: Date;
   TimeSlotSelected: TimeSlots;
   ServiceSelected: Services;
+  LockHour: any;
+  WorkDay: WorkingHours;
   ServcieTypeSelected: ServiceTypes;
+  ServiceTypes: ServiceTypes[] = [];
+  notEnoughtime: boolean = false;
   editMode: boolean = false;
   constructor(private API: ApiServiceService, private dialog: MatDialog) {
 
   }
-  closeDays:CloseDays[] =[];
+  closeDays: CloseDays[] = [];
   FilterWeekend = (d: Date): boolean => {
     let days
-    if(d.getDate() < 10){
-      days = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+"0"+d.getDate()
+    if (d.getDate() < 10) {
+      days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + "0" + d.getDate()
     }
-    else{
-      days = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()
+    else {
+      days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
     }
     const sat = d.getDay();
-    let DaytoClose = this.closeDays.filter(date=> date.Date == days)
-    if(DaytoClose.length > 0 || sat == 6){
+    let DaytoClose = this.closeDays.filter(date => date.Date == days)
+    if (DaytoClose.length > 0 || sat == 6) {
       return false;
     }
-    else{
+    else {
       return true;
     }
     // console.log(this.dates[d.toLocaleDateString("he-IL")])
     // return !this.dates[d.toLocaleDateString("he-IL")];
   }
 
-  async getAllCloseDays(){
+  async getAllCloseDays() {
     this.closeDays = await this.API.getAllCloseDays()
+  }
+  async getWorkHoursByDay(day) {
+    this.WorkDay = await this.API.getWorkHoursByDay(day);
+  }
+
+  async getLockHoursByDate(date) {
+    this.LockHour = await this.API.getLockHoursByDate(date);
   }
 
   ngOnInit() {
     this.getAllCloseDays();
+    if (!this.finishStartDate)
+      this.finishStartDate = new Date(this.book.StartDate);
+    this.getWorkHoursByDay(this.finishStartDate.getDay());
+    this.getLockHoursByDate(this.finishStartDate.getFullYear() + "-" + (this.finishStartDate.getMonth() + 1) + "-" + this.finishStartDate.getDate());
     this.API.getCustomerById(this.book.CustomerID).subscribe(res => {
       this.newStart = this.MinToTime(this.book.StartAt);
       this.newEnd = this.MinToTime(this.book.StartAt + this.book.Durtion);
@@ -98,7 +117,7 @@ export class ChangeBookComponent implements OnInit {
         this.Clear.emit(true);
         $(function () {
           $('#SerachModal').modal('toggle');
-          $('#SerachModal').modal('hide');       
+          $('#SerachModal').modal('hide');
         })
       } else {
         this.openDialog({ message: this.localRes.notEnoughtime, type: typeMessage.Error }, 3000)
@@ -143,12 +162,55 @@ export class ChangeBookComponent implements OnInit {
    * Save the time when selected in minutes
    * @param event TimeSlots
    */
-  onTimeChange(event: TimeSlots) {
-    if (event) {
+  onTimeChange(event: TimeSlots, select: NgSelectComponent) {
+
+    if (!event) {
+      return;
+    }
+    else {
       this.book.StartAt = event.id;
       this.editMode = true;
+      //this.ServcieTypeSelected = event;
+      //in this request from server to check all time exist in date choosed
+
+      this.API.TimeExist(this.finishStartDate.getFullYear() + "-" + (this.finishStartDate.getMonth() + 1) + "-" + this.finishStartDate.getDate()).subscribe(arry => {
+        var timeTotal = this.book.StartAt + this.book.Durtion
+
+        this.notEnoughtime = false;
+        for (let i = this.book.StartAt; i < timeTotal; i++) {
+          for (let j = 0; j < arry.Result.length - 1; j++) {
+            if (arry.Result[j] == i) {
+              this.notEnoughtime = true;
+              this.book.StartAt = null;
+              this.editMode = false;
+              select.clearModel();
+              break;
+
+            }
+          }
+        }
+
+        //Check if Lock time is end of close time
+        if (this.WorkDay.CloseTime < this.LockHour) {
+          this.notEnoughtime = true;
+          //this.reactiveForm.value.ServcieType = null;
+          this.ServcieTypeSelected = null;
+          select.clearModel();
+          return;
+        }
+
+        //check if close time + 120 bigger from time total of app
+        else if (this.WorkDay.CloseTime + 120 < timeTotal) {
+          this.notEnoughtime = true;
+          //this.reactiveForm.value.ServcieType = null;
+          //this.ServcieTypeSelected = null;
+          select.clearModel();
+          return;
+        }
+      })
     }
   }
+
 
   /**
    * 
@@ -162,8 +224,9 @@ export class ChangeBookComponent implements OnInit {
     this.finishStartDate = addMinutes(this.finishStartDate, 0);
     this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
     this.book.StartDate = this.finishStartDate.toISOString();
-    console.log(this.finishStartDate.getFullYear() + "-" + (this.finishStartDate.getMonth() + 1) + "-" + this.finishStartDate.getDate());
     this.Time$ = this.API.getTimeByDate(this.finishStartDate.getFullYear() + "-" + (this.finishStartDate.getMonth() + 1) + "-" + this.finishStartDate.getDate());
+    this.getWorkHoursByDay(this.finishStartDate.getDay());
+    this.getLockHoursByDate(this.finishStartDate.getFullYear() + "-" + (this.finishStartDate.getMonth() + 1) + "-" + this.finishStartDate.getDate());
 
   }
   /**
