@@ -209,7 +209,7 @@ export class SetBookComponent implements OnInit {
       }
 
       //Check if Lock time is end of close time
-      if(this.WorkDay.CloseTime < this.LockHour){
+      if(this.WorkDay.CloseTime <= this.LockHour){
         this.notEnoughtime = true;
         this.reactiveForm.value.ServcieType = null;
         this.ServcieTypeSelected = null;
