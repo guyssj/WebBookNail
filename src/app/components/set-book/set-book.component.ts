@@ -61,8 +61,8 @@ export class SetBookComponent implements OnInit {
   closeDays:CloseDays[] =[];
   FilterWeekend = (d: Date): boolean => {
     let days
-    if(d.getDate() < 10){
-      days = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+"0"+d.getDate()
+    if(d.getDate() < 10 && d.getMonth()+1 < 10 ){
+      days = d.getFullYear()+"-"+"0"+(d.getMonth()+1)+"-"+"0"+d.getDate()
     }
     else{
       days = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()

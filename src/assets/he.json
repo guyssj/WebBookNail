@@ -61,7 +61,10 @@
     "ValidationPhone":"מספר נייד הוא שדה חובה",
     "ValidationFirstName":"שם פרטי הוא שדה חובה",
     "ValidationLastName":"שם משפחה הוא שדה חובה",
-    "ValidationDate":"תאריך הוא שדה חובה"
+    "ValidationDate":"תאריך הוא שדה חובה",
+    "Notes":"הערות",
+    "NotesLock":"סיבת נעילה",
+    "Date":"תאריך"
 
 
 }

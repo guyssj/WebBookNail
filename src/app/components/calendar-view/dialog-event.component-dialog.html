@@ -3,23 +3,70 @@
     <div class="line" style="display: flex;"></div>
 
 </div>
-
-<mat-dialog-content class="mat-typography">
-    <div style="display: inline-block; padding: 22px;">
+<mat-dialog-content *ngIf="data.event.LockSlot" class="mat-typography">
+    <div
+        class="detailsEvent">
         <div class="form-row">
-            <mat-form-field class="col-md-12">
-                <input matInput placeholder="{{data.localRes?.CustomerAndService}}" [(ngModel)]="data.event.title" disabled>
-            </mat-form-field>
-            <mat-form-field class="col-md-6">
-                <input matInput placeholder="{{data.localRes?.endTime}}" [(ngModel)]="newEnd" disabled>
-            </mat-form-field>
-            <mat-form-field class="col-md-6">
-                <input matInput placeholder="{{data.localRes?.startTime}}" [(ngModel)]="newStart" disabled>
-            </mat-form-field>
+            <div class="col-md-12">
+                <strong><label>{{data.localRes?.CustomerAndService}}:</label></strong>
+                <label>{{data.event.title}}</label>
+            </div>
+            <div class="col-auto">
+                <i class="far fa-clock"></i>
+            </div>
+            <div class="col-md-11">
+                <strong>
+                    <label>{{data.localRes?.Time}}:</label></strong> 
+                    <label>{{data.event.meta.StartAt | minToTime}} - {{newEnd | minToTime}}</label>
+            </div>
+            <div class="col-md-12" *ngIf="data.event.LockSlot.Notes">
+                <strong> <label>{{data.localRes?.NotesLock}}:</label></strong> <label>{{data.event.LockSlot.Notes}}</label>
+            </div>
 
         </div>
     </div>
 </mat-dialog-content>
+<mat-dialog-content *ngIf="data.event.meta" class="mat-typography">
+    <div
+        class="detailsEvent">
+        <div class="form-row">
+            <div class="col-auto">
+                <i class="far fa-user"></i>
+            </div>
+            <div class="col-md-11">
+                 <strong><label>{{data.localRes?.CustomerAndService}}:</label></strong>
+                <label>{{data.event.title}}</label>
+            </div>
+            <div class="col-auto">
+                <i class="far fa-clock"></i>
+            </div>
+            <div class="col-md-11">
+                <strong>
+                    <label>{{data.localRes?.Time}}:</label>
+                </strong> 
+                <label>{{data.event.meta.StartAt | minToTime}} - {{newEnd | minToTime}}</label>
+            </div>
+            <div class="col-auto">
+                <i class="far fa-calendar-alt"></i>
+            </div>
+            <div class="col-md-11">
+                <strong>
+                    <label>{{data.localRes?.Date}}:</label>
+                </strong> 
+                <label>{{data.event.meta.StartDate | date:"dd/MM/yyyy"}}</label>
+            </div>
+        </div>
+    </div>
+</mat-dialog-content>
 <mat-dialog-actions align="end">
-    <button mat-button (click)="deleteEvent($event)"  cdkFocusInitial class="btn pink" > מחק </button>
+    <button mat-stroked-buttonn (click)="deleteEvent()" cdkFocusInitial class="btn pink"> 
+        מחק 
+        <i class="far fa-calendar-alt"></i>
+
+    </button>
+    <button mat-stroked-button (click)="editEvent()" cdkFocusInitial color="accent">     
+        עדכן 
+        <i class="far fa-calendar-alt"></i>
+
+    </button>
 </mat-dialog-actions>

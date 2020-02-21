@@ -13,6 +13,8 @@ import { addMinutes } from 'date-fns';
 import { environment } from 'src/environments/environment';
 import { CloseDays } from '../classes/CloseDays';
 import { WorkingHours } from '../classes/workinghours';
+import { LockHours } from '../classes/LockHours';
+
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +55,11 @@ export class ApiServiceService {
   async GetAllCustomers() {
     let customers = await this.http.get<resultsAPI<Customer[]>>(`${environment.apiUrl}admin/GetAllCustomers`, { withCredentials: true }).toPromise();
     return customers.Result;
+  }
+
+  async getAllLockHours(){
+    let LockHours = await this.http.get<resultsAPI<LockHours[]>>(`${environment.apiUrl}admin/GetAllLockHours`).toPromise();
+    return LockHours.Result;
   }
 
 
