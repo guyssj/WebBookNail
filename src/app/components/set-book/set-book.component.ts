@@ -42,7 +42,7 @@ export class SetBookComponent implements OnInit {
   ServicesTypes$: ServiceTypes[];
   dateNow: Date = new Date(Date.now());
   calendarPickerMinDate: Date = addDays(this.dateNow,2);
-  maxDate: Date = addDays(this.dateNow, 90);
+  maxDate: Date = addDays(this.dateNow, 120);
   formBuilder: any;
   finishStartDate: Date;
   Books: Book;
@@ -60,15 +60,20 @@ export class SetBookComponent implements OnInit {
   });
   closeDays:CloseDays[] =[];
   FilterWeekend = (d: Date): boolean => {
-    let days
+    let days;
     if(d.getDate() < 10 && d.getMonth()+1 < 10 ){
       days = d.getFullYear()+"-"+"0"+(d.getMonth()+1)+"-"+"0"+d.getDate()
     }
+    else if (d.getMonth()+1 < 10 && d.getDate() > 9 ){
+      days = d.getFullYear()+"-"+"0"+(d.getMonth()+1)+"-"+d.getDate()
+    }
     else{
       days = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate()
+
     }
     const sat = d.getDay();
-    let DaytoClose = this.closeDays.filter(date=> date.Date == days)
+    let DaytoClose = this.closeDays.filter(date=> date.Date == days);
+    debugger;
     if(DaytoClose.length > 0 || sat == 6){
       return false;
     }

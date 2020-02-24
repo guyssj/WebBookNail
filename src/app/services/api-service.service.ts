@@ -64,7 +64,7 @@ export class ApiServiceService {
 
 
   async getAllCloseDays() {
-    let CloseDays = await this.http.get<resultsAPI<CloseDays[]>>(`${environment.apiUrl}api/GetDateClosed`).toPromise();
+    let CloseDays = await this.http.get<resultsAPI<CloseDays[]>>(`${environment.apiUrl}api/GetHolidayClosed`).toPromise();
     return CloseDays.Result;
   }
 

@@ -38,7 +38,7 @@ export class ChangeBookComponent implements OnInit {
   @Output() Clear = new EventEmitter<boolean>();
   dateNow: Date = new Date(Date.now());
   calendarPickerMinDate: Date = addDays(this.dateNow, 2)
-  maxDate: Date = addDays(this.dateNow, 30);
+  maxDate: Date = addDays(this.dateNow, 120);
   newStart: string;
   newEnd: string;
   Time$: Observable<TimeSlots[]>;
@@ -46,6 +46,7 @@ export class ChangeBookComponent implements OnInit {
   TimeSlotSelected: TimeSlots;
   ServiceSelected: Services;
   LockHour: any;
+  loader:boolean = true;
   WorkDay: WorkingHours;
   ServcieTypeSelected: ServiceTypes;
   ServiceTypes: ServiceTypes[] = [];
@@ -56,19 +57,24 @@ export class ChangeBookComponent implements OnInit {
   }
   closeDays: CloseDays[] = [];
   FilterWeekend = (d: Date): boolean => {
-    let days
-    if (d.getDate() < 10) {
-      days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + "0" + d.getDate()
+    let days;
+    if(d.getDate() < 10 && d.getMonth()+1 < 10 ){
+      days = d.getFullYear()+"-"+"0"+(d.getMonth()+1)+"-"+"0"+d.getDate();
     }
-    else {
-      days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
+    else if (d.getMonth()+1 < 10 && d.getDate() > 9 ){
+      days = d.getFullYear()+"-"+"0"+(d.getMonth()+1)+"-"+d.getDate();
+    }
+    else{
+      days = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
+
     }
     const sat = d.getDay();
-    let DaytoClose = this.closeDays.filter(date => date.Date == days)
-    if (DaytoClose.length > 0 || sat == 6) {
+    let DaytoClose = this.closeDays.filter(date=> date.Date == days);
+    debugger;
+    if(DaytoClose.length > 0 || sat == 6){
       return false;
     }
-    else {
+    else{
       return true;
     }
     // console.log(this.dates[d.toLocaleDateString("he-IL")])
@@ -96,10 +102,11 @@ export class ChangeBookComponent implements OnInit {
       this.newStart = this.MinToTime(this.book.StartAt);
       this.newEnd = this.MinToTime(this.book.StartAt + this.book.Durtion);
       this.customer = res.Result;
+      this.loader = false;
     })
     this.Time$ = this.API.getTimeByDate(this.book.StartDate);
 
-
+    
   }
 
 

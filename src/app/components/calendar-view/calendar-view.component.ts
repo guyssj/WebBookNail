@@ -34,6 +34,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { CEvent } from 'src/app/classes/CEvent';
 import { LockHours } from 'src/app/classes/LockHours';
 import { ActionType } from 'src/app/classes/ActionType';
+import { CloseDays } from 'src/app/classes/CloseDays';
 
 const timezoneOffset = new Date().getTimezoneOffset();
 const hoursOffset = String(Math.floor(Math.abs(timezoneOffset / 60))).padStart(
@@ -108,6 +109,7 @@ export class CalendarViewComponent implements OnInit {
   maxDate: Date = addDays(this.dateNow, 30);
   refresh: Subject<any> = new Subject();
   localRes: any;
+  CloseDays: CloseDays[] = [];
   locale: string = 'he';
   @Input() UserGoogle: any;
   BookEditing: Book = new Book();
@@ -138,6 +140,9 @@ export class CalendarViewComponent implements OnInit {
   async getAllLockHours() {
     this.lockHours = await this.API.getAllLockHours();
   }
+  async getAllCloseDays() {
+    this.CloseDays = await this.API.getAllCloseDays();
+  }
 
   convertEventToBook(Event: CalendarEvent<Book>): Book {
     let book: Book = {
@@ -161,6 +166,7 @@ export class CalendarViewComponent implements OnInit {
       this.getAllCustomers();
       this.getAllServiceTypes();
       this.getAllLockHours();
+      this.getAllCloseDays();
       this.Books = allbook.Result;
       timer(3000, 1000).pipe(
         take(1)).subscribe(x => {
@@ -173,13 +179,14 @@ export class CalendarViewComponent implements OnInit {
   }
 
   clickEvent(Event) {
-    console.log(Event.event);
     var dialogsData: DialogData = {
       event: Event.event,
       localRes: this.localRes
     }
 
-    this.openDialog(dialogsData);
+    if (Event.event.meta || Event.event.LockSlot) {
+      this.openDialog(dialogsData);
+    }
   }
 
   /**
@@ -201,7 +208,7 @@ export class CalendarViewComponent implements OnInit {
         start: Start,
         end: End,
         serviceType: FilterServiceType,
-        customer:cus,
+        customer: cus,
         meta: books[i],
         actions: this.actions,
         draggable: false,
@@ -225,13 +232,38 @@ export class CalendarViewComponent implements OnInit {
       let Start = addMinutes(this.lockHours[i].StartDate, this.lockHours[i].StartAt);
       let End = addMinutes(this.lockHours[i].StartDate, this.lockHours[i].EndAt);
       const event: CEvent<Customer> = {
-        //title:`זמן נעול - ${this.lockHours[i].Notes}`,
         title: 'זמן נעול',
         start: Start,
         end: End,
         allDay: false,
         customer: cus,
-        LockSlot: this.lockHours[i]
+        LockSlot: this.lockHours[i],
+        color: {
+          primary: cus.Color,
+          secondary: cus.Color
+        }
+
+      }
+      this.events2.push(event);
+
+    }
+
+    //Add close day and holiday to calendar
+    for (let i = 0; i < this.CloseDays.length; i++) {
+      let cus = this.Customers.find(cus => cus.PhoneNumber == "0525533979")
+      let Start = addMinutes(this.CloseDays[i].Date, 0);
+      let End = addMinutes(this.CloseDays[i].Date, 1439);
+      const event: CEvent<boolean> = {
+        title: 'זמן נעול ' + this.CloseDays[i].Notes,
+        start: Start,
+        end: End,
+        allDay: false,
+        customer: cus,
+        meta: false,
+        color: {
+          primary: cus.Color,
+          secondary: cus.Color
+        }
 
       }
       this.events2.push(event);
@@ -432,8 +464,9 @@ export class DialogForClickEvent {
   newEvents: CalendarEvent[] = [];
   constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, public dialogRef: MatDialogRef<DialogForClickEvent>) {
     this.newStart = data.event.start.toLocaleTimeString();
-    this.newEnd = data.event.meta.StartAt + data.event.meta.Durtion;
-
+    if (data.event.meta) {
+      this.newEnd = data.event.meta.StartAt + data.event.meta.Durtion;
+    }
   }
 
   deleteEvent() {

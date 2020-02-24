@@ -63,6 +63,7 @@
     "ValidationLastName":"שם משפחה הוא שדה חובה",
     "ValidationDate":"תאריך הוא שדה חובה",
     "Notes":"הערות",
+    "NotesCustomer":"הערות ללקוח",
     "NotesLock":"סיבת נעילה",
     "Date":"תאריך"
 
