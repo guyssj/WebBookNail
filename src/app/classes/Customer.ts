@@ -1,7 +1,8 @@
 export interface Customer{
-    CustomerID?:number,
-    FirstName:string,
-    LastName:string,
-    PhoneNumber:string,
-    Notes?:string
+    CustomerID?:number;
+    FirstName:string;
+    LastName:string;
+    PhoneNumber:string;
+    Color?:string;
+    Notes?:string;
 }

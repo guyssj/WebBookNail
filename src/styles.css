@@ -4,6 +4,7 @@
 @import "~@ng-select/ng-select/themes/material.theme.css";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import url('https://fonts.googleapis.com/css?family=Varela+Round&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Rubik&display=swap');
 
 div{
     text-align: right;

@@ -13,6 +13,8 @@ import { addMinutes } from 'date-fns';
 import { environment } from 'src/environments/environment';
 import { CloseDays } from '../classes/CloseDays';
 import { WorkingHours } from '../classes/workinghours';
+import { LockHours } from '../classes/LockHours';
+
 
 @Injectable({
   providedIn: 'root'
@@ -55,9 +57,14 @@ export class ApiServiceService {
     return customers.Result;
   }
 
+  async getAllLockHours(){
+    let LockHours = await this.http.get<resultsAPI<LockHours[]>>(`${environment.apiUrl}admin/GetAllLockHours`).toPromise();
+    return LockHours.Result;
+  }
+
 
   async getAllCloseDays() {
-    let CloseDays = await this.http.get<resultsAPI<CloseDays[]>>(`${environment.apiUrl}api/GetDateClosed`).toPromise();
+    let CloseDays = await this.http.get<resultsAPI<CloseDays[]>>(`${environment.apiUrl}api/GetHolidayClosed`).toPromise();
     return CloseDays.Result;
   }
 

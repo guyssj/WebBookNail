@@ -31,6 +31,10 @@ import { ServiceTypes } from 'src/app/classes/servicetypes';
 import { MessageConfig, typeMessage } from '../MessageConfig';
 import { AuthTokenService } from 'src/app/services/auth-token.service';
 import { DialogComponent } from '../dialog/dialog.component';
+import { CEvent } from 'src/app/classes/CEvent';
+import { LockHours } from 'src/app/classes/LockHours';
+import { ActionType } from 'src/app/classes/ActionType';
+import { CloseDays } from 'src/app/classes/CloseDays';
 
 const timezoneOffset = new Date().getTimezoneOffset();
 const hoursOffset = String(Math.floor(Math.abs(timezoneOffset / 60))).padStart(
@@ -66,9 +70,9 @@ function getCookie(cname) {
 }
 
 export interface DialogData {
-  event: CalendarEvent,
-  events: CalendarEvent[],
-  localRes:any
+  event: CEvent,
+  Type?: ActionType,
+  localRes: any
 }
 
 @Component({
@@ -86,9 +90,9 @@ export class CalendarViewComponent implements OnInit {
     private router: Router,
     public dialog: MatDialog,
     public auth: AuthService,
-    public Localres: LocalresService,public AuthLogin:AuthTokenService) { 
-      this.AuthLogin.currentUser.subscribe(x => this.currentUser = x);
-    }
+    public Localres: LocalresService, public AuthLogin: AuthTokenService) {
+    this.AuthLogin.currentUser.subscribe(x => this.currentUser = x);
+  }
   events2: CalendarEvent[] = [];
   viewDate: Date = new Date();
   tokenCookie: string = "";
@@ -105,12 +109,15 @@ export class CalendarViewComponent implements OnInit {
   maxDate: Date = addDays(this.dateNow, 30);
   refresh: Subject<any> = new Subject();
   localRes: any;
+  CloseDays: CloseDays[] = [];
   locale: string = 'he';
   @Input() UserGoogle: any;
   BookEditing: Book = new Book();
+  lockHours: LockHours[] = [];
+
   hidetheSer: boolean = false;
   successEvents = [];
-  currentUser:any;
+  currentUser: any;
   ngOnInit() {
     this.auth.auth2().subscribe((res) => {
       this.UserGoogle = res;
@@ -128,6 +135,13 @@ export class CalendarViewComponent implements OnInit {
 
   async getAllServiceTypes() {
     this.ServiceTypes = await this.API.getAllServiceTypes();
+  }
+
+  async getAllLockHours() {
+    this.lockHours = await this.API.getAllLockHours();
+  }
+  async getAllCloseDays() {
+    this.CloseDays = await this.API.getAllCloseDays();
   }
 
   convertEventToBook(Event: CalendarEvent<Book>): Book {
@@ -151,26 +165,28 @@ export class CalendarViewComponent implements OnInit {
     this.API.getBooks().subscribe(allbook => {
       this.getAllCustomers();
       this.getAllServiceTypes();
+      this.getAllLockHours();
+      this.getAllCloseDays();
       this.Books = allbook.Result;
       timer(3000, 1000).pipe(
         take(1)).subscribe(x => {
           this.getEvent(this.Books);
         })
       // window.history.replaceState({}, document.title, "/#/Admin/Calendar");
-    },error =>{
+    }, error => {
       this.router.navigate(['/Login']);
     })
   }
 
   clickEvent(Event) {
-    console.log(Event.event);
     var dialogsData: DialogData = {
       event: Event.event,
-      events: this.events2,
-      localRes:this.localRes
+      localRes: this.localRes
     }
 
-    this.openDialog(dialogsData);
+    if (Event.event.meta || Event.event.LockSlot) {
+      this.openDialog(dialogsData);
+    }
   }
 
   /**
@@ -186,24 +202,73 @@ export class CalendarViewComponent implements OnInit {
       let cus = this.Customers.find(cus => cus.CustomerID == books[i].CustomerID)
       let Start = addMinutes(books[i].StartDate, books[i].StartAt);
       let End = addMinutes(Start, books[i].Durtion);
-      const event: CalendarEvent<Book> = {
+      const event: CEvent<Book> = {
         id: books[i].BookID,
         title: cus.FirstName + ' ' + cus.LastName + ' - ' + FilterServiceType.ServiceTypeName,
         start: Start,
         end: End,
+        serviceType: FilterServiceType,
+        customer: cus,
         meta: books[i],
         actions: this.actions,
         draggable: false,
         resizable: {
           beforeStart: false,
           afterEnd: false
+        },
+        color: {
+          primary: cus.Color,
+          secondary: cus.Color
         }
+
       }
       this.events2.push(event);
       this.refresh.next();
 
 
     } //end of loop for
+    for (let i = 0; i < this.lockHours.length; i++) {
+      let cus = this.Customers.find(cus => cus.PhoneNumber == "0525533979")
+      let Start = addMinutes(this.lockHours[i].StartDate, this.lockHours[i].StartAt);
+      let End = addMinutes(this.lockHours[i].StartDate, this.lockHours[i].EndAt);
+      const event: CEvent<Customer> = {
+        title: 'זמן נעול',
+        start: Start,
+        end: End,
+        allDay: false,
+        customer: cus,
+        LockSlot: this.lockHours[i],
+        color: {
+          primary: cus.Color,
+          secondary: cus.Color
+        }
+
+      }
+      this.events2.push(event);
+
+    }
+
+    //Add close day and holiday to calendar
+    for (let i = 0; i < this.CloseDays.length; i++) {
+      let cus = this.Customers.find(cus => cus.PhoneNumber == "0525533979")
+      let Start = addMinutes(this.CloseDays[i].Date, 0);
+      let End = addMinutes(this.CloseDays[i].Date, 1439);
+      const event: CEvent<boolean> = {
+        title: 'זמן נעול ' + this.CloseDays[i].Notes,
+        start: Start,
+        end: End,
+        allDay: false,
+        customer: cus,
+        meta: false,
+        color: {
+          primary: cus.Color,
+          secondary: cus.Color
+        }
+
+      }
+      this.events2.push(event);
+
+    }
     this.loading2 = false;
   }
 
@@ -326,15 +391,25 @@ export class CalendarViewComponent implements OnInit {
   openDialog(dialogdata: DialogData): void {
 
     const dialogRef = this.dialog.open(DialogForClickEvent, {
+      height: 'auto',
+      width: '33%',
       data: dialogdata
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.events2 = result;
-        this.API.DeleteBook(dialogdata.event.id, this.tokenCookie).subscribe(data => {
-          console.log(data);
-        })
+        if (result.Type == ActionType.Delete) {
+          //this.events2 = result;
+          this.events2 = this.events2.filter(Cevent => Cevent !== result.event);
+          this.API.DeleteBook(result.event.id, this.tokenCookie).subscribe(data => {
+            console.log(data);
+          })
+        }
+        else if (result.Type == ActionType.Edit) {
+          this.dialog.open(DialogComponent, {
+            data: { localRes: this.localRes, book: result.event.meta }
+          });
+        }
       }
       this.refresh.next();
     });
@@ -357,8 +432,8 @@ export class CalendarViewComponent implements OnInit {
       onClick: ({ event }: { event: CalendarEvent }): void => {
         this.BookEditing = this.convertEventToBook(event);
         this.hidetheSer = true;
-        this.dialog.open(DialogComponent,{
-          data:{localRes:this.localRes,book:this.BookEditing}
+        this.dialog.open(DialogComponent, {
+          data: { localRes: this.localRes, book: this.BookEditing }
         });
       }
     },
@@ -379,6 +454,7 @@ export class CalendarViewComponent implements OnInit {
 @Component({
   selector: 'dialog-for-click-event',
   templateUrl: 'dialog-event.component-dialog.html',
+  styleUrls: ["./calendar-view.component.css"]
 })
 export class DialogForClickEvent {
   //get MessageResult() { return ; }
@@ -386,14 +462,22 @@ export class DialogForClickEvent {
   newEnd: string;
   localRes: any = {}
   newEvents: CalendarEvent[] = [];
-  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData,public dialogRef: MatDialogRef<DialogForClickEvent>) {
+  constructor(@Inject(MAT_DIALOG_DATA) public data: DialogData, public dialogRef: MatDialogRef<DialogForClickEvent>) {
     this.newStart = data.event.start.toLocaleTimeString();
-    this.newEnd = data.event.end.toLocaleTimeString();
+    if (data.event.meta) {
+      this.newEnd = data.event.meta.StartAt + data.event.meta.Durtion;
+    }
   }
 
-  deleteEvent(event) {
-    this.newEvents = this.data.events.filter(Ievent => Ievent !== this.data.event);
-    this.dialogRef.close(this.newEvents);
+  deleteEvent() {
+    //this.newEvents = this.data.events.filter(Ievent => Ievent !== this.data.event);
+    this.data.Type = ActionType.Delete;
+    this.dialogRef.close(this.data);
 
+  }
+
+  editEvent() {
+    this.data.Type = ActionType.Edit;
+    this.dialogRef.close(this.data);
   }
 }

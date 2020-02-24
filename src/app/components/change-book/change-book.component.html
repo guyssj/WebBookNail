@@ -1,50 +1,42 @@
-<div class="form-row">
-    <mat-form-field class="col-md-6">
-        <input matInput placeholder="{{localRes?.FirstName}}" [(ngModel)]="customer.FirstName" readonly>
-    </mat-form-field>
-    <mat-form-field class="col-md-6">
-        <input matInput placeholder="{{localRes?.LastName}}" [(ngModel)]="customer.LastName" readonly>
-    </mat-form-field>
-</div>
-<div class="row">
-    <mat-form-field class="col-md-6">
-        <input matInput placeholder="{{localRes?.PhoneNumber}}" [(ngModel)]="customer.PhoneNumber" readonly>
-    </mat-form-field>
-    <mat-form-field class="col-md-6">
-        <input matInput placeholder="{{localRes?.TimeBook}}" [(ngModel)]="newStart" readonly>
-    </mat-form-field>
-    <mat-form-field class="col-md-6">
-        <input matInput 
-            [min]="calendarPickerMinDate" 
-            [(ngModel)]="book.StartDate"
-            [matDatepickerFilter]="FilterWeekend"
-            (dateChange)="dateChange($event)" 
-            [max]="maxDate" 
-            [matDatepicker]="picker"
-            placeholder="{{localRes?.selectedDate}}">
-        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker touchUi #picker></mat-datepicker>
-    </mat-form-field>
-</div>
-<div class="row">
-    <div class="col-md-6">
-        <ng-select dir="rtl"
-        #select
-        [items]="Time$ | async" 
-        bindLabel="timeSlot"
-        clearAllText="Clear"
-        [searchable]="false"
-        autofocus 
-        bindValue="id"
-        [(ngModel)]="book.StartAt"
-        placeholder="{{localRes?.selectedTime}}"
-        (change)="onTimeChange($event,select)">
-        </ng-select>
-        <mat-error *ngIf="notEnoughtime">{{localRes?.notEnoughtime}}</mat-error>
-      </div>
+<mat-spinner style="margin: auto;" *ngIf="loader"></mat-spinner>
 
-</div>
+<div *ngIf="!loader">
+    <div class="form-row">
+        <mat-form-field class="col-md-6">
+            <input matInput placeholder="{{localRes?.FirstName}}" [(ngModel)]="customer.FirstName" readonly>
+        </mat-form-field>
+        <mat-form-field class="col-md-6">
+            <input matInput placeholder="{{localRes?.LastName}}" [(ngModel)]="customer.LastName" readonly>
+        </mat-form-field>
+    </div>
+    <div class="row">
+        <mat-form-field class="col-md-6">
+            <input matInput placeholder="{{localRes?.PhoneNumber}}" [(ngModel)]="customer.PhoneNumber" readonly>
+        </mat-form-field>
+        <mat-form-field class="col-md-6">
+            <input matInput placeholder="{{localRes?.TimeBook}}" [(ngModel)]="newStart" readonly>
+        </mat-form-field>
+        <mat-form-field class="col-md-6">
+            <input matInput [min]="calendarPickerMinDate" [(ngModel)]="book.StartDate"
+                [matDatepickerFilter]="FilterWeekend" (dateChange)="dateChange($event)" [max]="maxDate"
+                [matDatepicker]="picker" placeholder="{{localRes?.selectedDate}}">
+            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker touchUi #picker></mat-datepicker>
+        </mat-form-field>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <ng-select dir="rtl" #select [items]="Time$ | async" bindLabel="timeSlot" clearAllText="Clear"
+                [searchable]="false" autofocus bindValue="id" [(ngModel)]="book.StartAt"
+                placeholder="{{localRes?.selectedTime}}" (change)="onTimeChange($event,select)">
+            </ng-select>
+            <mat-error *ngIf="notEnoughtime">{{localRes?.notEnoughtime}}</mat-error>
+        </div>
 
-<div>
-    <button type="submit" (click)="UpdateBook(book)" [disabled]="!editMode" class="btn pink">{{localRes?.BookSet}}</button>
+    </div>
+
+    <div>
+        <button type="submit" (click)="UpdateBook(book)" [disabled]="!editMode"
+            class="btn pink">{{localRes?.BookSet}}</button>
+    </div>
 </div>

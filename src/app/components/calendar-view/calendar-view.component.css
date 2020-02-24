@@ -14,6 +14,14 @@
     font-family: 'Varela Round', sans-serif;
 
   }
+
+  .detailsEvent{
+    display: block; 
+    padding: 5px; 
+    direction: rtl;
+    font-family: 'Varela Round', sans-serif !important; 
+    font-size: 1rem;
+  }
   
   /* @media screen and (max-width: 1024px) {  Specific to this particular image 
     .bg {
@@ -33,6 +41,10 @@
 
   .card{
       background-color: rgba(225,255,255, 0.2)
+  }
+
+  .detailsEventText{
+    
   }
 
   .box{
