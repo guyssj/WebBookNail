@@ -6,7 +6,7 @@
       <!-- ################################################################################################ -->
       <article>
         <h1>{{localRes?.BookNow}}</h1>
-        <footer>
+        <footer role="contentinfo">
           <!-- Button trigger modal -->
           <a class="btn pink" data-toggle="modal" style="padding: 15px;" data-target=".bd-example-modal-lg"
             href="">{{localRes?.clickBook}}</a>
@@ -111,14 +111,14 @@
   </article>
 </div> -->
 <div class="wrapper row4">
-  <footer id="footer" class="hoc clear">
+  <footer role="doc-credits" id="footer" class="hoc clear">
       <div class="one_third float-left">
-          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1676.6424620671141!2d35.48589961714824!3d32.81121479656767!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151c3ece8a87ec4b%3A0x1aa67c5155f3911f!2z15TXktek158sINeQ16jXkdec!5e0!3m2!1siw!2sil!4v1571944050463!5m2!1siw!2sil" width="100%" height="100%" frameborder="0" style="border:0; width:46vw; height: 30vh;" allowfullscreen=""></iframe>
+          <iframe role="none" aria-labelledby="Google" title="Google Maps Frame" aria-label="Google Maps" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1676.6424620671141!2d35.48589961714824!3d32.81121479656767!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151c3ece8a87ec4b%3A0x1aa67c5155f3911f!2z15TXktek158sINeQ16jXkdec!5e0!3m2!1siw!2sil!4v1571944050463!5m2!1siw!2sil" width="100%" height="100%" frameborder="0" style="border:0; width:46vw; height: 30vh;" allowfullscreen=""></iframe>
       </div>
     <!-- ################################################################################################ -->
     <div class="one_third float-right">
       <h6 class="heading">{{localRes?.Contact}}</h6>
-      <ul class="nospace btmspace-30 linklist contact">
+      <ul role="listitem" class="nospace btmspace-30 linklist contact">
         <li>
           <i class="fa fa-map-marker"></i>
           <address>
@@ -132,12 +132,12 @@
       </ul>
       <ul class="faico clear">
         <li>
-          <a class="faicon-facebook" [href]="settings?.FacebookLink">
+          <a class="faicon-facebook" aria-label="Facebook Link" title="Facebook Link" [href]="settings?.FacebookLink">
             <i class="fab fa-facebook-f"></i>
           </a>
         </li>
         <li>
-            <a class="faicon-facebook" [href]="settings?.InstegramLink">
+            <a class="faicon-facebook" aria-label="Instgram Link" title="Instegram Link" [href]="settings?.InstegramLink">
                 <i class="fab fa-instagram"></i>
               </a>
           </li>

@@ -214,7 +214,7 @@ export class SetBookComponent implements OnInit {
       }
 
       //Check if Lock time is end of close time
-      if(this.WorkDay.CloseTime <= this.LockHour){
+      if(this.WorkDay.CloseTime <= this.LockHour && timeTotal > this.LockHour){
         this.notEnoughtime = true;
         this.reactiveForm.value.ServcieType = null;
         this.ServcieTypeSelected = null;
@@ -223,7 +223,7 @@ export class SetBookComponent implements OnInit {
       }
 
       //check if close time + 120 bigger from time total of app
-      else if(this.WorkDay.CloseTime+120 < timeTotal){
+      else if(this.WorkDay.CloseTime+60 < timeTotal){
         this.notEnoughtime = true;
         this.reactiveForm.value.ServcieType = null;
         this.ServcieTypeSelected = null;

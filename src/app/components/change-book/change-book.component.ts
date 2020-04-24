@@ -198,7 +198,7 @@ export class ChangeBookComponent implements OnInit {
         }
 
         //Check if Lock time is end of close time
-        if (this.WorkDay.CloseTime < this.LockHour) {
+        if(this.WorkDay.CloseTime <= this.LockHour && timeTotal > this.LockHour){
           this.notEnoughtime = true;
           //this.reactiveForm.value.ServcieType = null;
           this.ServcieTypeSelected = null;
