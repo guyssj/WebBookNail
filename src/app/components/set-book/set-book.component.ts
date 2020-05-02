@@ -18,6 +18,8 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { CloseDays } from 'src/app/classes/CloseDays';
 import { WorkingHours } from 'src/app/classes/workinghours';
+import { SettingsService } from 'src/app/services/settings.service';
+import { SettingsEnum } from 'src/app/classes/SettingsEnum';
 
 
 @Component({
@@ -46,6 +48,7 @@ export class SetBookComponent implements OnInit {
   formBuilder: any;
   finishStartDate: Date;
   Books: Book;
+  MinAfterClose:string;
   LockHour:any;
   WorkDay:WorkingHours;
   notEnoughtime:boolean = false;
@@ -73,7 +76,6 @@ export class SetBookComponent implements OnInit {
     }
     const sat = d.getDay();
     let DaytoClose = this.closeDays.filter(date=> date.Date == days);
-    debugger;
     if(DaytoClose.length > 0 || sat == 6){
       return false;
     }
@@ -87,10 +89,12 @@ export class SetBookComponent implements OnInit {
   constructor(private localres: LocalresService,
               private dialog: MatDialog, 
               private API: ApiServiceService, 
+              private settingsService:SettingsService,
               private adapter: DateAdapter<any>) { }
 
   ngOnInit() {
     this.getAllCloseDays();
+    this.getMinAfterClose()
     this.adapter.setLocale('he');
     this.Time$ = this.API.getAllTimes();
     this.Services$ = this.API.getAllServices();
@@ -106,6 +110,10 @@ export class SetBookComponent implements OnInit {
 
   async getLockHoursByDate(date){
     this.LockHour = await this.API.getLockHoursByDate(date);
+  }
+
+  async getMinAfterClose() { 
+    this.MinAfterClose = await this.settingsService.getSetting(SettingsEnum.MINAFTERWORK);
   }
 
   /**
@@ -223,7 +231,7 @@ export class SetBookComponent implements OnInit {
       }
 
       //check if close time + 120 bigger from time total of app
-      else if(this.WorkDay.CloseTime+60 < timeTotal){
+      else if(this.WorkDay.CloseTime+Number(this.MinAfterClose) < timeTotal){
         this.notEnoughtime = true;
         this.reactiveForm.value.ServcieType = null;
         this.ServcieTypeSelected = null;
