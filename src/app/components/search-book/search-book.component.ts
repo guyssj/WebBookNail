@@ -24,6 +24,7 @@ export class SearchBookComponent implements OnInit {
 
   }
 
+  //TODO:change for working only with ID!!!
   SearchByPhone(phone:string){
     this.API.GetCustomerByPhone(phone).subscribe(res => {
       this.API.GetBookByCustomer(res.Result).subscribe(book =>{
