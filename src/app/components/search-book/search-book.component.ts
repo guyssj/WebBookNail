@@ -29,15 +29,15 @@ export class SearchBookComponent implements OnInit {
     this.API.GetCustomerByPhone(phone).subscribe(res => {
       this.API.GetBookByCustomer(res.Result).subscribe(book =>{
         if(book.Result.BookID > 0){
-          this.reactiveForm = new FormGroup({
-            firstName: new FormControl(res.Result.FirstName, Validators.required),
-            lastName: new FormControl(res.Result.LastName, Validators.required),
-            phoneNumber: new FormControl(res.Result.PhoneNumber, Validators.required),
-            date: new FormControl(book.Result.StartDate, Validators.required),
-            timeSlot: new FormControl(null, Validators.required),
-            service: new FormControl(null, Validators.required),
-            ServcieType: new FormControl(null, Validators.required)
-          });
+          // this.reactiveForm = new FormGroup({
+          //   firstName: new FormControl(res.Result.FirstName, Validators.required),
+          //   lastName: new FormControl(res.Result.LastName, Validators.required),
+          //   phoneNumber: new FormControl(res.Result.PhoneNumber, Validators.required),
+          //   date: new FormControl(book.Result.StartDate, Validators.required),
+          //   timeSlot: new FormControl(null, Validators.required),
+          //   service: new FormControl(null, Validators.required),
+          //   ServcieType: new FormControl(null, Validators.required)
+          // });
           this.BookFounded.emit(book.Result);
         }
         else{

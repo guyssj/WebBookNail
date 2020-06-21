@@ -7,6 +7,8 @@ export interface CEvent<MetaType = any> {
     id?: string | number;
     start: Date;
     end?: Date;
+    startTime?: Date;
+    endTime?: Date;
     title: string;
     customer?:Customer;
     serviceType?:ServiceTypes,

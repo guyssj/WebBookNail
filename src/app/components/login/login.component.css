@@ -37,3 +37,13 @@ div.bg {
     background: linear-gradient(to right, rgba(255,255,255,1) 0%,rgba(255,255,255,0.96) 4%,rgba(201,109,159,0.5) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
     }
+
+    @media screen and (max-width: 768px) {
+      .box{
+        width: 100%;height: auto;
+        }
+        .card{
+          margin-top: 25%;
+          background-color: rgba(225,255,255, 0.2)
+        }
+      }

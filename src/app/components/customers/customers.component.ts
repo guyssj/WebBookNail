@@ -17,6 +17,7 @@ export class CustomersComponent implements OnInit {
   displayedColumns: string[] = ['firstname', 'lastname', 'phonenumber'];
   resultsLen:any;
   localRes:any;
+  loader:boolean = true;
   dataSource:MatTableDataSource<Customer>;
   ngOnInit() {
     this.getAllCustomers();
@@ -30,6 +31,7 @@ export class CustomersComponent implements OnInit {
     this.dataSource = new MatTableDataSource(this.Customers);
     this.resultsLen = this.Customers.length;
     this.dataSource.paginator = this.paginator;
+    this.loader = false;
   }
   applyFilter(filterValue: string) {
     this.dataSource.filter = filterValue.trim().toLowerCase();

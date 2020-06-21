@@ -1,20 +1,22 @@
-.table{
+table{
     direction: rtl;
     text-align: right !important;
+    width: 100%;
+
 }
-th.mat-header-cell{
+/* th.mat-header-cell{
     text-align: right !important;
 }
 .mat-header-cell{
     color:white !important;
     background-color: #C96D9F;
-}
+} */
 
 .mat-table{
     font-family: 'Varela Round', sans-serif;
 }
 
-table{
+/* table{
     border-collapse: collapse;
     border-radius: 10px;
     overflow: hidden;
@@ -26,8 +28,15 @@ th, td {
     vertical-align: middle !important;
   }
 
-  .mat-paginator{
-      background: transparent;
-      direction: ltr;
-      float: left;
+ */
+
+ .mat-paginator{
+    background: transparent;
+    float: left;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 67%;
+    padding: 20px;
   }

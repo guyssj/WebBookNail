@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { CloseDays } from '../classes/CloseDays';
 import { WorkingHours } from '../classes/workinghours';
 import { LockHours } from '../classes/LockHours';
+import { CEvent } from '../classes/CEvent';
 
 
 @Injectable({
@@ -27,7 +28,7 @@ export class ApiServiceService {
   }
 
   getBooks() {
-    return this.http.get<resultsAPI<Book[]>>(`${environment.apiUrl}admin/GetAllBook2`, { withCredentials: true });
+    return this.http.get<resultsAPI<CEvent<Book>[]>>(`${environment.apiUrl}admin/GetAllBook2`, { withCredentials: true });
   }
 
   getAllTimes(): Observable<TimeSlots[]> {
@@ -39,8 +40,8 @@ export class ApiServiceService {
   TimeExist(date): Observable<resultsAPI<any[]>> {
     return this.http.get<resultsAPI<any[]>>(`${environment.apiUrl}api/GetSlotsExist?Date=${date}`)
   }
-  getAllServices(): Observable<Services[]> {
-    return this.http.get<Services[]>(`${environment.apiUrl}api/GetAllServices`)
+  getAllServices(): Observable<resultsAPI<Services[]>> {
+    return this.http.get<resultsAPI<Services[]>>(`${environment.apiUrl}api/GetAllServices`)
   }
 
   getAllServicetypesByServiceID(id) {
@@ -58,7 +59,7 @@ export class ApiServiceService {
   }
 
   async getAllLockHours(){
-    let LockHours = await this.http.get<resultsAPI<LockHours[]>>(`${environment.apiUrl}admin/GetAllLockHours`).toPromise();
+    let LockHours = await this.http.get<resultsAPI<CEvent[]>>(`${environment.apiUrl}admin/GetAllLockHours`).toPromise();
     return LockHours.Result;
   }
 
@@ -80,8 +81,8 @@ export class ApiServiceService {
     return this.http.get<resultsAPI<Customer>>(`${environment.apiUrl}api/GetCustomerByPhone?PhoneNumber=${customerPhone}`);
   }
 
-  GetBookByCustomer(Customer: Customer) {
-    return this.http.get<resultsAPI<Book>>(`${environment.apiUrl}api/GetBookByCustomer?CustomerID=${Customer[0].CustomerID}`);
+  GetBookByCustomer(CustomerId) {
+    return this.http.get<resultsAPI<Book>>(`${environment.apiUrl}api/GetBookByCustomer?CustomerID=${CustomerId}`);
   }
 
   UpdateBook(Book: Book): Observable<resultsAPI<any>> {

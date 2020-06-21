@@ -28,7 +28,7 @@ export class ServicesComponent implements OnInit {
 
   async GetAllServices(){
     this.API.getAllServices().subscribe(data=>{
-      this.Services = data;
+      this.Services = data.Result;
       this.dataSource = new MatTableDataSource(this.Services);
       this.dataSource.paginator = this.paginator;
     })

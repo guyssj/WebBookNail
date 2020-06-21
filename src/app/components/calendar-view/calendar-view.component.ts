@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject, Input } from "@angular/core";
 import * as $ from "jquery";
-import "fullcalendar";
 import { Book } from "../../classes/Book";
 import { ApiServiceService } from "../../services/api-service.service";
 import { map, take } from "rxjs/operators";
@@ -96,11 +95,11 @@ export class CalendarViewComponent implements OnInit {
   events2: CalendarEvent[] = [];
   viewDate: Date = new Date();
   tokenCookie: string = "";
-  Books: Book[] = [];
+  Books: CEvent[] = [];
   Customers: Customer[] = [];
   Services: Services[] = [];
   ServiceTypes: ServiceTypes[] = [];
-  view: CalendarView = CalendarView.Month;
+  view: CalendarView = CalendarView.Week;
   CalendarView = CalendarView;
   loading2: boolean = true;
   isEventExist: boolean = false;
@@ -113,28 +112,22 @@ export class CalendarViewComponent implements OnInit {
   locale: string = 'he';
   @Input() UserGoogle: any;
   BookEditing: Book = new Book();
-  lockHours: LockHours[] = [];
+  lockHours: CEvent[] = [];
 
   hidetheSer: boolean = false;
   successEvents = [];
   currentUser: any;
+  photoGoogle:any;
   ngOnInit() {
     this.auth.auth2().subscribe((res) => {
       this.UserGoogle = res;
+      this.photoGoogle = this.UserGoogle.photoURL;
     })
     this.Localres.getLocalResoruce("he").subscribe(res => {
       this.localRes = res;
     })
 
     this.getApiWithToken();
-  }
-
-  async getAllCustomers() {
-    this.Customers = await this.API.GetAllCustomers();
-  }
-
-  async getAllServiceTypes() {
-    this.ServiceTypes = await this.API.getAllServiceTypes();
   }
 
   async getAllLockHours() {
@@ -163,12 +156,10 @@ export class CalendarViewComponent implements OnInit {
    */
   getApiWithToken() {
     this.API.getBooks().subscribe(allbook => {
-      this.getAllCustomers();
-      this.getAllServiceTypes();
       this.getAllLockHours();
       this.getAllCloseDays();
       this.Books = allbook.Result;
-      timer(3000, 1000).pipe(
+      timer(1000, 1000).pipe(
         take(1)).subscribe(x => {
           this.getEvent(this.Books);
         })
@@ -196,20 +187,18 @@ export class CalendarViewComponent implements OnInit {
    * put all the event from array in Calendar UI
    * 
    */
-  getEvent(books: Book[]): void {
-    for (let i = 0; i < books.length; i++) {
-      let FilterServiceType = this.ServiceTypes.find(servFilter => servFilter.ServiceTypeID == books[i].ServiceTypeID);
-      let cus = this.Customers.find(cus => cus.CustomerID == books[i].CustomerID)
-      let Start = addMinutes(books[i].StartDate, books[i].StartAt);
-      let End = addMinutes(Start, books[i].Durtion);
-      const event: CEvent<Book> = {
-        id: books[i].BookID,
-        title: cus.FirstName + ' ' + cus.LastName + ' - ' + FilterServiceType.ServiceTypeName,
-        start: Start,
-        end: End,
-        serviceType: FilterServiceType,
-        customer: cus,
-        meta: books[i],
+  getEvent(books: CEvent<Book>[]): void {
+
+    //this.events2 = books;
+    books.forEach(book => {
+      const Event: CEvent<Book> = {
+        id: book.meta.BookID,
+        title: book.title,
+        start: new Date(book.startTime),
+        end: new Date(book.endTime),
+        serviceType: book.serviceType,
+        customer: book.customer,
+        meta: book.meta,
         actions: this.actions,
         draggable: false,
         resizable: {
@@ -217,40 +206,29 @@ export class CalendarViewComponent implements OnInit {
           afterEnd: false
         },
         color: {
-          primary: cus.Color,
-          secondary: cus.Color
+          primary: book.customer.Color,
+          secondary: book.customer.Color
         }
 
       }
-      this.events2.push(event);
+      this.events2.push(Event);
       this.refresh.next();
+    });
 
 
-    } //end of loop for
-    for (let i = 0; i < this.lockHours.length; i++) {
-      let cus = this.Customers.find(cus => cus.PhoneNumber == "0525533979")
-      let Start = addMinutes(this.lockHours[i].StartDate, this.lockHours[i].StartAt);
-      let End = addMinutes(this.lockHours[i].StartDate, this.lockHours[i].EndAt);
-      const event: CEvent<Customer> = {
-        title: 'זמן נעול',
-        start: Start,
-        end: End,
+    this.lockHours.forEach(lock => {
+      const event: CEvent<any> = {
+        title: lock.title,
+        start: new Date(lock.startTime),
+        end: new Date(lock.endTime),
         allDay: false,
-        customer: cus,
-        LockSlot: this.lockHours[i],
-        color: {
-          primary: cus.Color,
-          secondary: cus.Color
-        }
-
+        LockSlot: lock.LockSlot
       }
       this.events2.push(event);
-
-    }
+    });
 
     //Add close day and holiday to calendar
     for (let i = 0; i < this.CloseDays.length; i++) {
-      let cus = this.Customers.find(cus => cus.PhoneNumber == "0525533979")
       let Start = addMinutes(this.CloseDays[i].Date, 0);
       let End = addMinutes(this.CloseDays[i].Date, 1439);
       const event: CEvent<boolean> = {
@@ -258,13 +236,7 @@ export class CalendarViewComponent implements OnInit {
         start: Start,
         end: End,
         allDay: false,
-        customer: cus,
-        meta: false,
-        color: {
-          primary: cus.Color,
-          secondary: cus.Color
-        }
-
+        meta: false
       }
       this.events2.push(event);
 
@@ -430,7 +402,7 @@ export class CalendarViewComponent implements OnInit {
     {
       label: '<i class="far fa-edit"></i>',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.BookEditing = this.convertEventToBook(event);
+        this.BookEditing =  event.meta//this.convertEventToBook(event);
         this.hidetheSer = true;
         this.dialog.open(DialogComponent, {
           data: { localRes: this.localRes, book: this.BookEditing }

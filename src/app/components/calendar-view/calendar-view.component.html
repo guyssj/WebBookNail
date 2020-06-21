@@ -1,31 +1,17 @@
 <div class="bg" *ngIf="loading2 == false; else loading">
   <div>
     <ul class="navbar-nav ml-auto">
-      <li class="nav-item" *ngIf="UserGoogle">
-        <p class="">
-          <i class="fab fa-google"></i>
-          שלום, {{ UserGoogle?.displayName }}
-          <a>
-            <fa-icon (click)="signOut()" title="התנתק" [icon]="['fa', 'sign-out-alt']" size="1x"></fa-icon>
-          </a>
-        </p>
-      </li>
       <li class="nav-item" *ngIf="!UserGoogle">
         <a class="" (click)="SignInToGoogle()">
           <i class="fab fa-google"></i>
           {{localRes?.SignIn}}
         </a>
       </li>
-      <li class="nav-item" *ngIf="UserGoogle">
-        <a class="" (click)="SyncAllEvents(events2);">
-          <i class="fas fa-calendar"></i>
-          {{localRes?.SyncGoogle}}
-        </a>
-      </li>
     </ul>
   </div>
-  <div class="col-sm-10" style="position: relative; " *ngIf="loading2 == false;" dir="ltr">
+  <div class="col-sm-12" *ngIf="loading2 == false;" dir="ltr">
     <div class="row">
+
       <div class="col-sm-4">
         <div class="btn-group">
           <div class="btn pink" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
@@ -41,7 +27,7 @@
           </div>
         </div>
       </div>
-      <div class="col-sm-3">
+      <div class="col-sm-4">
         <h3>{{ viewDate | calendarDate:(view + 'ViewTitle'):'he' }}</h3>
       </div>
       <div class="col-sm-2">
@@ -57,11 +43,21 @@
           </div>
         </div>
       </div>
+      <div class="float-right col-sm-2" *ngIf="photoGoogle && UserGoogle">
+        {{ UserGoogle?.displayName }} , שלום
+        <img [matMenuTriggerFor]="afterMenu" dir="rtl" [src]="photoGoogle" class="imgGoogle" />
+        <mat-menu #afterMenu="matMenu" xPosition="after">
+          <button (click)="signOut()" mat-menu-item>{{localRes?.SignOut}}</button>
+          <button [disabled]="!UserGoogle" (click)="SyncAllEvents(events2)"
+            mat-menu-item>{{localRes?.SyncGoogle}}</button>
+
+        </mat-menu>
+      </div>
     </div>
     <br />
   </div>
   <div class="row">
-    <div class=" col-sm-12">
+    <div class="col-sm-12 bg">
       <div style="overflow: auto;">
         <div [ngSwitch]="view" *ngIf="loading2 == false; else loading">
           <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events2" [refresh]="refresh"
@@ -69,14 +65,18 @@
             [activeDayIsOpen]="activeDayIsOpen">
           </mwl-calendar-month-view>
           <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events2" [refresh]="refresh"
-            [locale]="locale" [hourSegments]="2" [dayStartHour]="8" [dayEndHour]="18"
+            [locale]="locale" [hourSegments]="2" [dayStartHour]="8" [dayEndHour]="19"
             (eventClicked)="clickEvent($event)">
           </mwl-calendar-week-view>
+          <mwl-calendar-day-view [viewDate]="viewDate"  (eventClicked)="clickEvent($event)"
+             [events]="events2" *ngSwitchCase="'day'"  [refresh]="refresh" [locale]="locale" [dayStartHour]="8" [dayEndHour]="19">
+          </mwl-calendar-day-view>
+
         </div>
 
 
         <!-- modal settings -->
-        <a class="nav-link" data-toggle="modal" id="edit2" data-target="#EditModal" href=""></a>
+        <!-- <a class="nav-link" data-toggle="modal" id="edit2" data-target="#EditModal" href=""></a>
         <div class="modal fade" id="EditModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2"
           aria-hidden="true">
 
@@ -95,7 +95,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

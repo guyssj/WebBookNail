@@ -25,7 +25,7 @@
     "signIn":"התחברי",
     "notEnoughtime":"מצטערת! אין מספיק זמן לטיפול זה בשעה שנבחרה",
     "SuccessApp":"הפגישה שלך נקבעה בהצלחה, אשמח לראותך",
-    "CustomerAndService":"לקוח וסוג הטיפול",
+    "CustomerAndService":"לקוח/ה וסוג הטיפול",
     "startTime":"התחלה",
     "endTime":"סיום",
     "gallery":"גלריה",
@@ -35,8 +35,8 @@
     "Address":"כתובת",
     "SyncSuccess":"הפגישות סונכרנו בהצלחה",
     "ErrorSync":"חלק מהפגישות לא סנכרנו בהצלחה",
-    "SyncGoogle":"סנכרני את כל הפגישות ליומן גוגל",
-    "SignIn":"התחברי עם חשבון גוגל",
+    "SyncGoogle":"סנכרנ/י את כל הפגישות ליומן גוגל",
+    "SignIn":"התחבר/י עם חשבון גוגל",
     "Customers":"לקוחות",
     "ServiceType":"סוג טיפול",
     "ServiceTypes":"סוגי טיפול",
@@ -63,9 +63,12 @@
     "ValidationLastName":"שם משפחה הוא שדה חובה",
     "ValidationDate":"תאריך הוא שדה חובה",
     "Notes":"הערות",
-    "NotesCustomer":"הערות ללקוח",
+    "NotesCustomer":"הערות ללקוח/ה",
     "NotesLock":"סיבת נעילה",
-    "Date":"תאריך"
+    "Date":"תאריך",
+    "SignOut":"התנתק",
+    "Delete":"מחק/י",
+    "Edit":"עדכן/י"
 
 
 }

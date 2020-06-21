@@ -1,4 +1,22 @@
-<app-sidebar [localRes]="localRes"></app-sidebar>
-<div class="cont">
-    <router-outlet></router-outlet>
-</div>
+<!-- <app-sidebar [localRes]="localRes"></app-sidebar> -->
+
+<mat-sidenav-container autosize dir="rtl" class="example-container">
+    <mat-sidenav  #sidenav mode="side" opened class="example-sidenav"
+                 [fixedInViewport]="true" [fixedTopGap]="0"
+                 [fixedBottomGap]="0">
+                 <app-sidebar [localRes]="localRes"></app-sidebar> 
+    </mat-sidenav>
+  
+    <mat-sidenav-content class="size">
+            <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+
+  <!-- <mat-drawer-container class="example-container">
+    <mat-drawer [position]="'start'" mode="side" opened>Drawer content</mat-drawer>
+    <mat-drawer-content>
+        <router-outlet></router-outlet>
+    </mat-drawer-content>
+
+  </mat-drawer-container> -->
+  

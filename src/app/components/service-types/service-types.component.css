@@ -1,4 +1,4 @@
-.table{
+/* .table{
     direction: rtl;
     text-align: right !important;
 }
@@ -8,13 +8,13 @@ th.mat-header-cell{
 .mat-header-cell{
     color:white !important;
     background-color: #C96D9F;
-}
+} */
 
 .mat-table{
     font-family: 'Varela Round', sans-serif;
 }
 
-table{
+/* table{
     border-collapse: collapse;
     border-radius: 10px;
     overflow: hidden;
@@ -24,10 +24,21 @@ th, td {
     background: rgba(201, 109, 160, 0.555);
     border-bottom: 2px solid white; 
     vertical-align: middle !important;
-  }
+  } */
 
   .mat-paginator{
-      background: transparent;
-      direction: ltr;
-      float: left;
+    background: transparent;
+    float: left;
+}
+
+.mat-form-field {
+    font-size: 14px;
+    width: 67%;
+    padding: 20px;
   }
+  table{
+    direction: rtl;
+    text-align: right !important;
+    width: 100%;
+
+}

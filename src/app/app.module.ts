@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule, MatOptionModule, MatSelectModule, MatProgressSpinnerModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule, MatOptionModule, MatSelectModule, MatProgressSpinnerModule, MatSidenavModule, MatMenuModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -27,6 +27,7 @@ import { AuthService } from './services/auth.service';
 import { LoginComponent } from './components/login/login.component';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { fab , faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { DialogForClickEvent } from './components/calendar-view/calendar-view.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { ChangeBookComponent } from './components/change-book/change-book.component';
@@ -40,6 +41,7 @@ import { AuthTokenService } from './services/auth-token.service';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { MinToTimePipe } from './pipes/min-to-time.pipe';
+import { GoogleAnalyticsService } from './services/google-analytics.service';
 
 registerLocaleData(localeHe);
 
@@ -83,7 +85,9 @@ registerLocaleData(localeHe);
     MatPaginatorModule,
     MatDialogModule,
     MatIconModule,
+    MatSidenavModule,
     MatOptionModule,
+    MatMenuModule,
     MatSelectModule,
     MatDatepickerModule,
     MatNativeDateModule,
@@ -102,6 +106,7 @@ registerLocaleData(localeHe);
     LocalresService,
     AuthTokenService,
     AuthService,
+    GoogleAnalyticsService,
     { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
     { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
@@ -112,6 +117,7 @@ registerLocaleData(localeHe);
 export class AppModule { 
   constructor() {
     // Add an icon to the library for convenient access in other components
+    library.add(fab,faGoogle);
     library.add(fas);
   }
 }

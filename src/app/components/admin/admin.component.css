@@ -1,7 +1,7 @@
 .cont{
-    width: calc(100% - 222px);
+    width: 100%;
     background-repeat: no-repeat;
-    background-image: url('/assets/212.jpg');
+    background-color:rgb(229, 229, 234);
     
     background-size: cover;
         /* Set up proportionate scaling */
@@ -12,13 +12,31 @@
   background-position   : 50% 50%; 
 }
 
-body,html{
-    height: 100% !important;
-  }
-  
-  @media screen and (max-width: 767px){
-    .cont{
-        transition: left .3s ease;
-        width: 100%;
-    }
+.size{
+  height: 100vh;
+} 
+   
+.example-container {
+  width: 100%;
+  height: 100% !important;
+  background-color:rgb(242, 242, 247);
 }
+
+.example-sidenav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  background: #C96D9F;
+  box-shadow: 0px 10px 10px -1px #b5b5b5 !important;
+
+}
+
+.cal-week-view .cal-time-events .cal-day-column {
+  margin-right: 10px;
+}
+
+.cal-week-view .cal-hour {
+  width: calc(100% + 10px);
+}
+

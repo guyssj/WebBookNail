@@ -50,6 +50,7 @@
           <ng-select dir="rtl"
           [items]="Time$ | async" 
           bindLabel="timeSlot"
+          #TimeSelect
           clearAllText="Clear"
           aria-required="true"
           autofocus 
@@ -58,11 +59,10 @@
           formControlName="timeSlot"
           bindValue="timeSlot"
           placeholder="{{localRes?.selectedTime}}"
-          (change)="onTimeChange($event)" 
-           required>
+          (change)="onTimeChange($event)">
           </ng-select>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="finishStartDate">
           <ng-select 
             [items]="Services$ | async"
             dir="rtl"

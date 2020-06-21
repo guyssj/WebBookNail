@@ -4,15 +4,13 @@
       background-image: url('/assets/212.jpg');
       background-size: cover;
       */
-    width: calc(100% - 22px); 
+    width: 100%; 
     height: auto;
       
     /* Set up positioning */
     overflow: hidden !important;
     top: 0;
     left: 0;
-    font-family: 'Varela Round', sans-serif;
-
   }
 
   .detailsEvent{
@@ -43,10 +41,6 @@
       background-color: rgba(225,255,255, 0.2)
   }
 
-  .detailsEventText{
-    
-  }
-
   .box{
     background-color:#c96d9f;
     width: 20vw;
@@ -72,10 +66,16 @@
   a:hover{
     cursor: pointer;
   }
+
   .menuItem{
     color:white !important;
     padding: 5px;
   }
   .menuItem:hover{
     color:black !important;
+  }
+
+  .imgGoogle{
+    height: 32px;
+    border-radius: 50%;
   }

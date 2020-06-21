@@ -1,73 +1,67 @@
-<div class="sitebar ml-auto shadows" [ngClass]="{sidebarPushRight: isActive}">
+<!-- <div class="sitebar ml-auto shadows" [ngClass]="{sidebarPushRight: isActive}">
   <div class="ml-auto navbar-dark side-collapse in" id="collapse-side">
     <ul class="navbar-nav ml-auto" dir="rtl">
-      <br>
-      <div class="row">
-        <p class="text-white">{{localRes?.AdminMenu}}</p>
-      </div>
-      <div class="lineWhite row"></div>
       <li class="nav-item">
         <a class="nav-link" href="#" [routerLink]="['Calendar']" routerLinkActive="active" data-toggle="collapse-side">
-          <i class="fas fa-calendar-alt"></i>
-          {{localRes?.Calendar}}</a>
+          <mat-icon>home</mat-icon></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#" [routerLink]="['Customers']" routerLinkActive="active" data-toggle="collapse-side">
-          <i class="fas fa-id-badge"></i>
-          {{localRes?.Customers}}</a>
+          <i class="fas fa-id-badge"></i></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#" [routerLink]="['ServiceTypes']" routerLinkActive="active" data-toggle="collapse-side">
-          <i class="fas fa-folder-plus"></i>
-          {{localRes?.ServiceTypes}}</a>
+          <i class="fas fa-folder-plus"></i></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" [routerLink]="['Services']" routerLinkActive="active" data-toggle="collapse-side">
           <i class="fas fa-concierge-bell"></i>
-          {{localRes?.Services}}
-        </a>
-      </li>
-    </ul>
-    <br>
-    <ul class="navbar-nav ml-auto" dir="rtl">
-      <div class="row">
-        <p class="text-white"> {{localRes?.fanClub}}</p>
-      </div>
-      <div class="lineWhite row"></div>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/addrepair" routerLinkActive="active" data-toggle="collapse-side">
-          <i class="fa fa-list" style="width: 20px; height:20px;"></i>
-          {{localRes?.AddRepair}}
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/addcustomer" routerLinkActive="active" data-toggle="collapse-side">
-          <i class="fa fa-user-plus" style="width: 20px; height:20px;"></i>
-          {{localRes?.AddCustomer}}
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/home" routerLinkActive="active" data-toggle="collapse-side">
-          <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-            x="0px" y="0px" width="20" height="20" viewBox="0 0 500 500" enable-background="new 0 0 500 500"
-            xml:space="preserve">
-            <g>
-              <g>
-                <g>
-                  <path fill="#FFFFFF" d="M256,48C141.1,48,48,141.1,48,256c0,114.9,93.1,208,208,208c114.9,0,208-93.1,208-208
-                   C464,141.1,370.9,48,256,48z M256,446.7c-105.1,0-190.7-85.5-190.7-190.7S150.9,65.3,256,65.3c105.1,0,190.7,85.6,190.7,190.7
-                   C446.7,361.1,361.1,446.7,256,446.7z" />
-                </g>
-              </g>
-              <g>
-                <polygon fill="#FFFFFF" points="264.1,128 247.3,128 247.3,247.9 128,247.9 128,264.7 247.3,264.7 247.3,384 264.1,384 
-                 264.1,264.7 384,264.7 384,247.9 264.1,247.9 		" />
-              </g>
-            </g>
-          </svg>
-          {{localRes?.AddDevice}}
         </a>
       </li>
     </ul>
   </div>
+</div> -->
+<header>
+<div class="iconsMenu">
+  <button mat-mini-fab color="accent" [matMenuTriggerFor]="afterMenu" aria-label="Example icon button with a plus one icon">
+    <mat-icon>add</mat-icon>
+    <mat-menu #afterMenu="matMenu" xPosition="after">
+      <button mat-menu-item>Item 1</button>
+      <button mat-menu-item>Item 2</button>
+    </mat-menu>
+  </button>
+  </div>
+<div class="iconsMenu">
+  <button [routerLink]="['/Login']" #Login="routerLinkActive" routerLinkActive="active" mat-icon-button aria-label="Example icon button with a home icon">
+    <mat-icon [ngClass]="{'iconSize':!Login.isActive,'active':Login.isActive}" class="iconSize">home</mat-icon>
+  </button>
 </div>
+
+<div class="iconsMenu">
+  <button [routerLink]="['Calendar']" #Calendar="routerLinkActive" routerLinkActive="active" mat-icon-button aria-label="Example icon button with a home icon">
+    <mat-icon [ngClass]="{'iconSize':!Calendar.isActive,'active':Calendar.isActive}" class="iconSize">calendar_today</mat-icon>
+  </button>
+</div>
+<div class="iconsMenu">
+  <button mat-icon-button aria-label="Example icon button with a home icon">
+    <mat-icon  class="iconSize">create</mat-icon>
+  </button>
+</div>
+<div class="iconsMenu">
+  <button [routerLink]="['Customers']" #Customers="routerLinkActive" routerLinkActive="active" mat-icon-button aria-label="Example icon button with a home icon">
+    <mat-icon [ngClass]="{'iconSize':!Customers.isActive,'active':Customers.isActive}" >people</mat-icon>
+  </button>
+</div>
+<div class="iconsMenu">
+  <button [routerLink]="['ServiceTypes']" #ServiceTypes="routerLinkActive" routerLinkActive="active" mat-icon-button aria-label="Example icon button with a home icon">
+    <mat-icon [ngClass]="{'iconSize':!ServiceTypes.isActive,'active':ServiceTypes.isActive}" class="iconSize">show_chart</mat-icon>
+  </button>
+</div>
+</header>
+<footer>
+  <div class="iconsMenuBottom fixed-bottom">
+    <button mat-icon-button aria-label="Example icon button with a home icon">
+      <i class="fab fa-google iconSize"></i>
+    </button>
+  </div>
+</footer>

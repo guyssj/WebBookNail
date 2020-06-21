@@ -23,6 +23,7 @@ export class ServiceTypesComponent implements OnInit {
   displayedColumns: string[] = ['ServiceTypeName', 'ServiceID', 'Description', 'Price', 'Duration'];
   resultsLen: any;
   localRes: any;
+  loader:boolean = true;
   dataSource: MatTableDataSource<ServiceTypes>;
   ngOnInit() {
     this.GetAllServiceTypes();
@@ -35,6 +36,7 @@ export class ServiceTypesComponent implements OnInit {
     this.ServiceTypes = await this.API.getAllServiceTypes();
     this.dataSource = new MatTableDataSource(this.ServiceTypes);
     this.dataSource.paginator = this.paginator;
+    this.loader = false;
   }
 
   applyFilter(filterValue: string) {
@@ -79,7 +81,7 @@ export class AddNewServiceType implements OnInit {
 
   getAllService() {
     this.API.getAllServices().subscribe(data => {
-      this.Services = data;
+      this.Services = data.Result;
     });
   }
   saveServiceType() {

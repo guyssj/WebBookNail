@@ -1,8 +1,13 @@
-<div class="table row">
-    <mat-form-field class="col-md-10">
+<div>
+  <div>
+    <mat-form-field>
       <input matInput (keyup)="applyFilter($event.target.value)" [placeholder]="localRes?.Search">
+      <button matSuffix mat-button class="btn pink" (click)="addNewServiceType()">{{localRes?.AddServiceType}}</button>
     </mat-form-field>
-  <div class="col-md-10">
+  </div>
+  <mat-spinner style="margin: auto;" *ngIf="loader"></mat-spinner>
+
+  <div *ngIf="!loader" class="col-md-10">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <ng-container matColumnDef="ServiceTypeName">
         <th mat-header-cell *matHeaderCellDef> {{localRes?.ServiceType}} </th>
@@ -32,8 +37,8 @@
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
       <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
     </table>
+  </div>
+  <div class="col-md-10">
     <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
-    <a class="btn pink" style="padding: 15px;" (click)="addNewServiceType()">{{localRes?.AddServiceType}}</a>
-
   </div>
 </div>

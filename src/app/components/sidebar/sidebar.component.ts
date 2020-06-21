@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { AuthService } from 'src/app/services/auth.service';
+import { FormBuilder, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,10 +10,17 @@ import { AuthService } from 'src/app/services/auth.service';
 export class SidebarComponent implements OnInit {
   isActive: boolean = false;
   showMenu: string = '';
+  options: FormGroup;
   pushRightClass: string = 'push-right';
   @Input() localRes:any;
   userGoogle:any;
-  constructor(private auth:AuthService) { }
+  constructor(private auth:AuthService,fb: FormBuilder) {
+    this.options = fb.group({
+      bottom: 0,
+      fixed: false,
+      top: 0
+    });
+   }
 
   ngOnInit() {
   }
