@@ -2,8 +2,8 @@ import { Component, OnInit, Inject, Input } from "@angular/core";
 import * as $ from "jquery";
 import { Book } from "../../classes/Book";
 import { ApiServiceService } from "../../services/api-service.service";
-import { map, take } from "rxjs/operators";
-import { CalendarEvent, CalendarView, CalendarEventAction } from "angular-calendar";
+import { take } from "rxjs/operators";
+import { CalendarEvent, CalendarView, CalendarEventAction, CalendarEventTimesChangedEvent } from "angular-calendar";
 import {
   isSameMonth,
   isSameDay,
@@ -16,8 +16,7 @@ import {
   format
 } from "date-fns";
 import { Observable, Subject, timer } from "rxjs";
-import { HttpClient } from "@angular/common/http";
-import { ActivatedRoute, Router } from "@angular/router";
+import { Router } from "@angular/router";
 import { addDays, addMinutes } from 'date-fns';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
 import { DialogContentExampleDialog } from "../set-book/set-book.component";
@@ -31,42 +30,9 @@ import { MessageConfig, typeMessage } from '../MessageConfig';
 import { AuthTokenService } from 'src/app/services/auth-token.service';
 import { DialogComponent } from '../dialog/dialog.component';
 import { CEvent } from 'src/app/classes/CEvent';
-import { LockHours } from 'src/app/classes/LockHours';
 import { ActionType } from 'src/app/classes/ActionType';
 import { CloseDays } from 'src/app/classes/CloseDays';
 
-const timezoneOffset = new Date().getTimezoneOffset();
-const hoursOffset = String(Math.floor(Math.abs(timezoneOffset / 60))).padStart(
-  2,
-  "0"
-);
-
-const minutesOffset = String(Math.abs(timezoneOffset % 60)).padEnd(2, "0");
-const direction = timezoneOffset > 0 ? "-" : "+";
-const timezoneOffsetString = `T00:00:00${direction}${hoursOffset}${minutesOffset}`;
-
-function setCookie(cname, cvalue, exdays) {
-  var d = new Date();
-  d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));
-  var expires = "expires=" + d.toUTCString();
-  document.cookie = cname + "=" + cvalue + ";" + expires + ";path=/";
-}
-
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for (var i = 0; i < ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
 
 export interface DialogData {
   event: CEvent,
@@ -84,8 +50,6 @@ export interface DialogData {
 export class CalendarViewComponent implements OnInit {
   constructor(
     private API: ApiServiceService,
-    private http: HttpClient,
-    private route: ActivatedRoute,
     private router: Router,
     public dialog: MatDialog,
     public auth: AuthService,
@@ -120,8 +84,10 @@ export class CalendarViewComponent implements OnInit {
   photoGoogle:any;
   ngOnInit() {
     this.auth.auth2().subscribe((res) => {
+      if(res){
       this.UserGoogle = res;
       this.photoGoogle = this.UserGoogle.photoURL;
+      }
     })
     this.Localres.getLocalResoruce("he").subscribe(res => {
       this.localRes = res;
@@ -200,7 +166,7 @@ export class CalendarViewComponent implements OnInit {
         customer: book.customer,
         meta: book.meta,
         actions: this.actions,
-        draggable: false,
+        draggable: true,
         resizable: {
           beforeStart: false,
           afterEnd: false
@@ -265,11 +231,25 @@ export class CalendarViewComponent implements OnInit {
       }
     }
   }
+  eventTimesChanged({
+    event,
+    newStart,
+    newEnd,
+  }: CalendarEventTimesChangedEvent): void {
+
+    event.start = newStart;
+    event.end = newEnd;
+    var newStartAt = newStart.getHours() * 60 + newStart.getMinutes();
+    
+    event.meta.StartAt = newStartAt
+    this.API.UpdateBook(event.meta).subscribe(res=>{
+
+    });
+    this.refresh.next();
+  }
 
   SignInToGoogle() {
     this.auth.login().then(user => {
-      console.log(user);
-
       this.UserGoogle = user;
     });
   }

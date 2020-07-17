@@ -12,7 +12,7 @@ export class JwtInterceptor implements HttpInterceptor {
         if (currentUser && currentUser.token) {
             request = request.clone({
                 setHeaders: { 
-                    'X-Token':  `${currentUser.token}`
+                    'Authorization': `Bearer ${currentUser.token}`
                 }
             });
         }
