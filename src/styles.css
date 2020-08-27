@@ -80,6 +80,16 @@ div{
     margin-right: 14.5px;
   } */
 
+  .modal-open{
+    padding-right: 0px !important;
+  }
+  .modal-open .modal {
+    padding-right: 0px !important;
+
+}
+.fixed-top {
+  padding-right: 16px !important;
+}
   .cal-day-columns {
     height: 100%;
   }

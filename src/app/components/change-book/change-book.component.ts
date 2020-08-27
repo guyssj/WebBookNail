@@ -12,7 +12,6 @@ import { DialogContentExampleDialog } from '../set-book/set-book.component';
 import { take } from 'rxjs/operators';
 import { CloseDays } from 'src/app/classes/CloseDays';
 import { NgSelectComponent } from '@ng-select/ng-select';
-import { WorkingHours } from 'src/app/classes/workinghours';
 import { GoogleAnalyticsService } from 'src/app/services/google-analytics.service';
 
 
@@ -36,10 +35,7 @@ export class ChangeBookComponent implements OnInit {
   newEnd: string;
   Time$: Observable<TimeSlots[]>;
   finishStartDate: Date;
-  LockHour: any;
   loader:boolean = true;
-  WorkDay: WorkingHours;
-  notEnoughtime: boolean = false;
   editMode: boolean = false;
   constructor(private API: ApiServiceService, private dialog: MatDialog,private googleAnalyticsService:GoogleAnalyticsService) {
 
@@ -72,29 +68,20 @@ export class ChangeBookComponent implements OnInit {
   async getAllCloseDays() {
     this.closeDays = await this.API.getAllCloseDays()
   }
-  async getWorkHoursByDay(day) {
-    this.WorkDay = await this.API.getWorkHoursByDay(day);
-  }
-
-  async getLockHoursByDate(date) {
-    this.LockHour = await this.API.getLockHoursByDate(date);
-  }
 
   ngOnInit() {
+    this.googleAnalyticsService
+    .pageview({ page_title: "שינוי התור", page_path: "/updatebook" });
     this.getAllCloseDays();
     if (!this.finishStartDate)
       this.finishStartDate = new Date(this.book.StartDate);
-    this.getWorkHoursByDay(this.finishStartDate.getDay());
-    this.getLockHoursByDate(this.finishStartDate.toISOString().split("T")[0]);
     this.API.getCustomerById(this.book.CustomerID).subscribe(res => {
       this.newStart = this.MinToTime(this.book.StartAt);
       this.newEnd = this.MinToTime(this.book.StartAt + this.book.Durtion);
       this.customer = res.Result;
       this.loader = false;
     })
-    this.Time$ = this.API.getTimeByDate(this.book.StartDate);
-
-    
+    this.Time$ = this.API.getTimeByDate(this.book.StartDate,this.book.Durtion);
   }
 
 
@@ -169,40 +156,6 @@ export class ChangeBookComponent implements OnInit {
       this.book.StartAt = event.id;
       this.editMode = true;
       //in this request from server to check all time exist in date choosed
-
-      this.API.TimeExist(this.finishStartDate.toISOString().split("T")[0]).subscribe(arry => {
-        var timeTotal = this.book.StartAt + this.book.Durtion
-
-        this.notEnoughtime = false;
-        for (let i = this.book.StartAt; i < timeTotal; i++) {
-          for (let j = 0; j < arry.Result.length - 1; j++) {
-            if (arry.Result[j] == i) {
-              this.notEnoughtime = true;
-              this.book.StartAt = null;
-              this.editMode = false;
-              select.clearModel();
-              break;
-
-            }
-          }
-        }
-
-        //Check if Lock time is end of close time
-        if(this.WorkDay.CloseTime <= this.LockHour && timeTotal > this.LockHour){
-          this.notEnoughtime = true;
-          this.editMode = false;
-          select.clearModel();
-          return;
-        }
-
-        //check if close time + 120 bigger from time total of app
-        else if (this.WorkDay.CloseTime + 60 < timeTotal) {
-          this.notEnoughtime = true;
-          this.editMode = false;
-          select.clearModel();
-          return;
-        }
-      })
     }
   }
 
@@ -219,10 +172,7 @@ export class ChangeBookComponent implements OnInit {
     this.finishStartDate = addMinutes(this.finishStartDate, 0);
     this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
     this.book.StartDate = this.finishStartDate.toISOString();
-    this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0]);
-    this.getWorkHoursByDay(this.finishStartDate.getDay());
-    this.getLockHoursByDate(this.finishStartDate.toISOString().split("T")[0]);
-
+    this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0],this.book.Durtion);
     if (!event)
     return;
   if (this.book.StartAt) {

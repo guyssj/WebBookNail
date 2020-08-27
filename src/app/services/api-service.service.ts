@@ -31,11 +31,11 @@ export class ApiServiceService {
     return this.http.get<resultsAPI<CEvent<Book>[]>>(`${environment.apiUrl}admin/GetAllBook2`, { withCredentials: true });
   }
 
-  getAllTimes(): Observable<TimeSlots[]> {
-    return this.http.get<TimeSlots[]>(`${environment.apiUrl}api/GetTimeSlots`)
+  getAllTimes():Observable<TimeSlots[]> {
+    return this.http.get<TimeSlots[]>(`${environment.apiUrl}api/GetTimeSlots`);
   }
-  getTimeByDate(date): Observable<TimeSlots[]> {
-    return this.http.get<TimeSlots[]>(`${environment.apiUrl}api/GetTimeSlots?Date=${date}`)
+  getTimeByDate(date,Duration=0):Observable<TimeSlots[]> {
+    return this.http.get<TimeSlots[]>(`${environment.apiUrl}api/GetTimeSlots?Date=${date}&Duration=${Duration}`);
   }
   TimeExist(date): Observable<resultsAPI<any[]>> {
     return this.http.get<resultsAPI<any[]>>(`${environment.apiUrl}api/GetSlotsExist?Date=${date}`)
@@ -91,10 +91,7 @@ export class ApiServiceService {
 
   DeleteBook(id: any, token): Observable<resultsAPI<any>> {
     let headers = new HttpHeaders();
-    //headers = headers.append('Authorization', this.authKey);
-    headers = headers.append('X-Token', token);
-    headers = headers.append('Content-Type', 'application/json');
-    return this.http.post<resultsAPI<any>>(`${environment.apiUrl}admin/DeleteBook`, { id: id }, { headers, withCredentials: true });
+    return this.http.post<resultsAPI<any>>(`${environment.apiUrl}admin/DeleteBook`, { id: id }, { withCredentials: true });
 
   }
 

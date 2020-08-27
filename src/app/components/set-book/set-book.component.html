@@ -44,11 +44,44 @@
             </mat-form-field>
         </div>
       </div>
-      <!-- Time and Service -->
+      <!-- Service and ServiceTypes -->
       <div class="form-row">
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="finishStartDate">
+          <ng-select 
+            [items]="Services$ | async"
+            dir="rtl"
+            placeholder="{{localRes?.selectedService}}"
+            bindLabel="ServiceName" 
+            autofocus
+            [searchable]="false"
+            (change)="onServiceChange($event)"
+            formControlName="service">
+          </ng-select>
+        </div>
+        <div class="col-md-6" *ngIf="ServiceSelected">
+          <ng-select 
+            #select
+            [items]="ServicesTypes$" 
+            [searchable]="false"
+            bindLabel="ServiceTypeName" 
+            placeholder="{{localRes?.selectedType}}"
+            dir="rtl"
+            autofocus
+            (change)="onServiceTypeChange($event,select)" 
+            formControlName="ServcieType">
+          </ng-select>
+          <div class="col-md-12" *ngIf="ServcieTypeSelected">
+            <mat-error>{{ServcieTypeSelected.Description}}</mat-error>
+          </div>
+        </div>
+
+      </div>
+      <!-- Time -->
+      <div class="form-row">
+
+        <div class="col-md-6" *ngIf="ServcieTypeSelected">
           <ng-select dir="rtl"
-          [items]="Time$ | async" 
+          [items]="Time$ |async" 
           bindLabel="timeSlot"
           #TimeSelect
           clearAllText="Clear"
@@ -62,40 +95,7 @@
           (change)="onTimeChange($event)">
           </ng-select>
         </div>
-        <div class="col-md-6" *ngIf="finishStartDate">
-          <ng-select 
-            [items]="Services$ | async"
-            dir="rtl"
-            placeholder="{{localRes?.selectedService}}"
-            bindLabel="ServiceName" 
-            autofocus
-            [searchable]="false"
-            (change)="onServiceChange($event)"
-            formControlName="service">
-          </ng-select>
-        </div>
-      </div>
-      <!-- Service Types -->
-      <div class="form-row">
-        <div class="col-md-6" *ngIf="ServiceSelected">
-          <ng-select 
-            #select
-            [items]="ServicesTypes$" 
-            [searchable]="false"
-            bindLabel="ServiceTypeName" 
-            placeholder="{{localRes?.selectedType}}"
-            dir="rtl"
-            autofocus
-            (change)="onServiceTypeChange($event,select)" 
-            formControlName="ServcieType">
-          </ng-select>
-          <mat-error *ngIf="notEnoughtime">{{localRes?.notEnoughtime}}</mat-error>
-        </div>
-        <div class="col-md-6" *ngIf="ServcieTypeSelected">
-          <div style="padding: 5px;">
-          {{ServcieTypeSelected.Description}}
-          </div>
-        </div>
+
       </div>
          <div>
           <button role="button" type="submit" [disabled]="reactiveForm.invalid" class="btn pink">{{localRes?.BookSet}}</button>
