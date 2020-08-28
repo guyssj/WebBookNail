@@ -8,6 +8,7 @@ import { DialogContentExampleDialog } from '../set-book/set-book.component';
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
+import { addDays } from 'date-fns';
 
 @Component({
   selector: 'app-search-book',
@@ -19,6 +20,7 @@ export class SearchBookComponent implements OnInit {
   constructor(private API:ApiServiceService,private dialog: MatDialog) { }
   @Output() BookFounded = new EventEmitter<Book>();
   @Input() localRes:any;
+  dateNow: Date = new Date(Date.now());
   reactiveForm:FormGroup;
   ngOnInit() {
 
@@ -29,20 +31,21 @@ export class SearchBookComponent implements OnInit {
     this.API.GetCustomerByPhone(phone).subscribe(res => {
       this.API.GetBookByCustomer(res.Result).subscribe(book =>{
         if(book.Result.BookID > 0){
-          // this.reactiveForm = new FormGroup({
-          //   firstName: new FormControl(res.Result.FirstName, Validators.required),
-          //   lastName: new FormControl(res.Result.LastName, Validators.required),
-          //   phoneNumber: new FormControl(res.Result.PhoneNumber, Validators.required),
-          //   date: new FormControl(book.Result.StartDate, Validators.required),
-          //   timeSlot: new FormControl(null, Validators.required),
-          //   service: new FormControl(null, Validators.required),
-          //   ServcieType: new FormControl(null, Validators.required)
-          // });
-          this.BookFounded.emit(book.Result);
+          debugger;
+          var dateNowPlus2 = addDays(this.dateNow, 2);
+          var minDate = new Date(dateNowPlus2.toISOString().split("T")[0]);
+          var dateBook: Date = new Date(book.Result.StartDate);
+          if(dateBook.getTime() >= minDate.getTime())
+            this.BookFounded.emit(book.Result);
+          else
+             this.openDialog({message: this.localRes.LimitDaySetBook , type:typeMessage.Error},3000);
+
         }
         else{
-          this.openDialog({message: this.localRes.CustomerNotFound , type:typeMessage.Error},3000)
+          this.openDialog({message: this.localRes.CustomerNotFound , type:typeMessage.Error},3000);
         }
+      },error=>{
+        this.openDialog({message: this.localRes.CustomerNotFound , type:typeMessage.Error},3000);
       })
     })
   }

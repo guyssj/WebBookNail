@@ -67,6 +67,11 @@ div{
 .flex-control-paging li a{background-color:rgba(255,255,255,1); border-color:rgba(255,255,255,0);}
 .flex-control-paging li a.flex-active{background-color:rgba(255,255,255,0); border-color:rgba(255,255,255,1);}
 
+@media screen and (max-width: 767px){
+    .bgded{
+        background-image: url('/assets/backgroundSmall.jpg') !important;
+    }
+}
 
 #return-to-top {
     position: fixed;
