@@ -69,7 +69,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.showSer = false;
   }
 
-  showPanel(){
+  showPanel(event){
     this.showSer = true;
   }
 }

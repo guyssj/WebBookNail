@@ -29,6 +29,7 @@ export class SetBookComponent implements OnInit {
   @Input() localRes: any;
   @ViewChild('select', { static: false }) public ngSelect: NgSelectComponent;
   @ViewChild('TimeSelect', { static: false }) public timeSelect: NgSelectComponent;
+  @ViewChild('ServiceSelect', { static: false }) public serviceSelect: NgSelectComponent;
 
   faCalendarAlt = faCalendarAlt;
   Time$: Observable<TimeSlots[]>
@@ -118,6 +119,9 @@ export class SetBookComponent implements OnInit {
       this.reactiveForm.value.timeSlot = null;
       this.timeSelect.clearModel();
       this.StartAt = null;
+    }
+    if (this.ServcieTypeSelected) {
+      this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0], this.ServcieTypeSelected.Duration);
     }
   }
 
