@@ -3,9 +3,6 @@ import * as $ from "jquery";
 import { LocalresService } from '../../services/localres.service';
 import { SetBookComponent } from '../set-book/set-book.component';
 import { isObject } from 'util';
-import { Customer } from 'src/app/classes/Customer';
-import { Book } from 'src/app/classes/Book';
-import { FormGroup } from '@angular/forms';
 import { ApiServiceService } from 'src/app/services/api-service.service';
 import { Settings } from 'src/app/classes/StoreSettings';
 import { SettingsService } from 'src/app/services/settings.service';
@@ -20,7 +17,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
   localRes: any = {};
   settings:Settings;
   hidetheSer: boolean;
-  bookFound: Book = new Book();
+  showSer:boolean = true;
+  bookFound: any;
   @ViewChild(SetBookComponent, { static: true }) setBookCom;
   constructor(private localres: LocalresService, private API: ApiServiceService, private Set:SettingsService) { }
 
@@ -68,5 +66,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
       this.bookFound = null;
       this.hidetheSer = false;
     }
+    this.showSer = false;
+  }
+
+  showPanel(){
+    this.showSer = true;
   }
 }

@@ -22,7 +22,8 @@ declare var $: any
   styleUrls: ['./change-book.component.css']
 })
 export class ChangeBookComponent implements OnInit {
-  @Input() book: Book;
+  @Input() bookDetails: any;
+  book:Book = new Book();
   @ViewChild('select', { static: false }) public ngSelect: NgSelectComponent;
 
   @Input() localRes: any;
@@ -40,18 +41,21 @@ export class ChangeBookComponent implements OnInit {
   constructor(private API: ApiServiceService, private dialog: MatDialog,private googleAnalyticsService:GoogleAnalyticsService) {
 
   }
+  
   closeDays: CloseDays[] = [];
   FilterWeekend = (d: Date): boolean => {
     let days;
-    if(d.getDate() < 10 && d.getMonth()+1 < 10 ){
-      days = d.getFullYear()+"-"+"0"+(d.getMonth()+1)+"-"+"0"+d.getDate();
+    if (d.getDate() < 10 && d.getMonth() + 1 < 10) {
+      days = d.getFullYear() + "-" + "0" + (d.getMonth() + 1) + "-" + "0" + d.getDate()
     }
-    else if (d.getMonth()+1 < 10 && d.getDate() > 9 ){
-      days = d.getFullYear()+"-"+"0"+(d.getMonth()+1)+"-"+d.getDate();
+    else if (d.getMonth() + 1 < 10 && d.getDate() > 9) {
+      days = d.getFullYear() + "-" + "0" + (d.getMonth() + 1) + "-" + d.getDate()
     }
-    else{
-      days = d.getFullYear()+"-"+(d.getMonth()+1)+"-"+d.getDate();
-
+    else if(d.getDate() < 10 && d.getMonth() + 1 > 9){
+      days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + "0" + d.getDate()
+    }
+    else {
+      days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
     }
     const sat = d.getDay();
     let DaytoClose = this.closeDays.filter(date=> date.Date == days);
@@ -70,12 +74,13 @@ export class ChangeBookComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.book = this.bookDetails.book;
     this.googleAnalyticsService
     .pageview({ page_title: "שינוי התור", page_path: "/updatebook" });
     this.getAllCloseDays();
     if (!this.finishStartDate)
       this.finishStartDate = new Date(this.book.StartDate);
-    this.API.getCustomerById(this.book.CustomerID).subscribe(res => {
+    this.API.getCustomerById(this.book.CustomerID,this.bookDetails.OTP).subscribe(res => {
       this.newStart = this.MinToTime(this.book.StartAt);
       this.newEnd = this.MinToTime(this.book.StartAt + this.book.Durtion);
       this.customer = res.Result;

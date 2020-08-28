@@ -47,6 +47,12 @@ export class ApiServiceService {
   getAllServicetypesByServiceID(id) {
     return this.http.get<resultsAPI<ServiceTypes[]>>(`${environment.apiUrl}api/GetAllServiceTypeByService?ServiceID=${id}`)
   }
+  generateOTP(id) {
+    return this.http.get<resultsAPI<boolean>>(`${environment.apiUrl}api/GenerateToken?CustomerID=${id}`)
+  }
+  verfiyOTP(otp,id) {
+    return this.http.get<resultsAPI<boolean>>(`${environment.apiUrl}api/VerfiyToken?CustomerID=${id}&OTP=${otp}`)
+  }
 
   async getAllServiceTypes() {
     let ServiceTypes = await this.http.get<resultsAPI<ServiceTypes[]>>(`${environment.apiUrl}api/GetAllServiceTypes`).toPromise()
@@ -69,8 +75,8 @@ export class ApiServiceService {
     return CloseDays.Result;
   }
 
-  getCustomerById(id) {
-    return this.http.get<resultsAPI<Customer>>(`${environment.apiUrl}api/GetCustomerById?CustomerID=${id}`, { withCredentials: true });
+  getCustomerById(id,otp) {
+    return this.http.get<resultsAPI<Customer>>(`${environment.apiUrl}api/GetCustomerById?CustomerID=${id}&OTP=${otp}`, { withCredentials: true });
   }
 
   setBook(Book: Book): Observable<resultsAPI<any>> {
@@ -78,7 +84,7 @@ export class ApiServiceService {
   }
 
   GetCustomerByPhone(customerPhone) {
-    return this.http.get<resultsAPI<Customer>>(`${environment.apiUrl}api/GetCustomerByPhone?PhoneNumber=${customerPhone}`);
+    return this.http.get<resultsAPI<number>>(`${environment.apiUrl}api/GetCustomerByPhone?PhoneNumber=${customerPhone}`);
   }
 
   GetBookByCustomer(CustomerId) {

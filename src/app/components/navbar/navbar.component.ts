@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Component, OnInit, Input, HostListener, Output, EventEmitter } from '@angular/core';
 import { LocalresService } from '../../services/localres.service';
 import { ApiServiceService } from '../../services/api-service.service';
 import { Observable, timer } from 'node_modules/rxjs';
@@ -16,6 +16,8 @@ export class NavbarComponent implements OnInit {
   constructor(private localres:LocalresService,private dialog:MatDialog) { }
   @Input() localRes:any;
   @Input() form:any;
+  @Output() showChange = new EventEmitter<boolean>();
+
   scroll:boolean;
   ngOnInit() {
     if(this.form == 'Admin'){
@@ -34,6 +36,10 @@ export class NavbarComponent implements OnInit {
     } else if (number < 50) {
        this.scroll = false;
     }
+  }
+
+  showPanelChange(){
+    this.showChange.emit(true)
   }
 
 }

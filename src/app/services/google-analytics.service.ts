@@ -34,9 +34,8 @@ export class GoogleAnalyticsService {
           page_title: ' מיריתוש | טיפוח הציפורן | קביעת תורים',
           page_location: window.location.href
         };
-  
-        params = { ...defaults, ...params };
-        gtag('config', this.mergedConfig.trackingId, params);
+
+        gtag('event', 'page_view', params);
       } catch (err) {
         console.error('Google Analytics pageview error', err);
       }

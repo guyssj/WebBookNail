@@ -1,4 +1,4 @@
-<app-navbar [localRes]="localRes"></app-navbar>
+<app-navbar [localRes]="localRes" (showChange)="showPanel($event)"></app-navbar>
 
 <div class="bgded overlay" style="background-image:url('assets/background.jpg');">
 <div id="pageintro" class="hoc clear">
@@ -147,8 +147,8 @@
       </div>
       <div class="line"></div>
       <div class="modal-body">
-        <app-search-book [localRes]="localRes" *ngIf="!hidetheSer" (BookFounded)="whenCustomerFound($event)"></app-search-book>
-        <app-change-book [localRes]="localRes" [book]="bookFound" (Clear)=clear($event) *ngIf="hidetheSer" ></app-change-book>
+        <app-search-book [localRes]="localRes" *ngIf="showSer" (Clear)=clear($event) (BookFounded)="whenCustomerFound($event)"></app-search-book>
+        <app-change-book [localRes]="localRes" [bookDetails]="bookFound" (Clear)=clear($event) *ngIf="hidetheSer" ></app-change-book>
       </div>
     </div>
   </div>

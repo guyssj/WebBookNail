@@ -30,7 +30,6 @@
                 [searchable]="false" autofocus bindValue="id" [(ngModel)]="book.StartAt"
                 placeholder="{{localRes?.selectedTime}}" (change)="onTimeChange($event,select)">
             </ng-select>
-            <mat-error *ngIf="notEnoughtime">{{localRes?.notEnoughtime}}</mat-error>
         </div>
 
     </div>

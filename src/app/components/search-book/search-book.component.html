@@ -2,5 +2,9 @@
     <mat-form-field class="col-md-12">
         <input matInput type="tel" placeholder="הקשי מספר פלאפון" [(ngModel)]="phoneNumber">
     </mat-form-field>
-    <button type="button" class="btn pink" (click)="SearchByPhone(phoneNumber)"> חפשי </button>
+    <mat-form-field  *ngIf="showToken" class="col-md-12">
+        <input matInput type="tel" placeholder="קוד אימות" [(ngModel)]="token">
+    </mat-form-field>
+    <button *ngIf="!showToken" type="button" class="btn pink" (click)="SearchByPhone(phoneNumber)"> חפשי </button>
+    <button *ngIf="showToken" type="button" class="btn pink" (click)="enterToBook(token)"> חפשי </button>
 </div>

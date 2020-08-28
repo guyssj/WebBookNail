@@ -66,15 +66,12 @@ export class SetBookComponent implements OnInit {
     }
     else if(d.getDate() < 10 && d.getMonth() + 1 > 9){
       days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + "0" + d.getDate()
-
     }
     else {
       days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
-
     }
     const sat = d.getDay();
     let DaytoClose = this.closeDays.filter(date => date.Date == days);
-    debugger;
     if (DaytoClose.length > 0 || sat == 6) {
       return false;
     }
