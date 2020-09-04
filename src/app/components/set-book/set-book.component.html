@@ -46,7 +46,7 @@
       </div>
       <!-- Service and ServiceTypes -->
       <div class="form-row">
-        <div class="col-md-6" *ngIf="finishStartDate">
+        <div class="col-md-6" *ngIf="finishStartDate && !noFreeTime">
           <ng-select 
             [items]="Services$ | async"
             dir="rtl"
@@ -71,15 +71,17 @@
             formControlName="ServcieType">
           </ng-select>
           <div class="col-md-12" *ngIf="ServcieTypeSelected">
-            <mat-error>{{ServcieTypeSelected.Description}}</mat-error>
+            <p>{{ServcieTypeSelected.Description}}</p>
           </div>
         </div>
-
+        <div class="col-md-12" *ngIf="noFreeTime">
+          <mat-error>{{localRes?.notEnoughtime}}</mat-error>
+        </div>
       </div>
       <!-- Time -->
       <div class="form-row">
 
-        <div class="col-md-6" *ngIf="ServcieTypeSelected">
+        <div class="col-md-6" *ngIf="ServcieTypeSelected && !noFreeTime">
           <ng-select dir="rtl"
           [items]="Time$ |async" 
           bindLabel="timeSlot"

@@ -46,6 +46,7 @@ export class SetBookComponent implements OnInit {
   maxDate: Date = addDays(this.dateNow, 120);
   formBuilder: any;
   finishStartDate: Date;
+  noFreeTime:boolean = false;
   Books: Book;
   reactiveForm = new FormGroup({
     firstName: new FormControl(null, Validators.required),
@@ -107,12 +108,18 @@ export class SetBookComponent implements OnInit {
    * 
    */
   dateChange(event: MatDatepickerInputEvent<Date>) {
+    debugger;
+    this.noFreeTime = false;
     this.googleAnalyticsService
       .pageview({ page_title: "קביעת פגישה", page_path: "/setbook" });
     this.finishStartDate = new Date(event.value);
     this.finishStartDate = this.clearTime(this.finishStartDate);
     this.finishStartDate = addMinutes(this.finishStartDate, 0);
     this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
+    this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0]).subscribe(res=>{
+      if(res.length == 0)
+        this.noFreeTime = true;
+    })
     if (!event)
       return;
     if (this.StartAt) {
@@ -191,14 +198,24 @@ export class SetBookComponent implements OnInit {
    * @param event ServiceTypes
    */
   onServiceTypeChange(event: ServiceTypes, select: NgSelectComponent) {
+
     if (!event) {
       return;
+    }
+    if (this.StartAt) {
+      this.reactiveForm.value.timeSlot = null;
+      this.timeSelect.clearModel();
+      this.StartAt = null;
     }
     this
       .googleAnalyticsService
       .eventEmitter("change_servicetyoe", "servicetype", "changeType", "change", 10);
     this.ServcieTypeSelected = event;
     this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0], this.ServcieTypeSelected.Duration);
+    this.Time$.subscribe(res=>{
+      if(res.length == 0)
+      this.noFreeTime = true;
+    })
   }
 
   /**
