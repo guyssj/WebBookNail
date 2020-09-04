@@ -42,6 +42,7 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { DialogComponent } from './components/dialog/dialog.component';
 import { MinToTimePipe } from './pipes/min-to-time.pipe';
 import { GoogleAnalyticsService } from './services/google-analytics.service';
+import { BooksViewComponent } from './components/books-view/books-view.component';
 
 registerLocaleData(localeHe);
 
@@ -64,7 +65,8 @@ registerLocaleData(localeHe);
     ServiceTypesComponent,
     DialogComponent,
     AddNewServiceType,
-    MinToTimePipe
+    MinToTimePipe,
+    BooksViewComponent
   ],
   imports: [
     BrowserModule,
