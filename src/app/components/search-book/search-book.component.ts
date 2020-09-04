@@ -35,6 +35,7 @@ export class SearchBookComponent implements OnInit {
     this.API.GetCustomerByPhone(phone).subscribe(res => {
       this.customerId = res.Result;
       this.API.generateOTP(res.Result).subscribe(token => {
+        debugger;
         if (token.Result) {
           this.showToken = true;
         }
@@ -51,20 +52,20 @@ export class SearchBookComponent implements OnInit {
   enterToBook() {
     this.API.verfiyOTP(this.token, this.customerId).subscribe(ver => {
       if (ver.Result) {
-        this.API.GetBookByCustomer(this.customerId).subscribe(book => {
-          if (book.Result.BookID > 0) {
+        this.API.GetBooksByCustomer(this.customerId).subscribe(book => {
+          if (book.Result.length > 0) {
             var dateNowPlus2 = addDays(this.dateNow, 2);
             var minDate = new Date(dateNowPlus2.toISOString().split("T")[0]);
-            var dateBook: Date = new Date(book.Result.StartDate);
-            if (dateBook.getTime() >= minDate.getTime()){
+           // var dateBook: Date = new Date(book.Result.StartDate);
+           // if (dateBook.getTime() >= minDate.getTime()){
               this.BookFounded.emit({book:book.Result,OTP:this.token});
               this.showToken = false;
               this.token = '';
               this.customerId = 0;
               this.Clear.emit(false);
-            }
-            else
-              this.openDialog({ message: this.localRes.LimitDaySetBook, type: typeMessage.Error }, 3000);
+           // }
+           // else
+          //    this.openDialog({ message: this.localRes.LimitDaySetBook, type: typeMessage.Error }, 3000);
           }
           else {
             this.openDialog({ message: this.localRes.CustomerNotFound, type: typeMessage.Error }, 3000);

@@ -148,7 +148,7 @@
       <div class="line"></div>
       <div class="modal-body">
         <app-search-book [localRes]="localRes" *ngIf="showSer" (Clear)=clear($event) (BookFounded)="whenCustomerFound($event)"></app-search-book>
-        <app-change-book [localRes]="localRes" [bookDetails]="bookFound" (Clear)=clear($event) *ngIf="hidetheSer" ></app-change-book>
+        <app-books-view [localRes]="localRes" [booksDetails]="bookFound" (Clear)=clear($event) *ngIf="hidetheSer" ></app-books-view>
       </div>
     </div>
   </div>

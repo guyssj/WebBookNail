@@ -90,6 +90,9 @@ export class ApiServiceService {
   GetBookByCustomer(CustomerId) {
     return this.http.get<resultsAPI<Book>>(`${environment.apiUrl}api/GetBookByCustomer?CustomerID=${CustomerId}`);
   }
+  GetBooksByCustomer(CustomerId) {
+    return this.http.get<resultsAPI<Book[]>>(`${environment.apiUrl}api/GetBooksByCustomer?CustomerID=${CustomerId}`);
+  }
 
   UpdateBook(Book: Book): Observable<resultsAPI<any>> {
     return this.http.put<resultsAPI<any>>(`${environment.apiUrl}api/UpdateBook`, Book,{withCredentials:true});

@@ -108,7 +108,6 @@ export class SetBookComponent implements OnInit {
    * 
    */
   dateChange(event: MatDatepickerInputEvent<Date>) {
-    debugger;
     this.noFreeTime = false;
     this.googleAnalyticsService
       .pageview({ page_title: "קביעת פגישה", page_path: "/setbook" });

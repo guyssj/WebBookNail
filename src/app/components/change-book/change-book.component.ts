@@ -15,6 +15,7 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 import { GoogleAnalyticsService } from 'src/app/services/google-analytics.service';
 
 
+
 declare var $: any
 @Component({
   selector: 'app-change-book',
