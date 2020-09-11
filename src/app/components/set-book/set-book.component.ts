@@ -29,7 +29,6 @@ export class SetBookComponent implements OnInit {
   @Input() localRes: any;
   @ViewChild('select', { static: false }) public ngSelect: NgSelectComponent;
   @ViewChild('TimeSelect', { static: false }) public timeSelect: NgSelectComponent;
-  @ViewChild('ServiceSelect', { static: false }) public serviceSelect: NgSelectComponent;
 
   faCalendarAlt = faCalendarAlt;
   Time$: Observable<TimeSlots[]>
@@ -115,19 +114,22 @@ export class SetBookComponent implements OnInit {
     this.finishStartDate = this.clearTime(this.finishStartDate);
     this.finishStartDate = addMinutes(this.finishStartDate, 0);
     this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
-    this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0]).subscribe(res=>{
-      if(res.length == 0)
-        this.noFreeTime = true;
-    })
-    if (!event)
-      return;
     if (this.StartAt) {
       this.reactiveForm.value.timeSlot = null;
       this.timeSelect.clearModel();
       this.StartAt = null;
     }
+    if (!event)
+      return;
+
     if (this.ServcieTypeSelected) {
       this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0], this.ServcieTypeSelected.Duration);
+    }
+    else{
+      this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0]).subscribe(res=>{
+        if(res.length == 0)
+          this.noFreeTime = true;
+      })
     }
   }
 
@@ -197,14 +199,15 @@ export class SetBookComponent implements OnInit {
    * @param event ServiceTypes
    */
   onServiceTypeChange(event: ServiceTypes, select: NgSelectComponent) {
-
-    if (!event) {
-      return;
-    }
     if (this.StartAt) {
       this.reactiveForm.value.timeSlot = null;
       this.timeSelect.clearModel();
       this.StartAt = null;
+      this.ServcieTypeSelected = null;
+    }
+    if (!event) {
+      this.ServcieTypeSelected = null;
+      return;
     }
     this
       .googleAnalyticsService

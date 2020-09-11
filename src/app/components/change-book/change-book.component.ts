@@ -13,6 +13,7 @@ import { take } from 'rxjs/operators';
 import { CloseDays } from 'src/app/classes/CloseDays';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { GoogleAnalyticsService } from 'src/app/services/google-analytics.service';
+import { DialogService } from 'src/app/services/dialog.service';
 
 
 
@@ -39,7 +40,7 @@ export class ChangeBookComponent implements OnInit {
   finishStartDate: Date;
   loader:boolean = true;
   editMode: boolean = false;
-  constructor(private API: ApiServiceService, private dialog: MatDialog,private googleAnalyticsService:GoogleAnalyticsService) {
+  constructor(private API: ApiServiceService, private dialog: DialogService,private googleAnalyticsService:GoogleAnalyticsService) {
 
   }
   
@@ -75,13 +76,13 @@ export class ChangeBookComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.book = this.bookDetails.book;
+    this.book = this.bookDetails;
     this.googleAnalyticsService
     .pageview({ page_title: "שינוי התור", page_path: "/updatebook" });
     this.getAllCloseDays();
     if (!this.finishStartDate)
       this.finishStartDate = new Date(this.book.StartDate);
-    this.API.getCustomerById(this.book.CustomerID,this.bookDetails.OTP).subscribe(res => {
+    this.API.GetCustomerByPhone().subscribe(res => {
       this.newStart = this.MinToTime(this.book.StartAt);
       this.newEnd = this.MinToTime(this.book.StartAt + this.book.Durtion);
       this.customer = res.Result;
@@ -101,17 +102,18 @@ export class ChangeBookComponent implements OnInit {
     book.StartDate = this.finishStartDate;
     this.API.UpdateBook(book).subscribe(res => {
       if (res.Result) {
-        this.openDialog({ message: this.localRes.SuccessApp, type: typeMessage.Success }, 3000);
+        this.dialog.openDialog({ message: this.localRes.SuccessApp, type: typeMessage.Success }, 3000);
         this
         .googleAnalyticsService
         .eventEmitter("book_update", "books", "updated", "click", 10);
-        this.Clear.emit(true);
         $(function () {
           $('#SerachModal').modal('toggle');
           $('#SerachModal').modal('hide');
         })
+        this.Clear.emit(true);
+
       } else {
-        this.openDialog({ message: this.localRes.notEnoughtime, type: typeMessage.Error }, 3000)
+        this.dialog.openDialog({ message: this.localRes.notEnoughtime, type: typeMessage.Error }, 3000)
       }
     })
   }
@@ -201,23 +203,5 @@ export class ChangeBookComponent implements OnInit {
 
   }
 
-
-  /**
-   * 
-   * Open dialog message
-   * 
-   * @param messageObj 
-   * 
-   * @param time 
-   */
-  openDialog(messageObj: MessageConfig, time) {
-    this.dialog.open(DialogContentExampleDialog, {
-      data: messageObj
-    });
-    timer(time, 1000).pipe(
-      take(1)).subscribe(x => {
-        this.dialog.closeAll();
-      })
-  }
 
 }

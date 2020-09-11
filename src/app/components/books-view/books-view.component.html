@@ -1,12 +1,48 @@
-<mat-card *ngFor="let book of booksDetails.book">
-    <mat-card-header>
-        {{book.StartAt}}
-    </mat-card-header>
-    <mat-card-content>
-      <p>
-      </p>
-    </mat-card-content>
-    <mat-card-actions>
-      <button mat-button>שינוי התור</button>
-    </mat-card-actions>
-  </mat-card>
+<mat-spinner style="margin: auto;" *ngIf="loader"></mat-spinner>
+
+<div *ngIf="!loader && !bookEdit">
+    <div class="cardBook" *ngFor="let book of booksDetails.book">
+        <mat-card>
+            <mat-card-header>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="detailsEvent">
+                    <div class="row">
+                        <div class="col-auto">
+                            <i class="far fa-user"></i>
+                        </div>
+                        <div class="col-md-10">
+                            <strong><label>{{localRes?.Service}}:</label></strong>
+                            <label>{{book.Notes}}</label>
+                        </div>
+                        <div class="col-auto">
+                            <i class="far fa-clock"></i>
+                        </div>
+                        <div class="col-md-10">
+                            <strong>
+                                <label>{{localRes?.Time}}:</label>
+                            </strong>
+                            <label>{{book.StartAt | minToTime}} - {{book.StartAt + book.Durtion | minToTime}}</label>
+                        </div>
+                        <div class="col-auto">
+                            <i class="far fa-calendar-alt"></i>
+                        </div>
+                        <div class="col-md-10">
+                            <strong>
+                                <label>{{localRes?.Date}}:</label>
+                            </strong>
+                            <label>{{book.StartDate | date:"dd/MM/yyyy"}}</label>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-actions>
+                <button class="btn pink" (click)="buttonChange(book)">שינוי התור</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+</div>
+
+<div *ngIf="!loader && bookEdit">
+    <app-change-book (Clear)="ClearAll($event)" [localRes]="localRes" [bookDetails]="bookEdit"></app-change-book>
+</div>
