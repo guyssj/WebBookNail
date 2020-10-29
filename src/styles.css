@@ -9,6 +9,13 @@
 div{
     text-align: right;
 } 
+.mat-calendar-header{
+  direction: ltr;
+}
+.mat-chip-list-stacked .mat-chip-list-wrapper {
+  flex-direction: row !important;
+  align-items: flex-start;
+}
 
 
 .btn,.btn.pink, .btn.inverse:hover{color:#FFFFFF; background-color:#C96D9F; border-color:#C96D9F;}

@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule, MatOptionModule, MatSelectModule, MatProgressSpinnerModule, MatSidenavModule, MatMenuModule, MatCard, MatCardActions, MatCardModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule, MatOptionModule, MatSelectModule, MatProgressSpinnerModule, MatSidenavModule, MatMenuModule, MatCard, MatCardActions, MatCardModule, MatChipsModule } from '@angular/material';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -43,6 +43,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
 import { MinToTimePipe } from './pipes/min-to-time.pipe';
 import { GoogleAnalyticsService } from './services/google-analytics.service';
 import { BooksViewComponent } from './components/books-view/books-view.component';
+import { CalendarComponent } from './components/calendar/calendar.component';
 
 registerLocaleData(localeHe);
 
@@ -66,7 +67,8 @@ registerLocaleData(localeHe);
     DialogComponent,
     AddNewServiceType,
     MinToTimePipe,
-    BooksViewComponent
+    BooksViewComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
@@ -89,6 +91,7 @@ registerLocaleData(localeHe);
     MatIconModule,
     MatCardModule,
     MatSidenavModule,
+    MatChipsModule,
     MatOptionModule,
     MatMenuModule,
     MatSelectModule,

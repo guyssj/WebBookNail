@@ -99,7 +99,7 @@ export class ChangeBookComponent implements OnInit {
    * 
    */
   UpdateBook(book: Book) {
-    book.StartDate = this.finishStartDate;
+    book.StartDate = this.finishStartDate.toISOString().split("T")[0];
     this.API.UpdateBook(book).subscribe(res => {
       if (res.Result) {
         this.dialog.openDialog({ message: this.localRes.SuccessApp, type: typeMessage.Success }, 3000);

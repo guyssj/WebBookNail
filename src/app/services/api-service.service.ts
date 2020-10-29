@@ -94,6 +94,9 @@ export class ApiServiceService {
   UpdateBook(Book: Book): Observable<resultsAPI<any>> {
     return this.http.put<resultsAPI<any>>(`${environment.apiUrl}api/UpdateBook`, Book,{withCredentials:true});
   }
+  UpdateBookAdmin(Book: Book): Observable<resultsAPI<any>> {
+    return this.http.put<resultsAPI<any>>(`${environment.apiUrl}admin/UpdateBook`, Book,{withCredentials:true});
+  }
 
   DeleteBook(id: any, token): Observable<resultsAPI<any>> {
     let headers = new HttpHeaders();

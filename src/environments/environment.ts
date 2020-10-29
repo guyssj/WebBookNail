@@ -13,7 +13,7 @@ export const environment = {
     messagingSenderId: "107195644423",
     appId: "1:107195644423:web:9163ca906432b687"
   },
-  apiUrl:'http://localhost/NailBook/public/'
+  apiUrl:'http://192.168.0.46/NailBook/public/'
 };
 
 /*

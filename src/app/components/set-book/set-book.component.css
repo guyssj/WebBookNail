@@ -16,6 +16,19 @@ div,input,label{
     font-family: 'Varela Round', sans-serif;
 }
 
+.input-inline{
+    width: 50%;
+    padding-left: 3%;
+}
+
+.calendar-wrapper{
+    max-width: 300px;
+    width: 100%;
+    text-align: center;
+}
+
+
+
 button{
     margin-left: 2%;
 }
