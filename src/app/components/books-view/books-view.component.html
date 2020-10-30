@@ -37,9 +37,12 @@
                 </div>
             </mat-card-content>
             <mat-card-actions>
-                <button class="btn pink" (click)="buttonChange(book)">שינוי התור</button>
+                <button *ngIf="book.canEdit" class="btn pink" (click)="buttonChange(book)">{{localRes?.EditMode}}</button>
             </mat-card-actions>
         </mat-card>
+    </div>
+    <div *ngIf="booksDetails.book.length == 0">
+        {{localRes?.CustomerNotFound}}
     </div>
 </div>
 

@@ -51,7 +51,7 @@ export class SearchBookComponent implements OnInit {
           if (data.token) {
             this.API.GetBooksByCustomerPhone().subscribe(book => {
               if (book.Result.length > 0) {
-                var dateNowPlus2 = addDays(this.dateNow, 2);
+                var dateNowPlus2 = this.dateNow;
                 var minDate = new Date(dateNowPlus2.toISOString().split("T")[0]);
                 var newBooks = book.Result.filter(book => new Date(book.StartDate).getTime() >= minDate.getTime()); //filter only book 2 day ahead
                 this.BookFounded.emit({ book: newBooks });

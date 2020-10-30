@@ -74,7 +74,7 @@
 
       </mat-calendar>
     </div>
-        <div class="col-md-6" *ngIf="ServcieTypeSelected && !noFreeTime">
+        <div class="col-md-6" *ngIf="ServcieTypeSelected && finishStartDate && !noFreeTime">
           <mat-chip-list class="mat-chip-list-stacked" aria-label="Time slot selection">
             <mat-spinner style="margin: auto;" *ngIf="!(Time$ | async)"></mat-spinner>
             <mat-chip style="width: 30%;" (mwlClick)="onTimeChange(time)" [ngClass]="{'btn pink':time.id === StartAt}" [selectable]="true" *ngFor="let time of Time$ |async ">
@@ -84,7 +84,7 @@
         </div>
 
       </div>
-         <div>
+         <div style="padding-top: 2%;">
           <button role="button" type="submit" [disabled]="reactiveForm.invalid" class="btn pink">{{localRes?.BookSet}}</button>
           <button role="button" type="button" class="btn btn-secondary" data-dismiss="modal">{{localRes?.Cancel}}</button>
         </div>

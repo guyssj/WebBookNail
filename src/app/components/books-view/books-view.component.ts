@@ -6,10 +6,11 @@ import { ServiceTypes } from 'src/app/classes/servicetypes';
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { DialogComponent } from '../dialog/dialog.component';
+import { addDays } from 'date-fns';
 
-export interface bookDetails{
-  book:Book[],
-  OTP:string
+export interface bookDetails {
+  book: Book[],
+  OTP: string
 }
 
 @Component({
@@ -22,22 +23,25 @@ export class BooksViewComponent implements OnInit {
   @Input() booksDetails: bookDetails;
   @Input() localRes: any;
   @Output() Clear = new EventEmitter<boolean>();
-  newEnd:string;
-  serviceTypes:ServiceTypes[] =[] ;
-  loader:boolean = true;
-  bookEdit:bookDetails;
+  newEnd: string;
+  serviceTypes: ServiceTypes[] = [];
+  loader: boolean = true;
+  bookEdit: bookDetails;
 
 
-  constructor(private API: ApiServiceService, private dialog: MatDialog) { 
-    
+  constructor(private API: ApiServiceService, private dialog: MatDialog) {
+
   }
 
   ngOnInit() {
     this.getallServiceTypes();
     timer(1000, 1000).pipe(
       take(1)).subscribe(x => {
-        this.booksDetails.book.forEach(book =>{
-         book.Notes = this.serviceTypes.filter(servt => servt.ServiceTypeID == book.ServiceTypeID)[0].ServiceTypeName;
+        this.booksDetails.book.forEach(book => {
+          var minDate = addDays(new Date(Date.now()), 2);
+          if (new Date(book.StartDate).getTime() >= minDate.getTime())
+            book.canEdit = true;
+          book.Notes = this.serviceTypes.filter(servt => servt.ServiceTypeID == book.ServiceTypeID)[0].ServiceTypeName;
         })
         this.loader = false;
 
@@ -45,16 +49,16 @@ export class BooksViewComponent implements OnInit {
 
   }
 
-  buttonChange(bookEdit){
+  buttonChange(bookEdit) {
     this.bookEdit = bookEdit;
   }
 
-  ClearAll(){
+  ClearAll() {
     this.bookEdit = null;
     this.Clear.emit(true);
 
   }
-  async getallServiceTypes(){
+  async getallServiceTypes() {
     this.serviceTypes = await this.API.getAllServiceTypes();
   }
 

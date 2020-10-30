@@ -7,5 +7,6 @@ export class Book {
     Durtion: number;
     ServiceTypeID:number;
     Notes?:string;
+    canEdit?:boolean
 }
 

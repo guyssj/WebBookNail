@@ -28,9 +28,7 @@ import { GoogleAnalyticsService } from 'src/app/services/google-analytics.servic
 export class SetBookComponent implements OnInit {
   @Input() localRes: any;
   @ViewChild('select', { static: false }) public ngSelect: NgSelectComponent;
-  @ViewChild('TimeSelect', { static: false }) public timeSelect: NgSelectComponent;
-  @ViewChild(MatCalendar,{static:false}) calendar: MatCalendar<Date>;
-  @ViewChild(MatCalendarHeader,{static:false}) calendarheader: MatCalendarHeader<Date>;
+  @ViewChild(MatCalendar, { static: false }) calendar: MatCalendar<Date>;
 
 
 
@@ -49,7 +47,7 @@ export class SetBookComponent implements OnInit {
   maxDate: Date = addDays(this.dateNow, 120);
   formBuilder: any;
   finishStartDate: Date;
-  noFreeTime:boolean = false;
+  noFreeTime: boolean = false;
   Books: Book;
   reactiveForm = new FormGroup({
     firstName: new FormControl(null, Validators.required),
@@ -60,7 +58,7 @@ export class SetBookComponent implements OnInit {
     service: new FormControl(null, Validators.required),
     ServcieType: new FormControl(null, Validators.required)
   });
-  DateSelected:any;
+  DateSelected: any;
   closeDays: CloseDays[] = [];
   FilterWeekend = (d: Date): boolean => {
     let days;
@@ -71,14 +69,14 @@ export class SetBookComponent implements OnInit {
     else if (d.getMonth() + 1 < 10 && d.getDate() > 9) {
       days = d.getFullYear() + "-" + "0" + (d.getMonth() + 1) + "-" + d.getDate()
     }
-    else if(d.getDate() < 10 && d.getMonth() + 1 > 9){
+    else if (d.getDate() < 10 && d.getMonth() + 1 > 9) {
       days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + "0" + d.getDate()
     }
     else {
       days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
     }
     const sat = d.getDay();
-    if(this.finishStartDate.toISOString().split("T")[0] == days)
+    if (this.finishStartDate.toISOString().split("T")[0] == days)
       noVacentTime = this.noFreeTime;
     let DaytoClose = this.closeDays.filter(date => date.Date == days);
     if (DaytoClose.length > 0 || sat == 6 || noVacentTime) {
@@ -93,8 +91,7 @@ export class SetBookComponent implements OnInit {
     private dialog: MatDialog,
     private API: ApiServiceService,
     private googleAnalyticsService: GoogleAnalyticsService,
-    private adapter: DateAdapter<any>,
-    private renderer: Renderer2) {
+    private adapter: DateAdapter<any>) {
     this.getAllCloseDays();
   }
 
@@ -103,6 +100,7 @@ export class SetBookComponent implements OnInit {
     this.Time$ = this.API.getAllTimes();
     this.Services$ = this.API.getAllServices().pipe(map(item => item.Result));
     this.finishStartDate = this.calendarPickerMinDate;
+    this.reactiveForm.patchValue({ date: this.finishStartDate });
   }
 
   async getAllCloseDays() {
@@ -117,31 +115,23 @@ export class SetBookComponent implements OnInit {
    * 
    */
   dateChange(event) {
-    debugger;
+    if (!event)
+      return;
     this.noFreeTime = false;
-    this.reactiveForm.patchValue({date:event.toISOString().split("T")[0]})
     this.googleAnalyticsService
       .pageview({ page_title: "קביעת פגישה", page_path: "/setbook" });
     this.finishStartDate = new Date(event);
     this.finishStartDate = this.clearTime(this.finishStartDate);
     this.finishStartDate = addMinutes(this.finishStartDate, 0);
     this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
+    this.reactiveForm.patchValue({ date: this.finishStartDate });
     if (this.StartAt) {
-      this.reactiveForm.patchValue({timeSlot:null});
-      //this.timeSelect.clearModel();
+      this.reactiveForm.patchValue({ timeSlot: null });
       this.StartAt = null;
     }
-    if (!event)
-      return;
 
     if (this.ServcieTypeSelected) {
       this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0], this.ServcieTypeSelected.Duration);
-    }
-    else{
-      // this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0]).subscribe(res=>{
-      //   if(res.length == 0)
-      //     this.noFreeTime = true;
-      // })
     }
   }
 
@@ -175,11 +165,11 @@ export class SetBookComponent implements OnInit {
 
     if (this.finishStartDate) {
       this.StartAt = event.id;
-      this.reactiveForm.patchValue({timeSlot:event})
+      this.reactiveForm.patchValue({ timeSlot: event })
     }
     else {
       this.StartAt = event.id;
-      this.reactiveForm.patchValue({timeSlot:event})
+      this.reactiveForm.patchValue({ timeSlot: event })
     }
   }
 
@@ -204,17 +194,6 @@ export class SetBookComponent implements OnInit {
 
     }
   }
-
-  @HostListener("change") onChange(){
-    debugger;
-    const buttons = document.querySelectorAll('.mat-calendar-previous-button, .mat-calendar-next-button');
-    if (buttons) {
-      Array.from(buttons).forEach(button => {
-        this.renderer.listen(button, 'click', () => {
-        });
-      });
-    }
-  }
   /**
    * Method event when Service type selected
    * 
@@ -223,12 +202,9 @@ export class SetBookComponent implements OnInit {
    * @param event ServiceTypes
    */
   onServiceTypeChange(event: ServiceTypes, select: NgSelectComponent) {
-
     if (this.StartAt) {
-      this.reactiveForm.patchValue({timeSlot:null});
-      //this.timeSelect.clearModel();
+      this.reactiveForm.patchValue({ timeSlot: null });
       this.StartAt = null;
-      this.ServcieTypeSelected = null;
     }
     if (!event) {
       this.ServcieTypeSelected = null;
@@ -238,19 +214,22 @@ export class SetBookComponent implements OnInit {
       .googleAnalyticsService
       .eventEmitter("change_servicetyoe", "servicetype", "changeType", "change", 10);
     this.ServcieTypeSelected = event;
-    console.log(this.reactiveForm.get('date').value)
+    if (this.closeDays.filter(date => date.Date == this.finishStartDate.toISOString().split("T")[0]).length > 0 || this.finishStartDate.getDay() == 6) {
+      this.finishStartDate = addDays(this.finishStartDate, 1);
+    }
     this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0], this.ServcieTypeSelected.Duration);
-    this.Time$.subscribe(res=>{
-      if(res.length == 0){
+    this.Time$.subscribe(res => {
+      if (res.length == 0) {
         this.noFreeTime = true;
-      this.calendar.updateTodaysDate();
+        this.calendar.updateTodaysDate();
       }
     })
   }
 
-  monthChange(event){
-    console.log(event);
-
+  monthChange(event) {
+    this.reactiveForm.patchValue({ timeSlot: null, date: null });
+    this.dateChange(event);
+    this.StartAt = null;
   }
 
 
@@ -261,9 +240,9 @@ export class SetBookComponent implements OnInit {
    */
   setBook() {
     this.customer = {
-      FirstName: this.reactiveForm.value.firstName,
-      LastName: this.reactiveForm.value.lastName,
-      PhoneNumber: this.reactiveForm.value.phoneNumber
+      FirstName: this.reactiveForm.get("firstName").value,
+      LastName: this.reactiveForm.get("lastName").value,
+      PhoneNumber: this.reactiveForm.get("phoneNumber").value
     }
     this.API.addCustomer(this.customer).subscribe(id => {
       this.customer.CustomerID = id.Result;
