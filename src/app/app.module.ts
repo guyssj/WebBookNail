@@ -43,7 +43,6 @@ import { DialogComponent } from './components/dialog/dialog.component';
 import { MinToTimePipe } from './pipes/min-to-time.pipe';
 import { GoogleAnalyticsService } from './services/google-analytics.service';
 import { BooksViewComponent } from './components/books-view/books-view.component';
-import { CalendarComponent } from './components/calendar/calendar.component';
 
 registerLocaleData(localeHe);
 
@@ -68,7 +67,6 @@ registerLocaleData(localeHe);
     AddNewServiceType,
     MinToTimePipe,
     BooksViewComponent,
-    CalendarComponent
   ],
   imports: [
     BrowserModule,
