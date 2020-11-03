@@ -132,6 +132,13 @@ export class SetBookComponent implements OnInit {
 
     if (this.ServcieTypeSelected) {
       this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0], this.ServcieTypeSelected.Duration);
+      this.Time$.subscribe(res => {
+        if (res.length == 0) {
+          debugger;
+          this.noFreeTime = true;
+          this.calendar.updateTodaysDate();
+        }
+      })
     }
   }
 
@@ -220,6 +227,7 @@ export class SetBookComponent implements OnInit {
     this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0], this.ServcieTypeSelected.Duration);
     this.Time$.subscribe(res => {
       if (res.length == 0) {
+        debugger;
         this.noFreeTime = true;
         this.calendar.updateTodaysDate();
       }
