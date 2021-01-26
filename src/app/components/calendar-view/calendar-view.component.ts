@@ -240,7 +240,6 @@ export class CalendarViewComponent implements OnInit {
     event.start = newStart;
     event.end = newEnd;
     var newStartAt = newStart.getHours() * 60 + newStart.getMinutes();
-    debugger;
     event.meta.StartDate = event.start.toISOString().split("T")[0];
     event.meta.StartAt = newStartAt
     this.API.UpdateBookAdmin(event.meta).subscribe(res=>{

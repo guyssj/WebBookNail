@@ -134,7 +134,6 @@ export class SetBookComponent implements OnInit {
       this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0], this.ServcieTypeSelected.Duration);
       this.Time$.subscribe(res => {
         if (res.length == 0) {
-          debugger;
           this.noFreeTime = true;
           this.calendar.updateTodaysDate();
         }
@@ -221,13 +220,20 @@ export class SetBookComponent implements OnInit {
       .googleAnalyticsService
       .eventEmitter("change_servicetyoe", "servicetype", "changeType", "change", 10);
     this.ServcieTypeSelected = event;
-    if (this.closeDays.filter(date => date.Date == this.finishStartDate.toISOString().split("T")[0]).length > 0 || this.finishStartDate.getDay() == 6) {
-      this.finishStartDate = addDays(this.finishStartDate, 1);
+
+    //check close dates
+    for (let i = 0; i < this.closeDays.length; i++) {
+      let element = this.closeDays[i].Date;
+      if (element == this.finishStartDate.toISOString().split("T")[0])
+        this.finishStartDate = addDays(this.finishStartDate, 1);
     }
+
+    if( this.finishStartDate.getDay() == 6)
+      this.finishStartDate = addDays(this.finishStartDate, 1);
+
     this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0], this.ServcieTypeSelected.Duration);
     this.Time$.subscribe(res => {
       if (res.length == 0) {
-        debugger;
         this.noFreeTime = true;
         this.calendar.updateTodaysDate();
       }
