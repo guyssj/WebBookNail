@@ -43,6 +43,7 @@ import { DialogComponent } from './components/dialog/dialog.component';
 import { MinToTimePipe } from './pipes/min-to-time.pipe';
 import { GoogleAnalyticsService } from './services/google-analytics.service';
 import { BooksViewComponent } from './components/books-view/books-view.component';
+import { CustomerService } from './services/customer.service';
 
 registerLocaleData(localeHe);
 
@@ -109,6 +110,7 @@ registerLocaleData(localeHe);
     ApiServiceService, 
     LocalresService,
     AuthTokenService,
+    CustomerService,
     AuthService,
     GoogleAnalyticsService,
     { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },

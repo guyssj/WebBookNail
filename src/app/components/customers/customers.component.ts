@@ -3,6 +3,7 @@ import { ApiServiceService } from 'src/app/services/api-service.service';
 import { Customer } from 'src/app/classes/Customer';
 import { MatTableDataSource, MatPaginator } from '@angular/material';
 import { LocalresService } from 'src/app/services/localres.service';
+import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
   selector: 'app-customers',
@@ -11,7 +12,7 @@ import { LocalresService } from 'src/app/services/localres.service';
 })
 export class CustomersComponent implements OnInit {
 
-  constructor(private API:ApiServiceService, private localres:LocalresService) { }
+  constructor(private cusService:CustomerService, private localres:LocalresService) { }
   Customers:Customer[] = [];
   @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
   displayedColumns: string[] = ['firstname', 'lastname', 'phonenumber'];
@@ -27,7 +28,7 @@ export class CustomersComponent implements OnInit {
   }
 
   async getAllCustomers() {
-    this.Customers = await this.API.GetAllCustomers();
+    this.Customers = await this.cusService.GetAllCustomers();
     this.dataSource = new MatTableDataSource(this.Customers);
     this.resultsLen = this.Customers.length;
     this.dataSource.paginator = this.paginator;

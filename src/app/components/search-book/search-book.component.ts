@@ -9,6 +9,7 @@ import { MatDialog } from '@angular/material';
 import { addDays, min } from 'date-fns';
 import { AuthTokenService } from 'src/app/services/auth-token.service';
 import { DialogService } from 'src/app/services/dialog.service';
+import { CustomerService } from 'src/app/services/customer.service';
 
 @Component({
   selector: 'app-search-book',
@@ -17,7 +18,7 @@ import { DialogService } from 'src/app/services/dialog.service';
 })
 export class SearchBookComponent implements OnInit {
   phoneNumber: string;
-  constructor(private API: ApiServiceService, private dialog: DialogService, private AuthLogin: AuthTokenService) { }
+  constructor(private API: ApiServiceService, private cusService: CustomerService, private dialog: DialogService, private AuthLogin: AuthTokenService) { }
   @Output() BookFounded = new EventEmitter<any>();
   @Input() localRes: any;
   @Output() Clear = new EventEmitter<boolean>();
@@ -33,7 +34,7 @@ export class SearchBookComponent implements OnInit {
   SearchByPhone(phone: string) {
     if (!phone)
       return;
-    this.API.generateOTP(this.phoneNumber).subscribe(token => {
+    this.cusService.generateOTP(this.phoneNumber).subscribe(token => {
       if (token.Result) {
         this.showOTP = true;
       }

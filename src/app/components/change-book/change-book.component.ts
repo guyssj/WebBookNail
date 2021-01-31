@@ -9,11 +9,13 @@ import { CustomersComponent } from '../customers/customers.component';
 import { TimeSlots } from 'src/app/classes/TimeSlots';
 import { Observable, timer } from 'rxjs';
 import { DialogContentExampleDialog } from '../set-book/set-book.component';
-import { take } from 'rxjs/operators';
+import { filter, take } from 'rxjs/operators';
 import { CloseDays } from 'src/app/classes/CloseDays';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { GoogleAnalyticsService } from 'src/app/services/google-analytics.service';
 import { DialogService } from 'src/app/services/dialog.service';
+import { CustomerService } from 'src/app/services/customer.service';
+import { NavigationEnd, Router } from '@angular/router';
 
 
 
@@ -40,7 +42,8 @@ export class ChangeBookComponent implements OnInit {
   finishStartDate: Date;
   loader:boolean = true;
   editMode: boolean = false;
-  constructor(private API: ApiServiceService, private dialog: DialogService,private googleAnalyticsService:GoogleAnalyticsService) {
+  previousUrl:string;
+  constructor(private router:Router, private API: ApiServiceService,private cusService: CustomerService, private dialog: DialogService,private googleAnalyticsService:GoogleAnalyticsService) {
 
   }
   
@@ -76,18 +79,31 @@ export class ChangeBookComponent implements OnInit {
   }
 
   ngOnInit() {
+    debugger;
+    
     this.book = this.bookDetails;
     this.googleAnalyticsService
     .pageview({ page_title: "שינוי התור", page_path: "/updatebook" });
     this.getAllCloseDays();
     if (!this.finishStartDate)
       this.finishStartDate = new Date(this.book.StartDate);
-    this.API.GetCustomerByPhone().subscribe(res => {
-      this.newStart = this.MinToTime(this.book.StartAt);
-      this.newEnd = this.MinToTime(this.book.StartAt + this.book.Durtion);
-      this.customer = res.Result;
-      this.loader = false;
-    })
+    if (this.router.url === "/Admin/Calendar"){
+      this.cusService.getCustomerById(this.book.CustomerID).subscribe(res => {
+        this.newStart = this.MinToTime(this.book.StartAt);
+        this.newEnd = this.MinToTime(this.book.StartAt + this.book.Durtion);
+        this.customer = res.Result;
+        this.loader = false;
+      })
+    }
+    else{
+      this.cusService.GetCustomerByPhone().subscribe(res => {
+        this.newStart = this.MinToTime(this.book.StartAt);
+        this.newEnd = this.MinToTime(this.book.StartAt + this.book.Durtion);
+        this.customer = res.Result;
+        this.loader = false;
+      })
+    }
+
     this.Time$ = this.API.getTimeByDate(this.book.StartDate,this.book.Durtion);
   }
 

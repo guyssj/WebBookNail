@@ -23,9 +23,7 @@ import { CEvent } from '../classes/CEvent';
 export class ApiServiceService {
   constructor(private http: HttpClient) { }
 
-  addCustomer(customer: Customer): Observable<resultsAPI<number>> {
-    return this.http.post<resultsAPI<number>>(`${environment.apiUrl}api/AddCustomer`, customer);
-  }
+
 
   getBooks() {
     return this.http.get<resultsAPI<CEvent<Book>[]>>(`${environment.apiUrl}admin/GetAllBook2`, { withCredentials: true });
@@ -47,22 +45,14 @@ export class ApiServiceService {
   getAllServicetypesByServiceID(id) {
     return this.http.get<resultsAPI<ServiceTypes[]>>(`${environment.apiUrl}api/GetAllServiceTypeByService?ServiceID=${id}`)
   }
-  generateOTP(phoneNumber) {
-    return this.http.get<resultsAPI<boolean>>(`${environment.apiUrl}api/GenerateToken?PhoneNumber=${phoneNumber}`)
-  }
-  verfiyOTP(otp,phoneNumber) {
-    return this.http.get<resultsAPI<boolean>>(`${environment.apiUrl}api/VerfiyToken?PhoneNumber=${phoneNumber}&OTP=${otp}`)
-  }
+
 
   async getAllServiceTypes() {
     let ServiceTypes = await this.http.get<resultsAPI<ServiceTypes[]>>(`${environment.apiUrl}api/GetAllServiceTypes`).toPromise()
     return ServiceTypes.Result;
   }
 
-  async GetAllCustomers() {
-    let customers = await this.http.get<resultsAPI<Customer[]>>(`${environment.apiUrl}admin/GetAllCustomers`, { withCredentials: true }).toPromise();
-    return customers.Result;
-  }
+
 
   async getAllLockHours(){
     let LockHours = await this.http.get<resultsAPI<CEvent[]>>(`${environment.apiUrl}admin/GetAllLockHours`).toPromise();
@@ -75,17 +65,12 @@ export class ApiServiceService {
     return CloseDays.Result;
   }
 
-  getCustomerById(id,otp) {
-    return this.http.get<resultsAPI<Customer>>(`${environment.apiUrl}api/GetCustomerById?CustomerID=${id}&OTP=${otp}`, { withCredentials: true });
-  }
+
 
   setBook(Book: Book): Observable<resultsAPI<any>> {
     return this.http.post<resultsAPI<any>>(`${environment.apiUrl}api/SetBook`, Book);
   }
 
-  GetCustomerByPhone() {
-    return this.http.get<resultsAPI<Customer>>(`${environment.apiUrl}api/GetCustomerByPhone`);
-  }
 
   GetBooksByCustomerPhone() {
     return this.http.get<resultsAPI<Book[]>>(`${environment.apiUrl}api/GetBooksByCustomer`,{ withCredentials: true });

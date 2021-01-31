@@ -26,7 +26,7 @@ export class AuthTokenService {
       }));
   }
   otpLogin(CustomerPhone,otp) {
-    return this.http.get(`${environment.apiUrl}api/VerfiyToken?PhoneNumber=${CustomerPhone}&OTP=${otp}`)
+    return this.http.post(`${environment.apiUrl}api/Customer/VerfiyToken`,{PhoneNumber:CustomerPhone,OTP:otp})
       .pipe(map<resultsAPI<any>,any>(user => {
         localStorage.setItem('userToken', JSON.stringify(user.Result));
         this.currentUserSubject.next(user.Result);

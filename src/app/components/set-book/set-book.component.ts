@@ -18,6 +18,7 @@ import { FormGroup, Validators, FormControl } from '@angular/forms';
 import { NgSelectComponent } from '@ng-select/ng-select';
 import { CloseDays } from 'src/app/classes/CloseDays';
 import { GoogleAnalyticsService } from 'src/app/services/google-analytics.service';
+import { CustomerService } from 'src/app/services/customer.service';
 
 
 @Component({
@@ -90,6 +91,7 @@ export class SetBookComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private API: ApiServiceService,
+    private cusService:CustomerService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private adapter: DateAdapter<any>) {
     this.getAllCloseDays();
@@ -258,7 +260,7 @@ export class SetBookComponent implements OnInit {
       LastName: this.reactiveForm.get("lastName").value,
       PhoneNumber: this.reactiveForm.get("phoneNumber").value
     }
-    this.API.addCustomer(this.customer).subscribe(id => {
+    this.cusService.addCustomer(this.customer).subscribe(id => {
       this.customer.CustomerID = id.Result;
       this.Books = new Book();
       this.Books = {
