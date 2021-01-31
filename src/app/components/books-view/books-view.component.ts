@@ -7,6 +7,7 @@ import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { DialogComponent } from '../dialog/dialog.component';
 import { addDays } from 'date-fns';
+import { ServicetypeService } from 'src/app/services/servicetype.service';
 
 export interface bookDetails {
   book: Book[],
@@ -29,7 +30,7 @@ export class BooksViewComponent implements OnInit {
   bookEdit: bookDetails;
 
 
-  constructor(private API: ApiServiceService, private dialog: MatDialog) {
+  constructor(private API: ApiServiceService,private servService:ServicetypeService, private dialog: MatDialog) {
 
   }
 
@@ -59,7 +60,7 @@ export class BooksViewComponent implements OnInit {
 
   }
   async getallServiceTypes() {
-    this.serviceTypes = await this.API.getAllServiceTypes();
+    this.serviceTypes = await this.servService.getAllServiceTypes();
   }
 
 }

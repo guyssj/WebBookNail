@@ -19,6 +19,8 @@ import { NgSelectComponent } from '@ng-select/ng-select';
 import { CloseDays } from 'src/app/classes/CloseDays';
 import { GoogleAnalyticsService } from 'src/app/services/google-analytics.service';
 import { CustomerService } from 'src/app/services/customer.service';
+import { BooksService } from 'src/app/services/books.service';
+import { ServicetypeService } from 'src/app/services/servicetype.service';
 
 
 @Component({
@@ -92,6 +94,8 @@ export class SetBookComponent implements OnInit {
     private dialog: MatDialog,
     private API: ApiServiceService,
     private cusService:CustomerService,
+    private booksService:BooksService,
+    private servService: ServicetypeService,
     private googleAnalyticsService: GoogleAnalyticsService,
     private adapter: DateAdapter<any>) {
     this.getAllCloseDays();
@@ -100,7 +104,7 @@ export class SetBookComponent implements OnInit {
   ngOnInit() {
     this.adapter.setLocale('he');
     this.Time$ = this.API.getAllTimes();
-    this.Services$ = this.API.getAllServices().pipe(map(item => item.Result));
+    this.Services$ = this.servService.getAllServices().pipe(map(item => item.Result));
     this.finishStartDate = this.calendarPickerMinDate;
     this.reactiveForm.patchValue({ date: this.finishStartDate });
   }
@@ -194,7 +198,7 @@ export class SetBookComponent implements OnInit {
       this.ServcieTypeSelected = null;
     }
     try {
-      this.API.getAllServicetypesByServiceID(event.ServiceID = !undefined ? event.ServiceID : 4).subscribe(api => {
+      this.servService.getAllServicetypesByServiceID(event.ServiceID = !undefined ? event.ServiceID : 4).subscribe(api => {
         this.ServicesTypes$ = api.Result;
         this.ServiceSelected = this.reactiveForm.value.service;
       })
@@ -271,7 +275,7 @@ export class SetBookComponent implements OnInit {
         ServiceTypeID: this.ServcieTypeSelected.ServiceTypeID,
         Durtion: this.ServcieTypeSelected.Duration
       }
-      this.API.setBook(this.Books).subscribe(results => {
+      this.booksService.setBook(this.Books).subscribe(results => {
         if (results.Result > 0) {
           this
             .googleAnalyticsService

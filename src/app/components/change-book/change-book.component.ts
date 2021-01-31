@@ -16,6 +16,7 @@ import { GoogleAnalyticsService } from 'src/app/services/google-analytics.servic
 import { DialogService } from 'src/app/services/dialog.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { NavigationEnd, Router } from '@angular/router';
+import { BooksService } from 'src/app/services/books.service';
 
 
 
@@ -43,7 +44,7 @@ export class ChangeBookComponent implements OnInit {
   loader:boolean = true;
   editMode: boolean = false;
   previousUrl:string;
-  constructor(private router:Router, private API: ApiServiceService,private cusService: CustomerService, private dialog: DialogService,private googleAnalyticsService:GoogleAnalyticsService) {
+  constructor(private router:Router,private booksService:BooksService, private API: ApiServiceService,private cusService: CustomerService, private dialog: DialogService,private googleAnalyticsService:GoogleAnalyticsService) {
 
   }
   
@@ -116,7 +117,7 @@ export class ChangeBookComponent implements OnInit {
    */
   UpdateBook(book: Book) {
     book.StartDate = this.finishStartDate.toISOString().split("T")[0];
-    this.API.UpdateBook(book).subscribe(res => {
+    this.booksService.UpdateBook(book).subscribe(res => {
       if (res.Result) {
         this.dialog.openDialog({ message: this.localRes.SuccessApp, type: typeMessage.Success }, 3000);
         this

@@ -9,6 +9,7 @@ import { DialogContentExampleDialog } from '../set-book/set-book.component';
 import { MessageConfig, typeMessage } from '../MessageConfig';
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
+import { ServicetypeService } from 'src/app/services/servicetype.service';
 
 @Component({
   selector: 'app-service-types',
@@ -17,7 +18,7 @@ import { take } from 'rxjs/operators';
 })
 export class ServiceTypesComponent implements OnInit {
 
-  constructor(private API: ApiServiceService, private localres: LocalresService, private dialog: MatDialog) { }
+  constructor(private API: ApiServiceService, private servService:ServicetypeService,private localres: LocalresService, private dialog: MatDialog) { }
   ServiceTypes: ServiceTypes[] = [];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   displayedColumns: string[] = ['ServiceTypeName', 'ServiceID', 'Description', 'Price', 'Duration'];
@@ -33,7 +34,7 @@ export class ServiceTypesComponent implements OnInit {
   }
 
   async GetAllServiceTypes() {
-    this.ServiceTypes = await this.API.getAllServiceTypes();
+    this.ServiceTypes = await this.servService.getAllServiceTypes();
     this.dataSource = new MatTableDataSource(this.ServiceTypes);
     this.dataSource.paginator = this.paginator;
     this.loader = false;
@@ -63,6 +64,8 @@ export class AddNewServiceType implements OnInit {
     public dialogRef: MatDialogRef<AddNewServiceType>,
     public fb: FormBuilder,
     public API: ApiServiceService,
+    private servService: ServicetypeService,
+
     private alert: MatDialog) { }
 
   public ServiceTypeForm = this.fb.group({
@@ -80,7 +83,7 @@ export class AddNewServiceType implements OnInit {
   }
 
   getAllService() {
-    this.API.getAllServices().subscribe(data => {
+    this.servService.getAllServices().subscribe(data => {
       this.Services = data.Result;
     });
   }
@@ -92,7 +95,7 @@ export class AddNewServiceType implements OnInit {
       });
     }
     else {
-      this.API.addServiceType(this.ServiceTypeForm.value).subscribe(data => {
+      this.servService.addServiceType(this.ServiceTypeForm.value).subscribe(data => {
         if (data.Result > 0) {
           this.openDialog({ message: this.data.SuccessApp, type: typeMessage.Success }, 3000)
         }

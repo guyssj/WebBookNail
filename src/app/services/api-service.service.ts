@@ -25,9 +25,7 @@ export class ApiServiceService {
 
 
 
-  getBooks() {
-    return this.http.get<resultsAPI<CEvent<Book>[]>>(`${environment.apiUrl}admin/GetAllBook2`, { withCredentials: true });
-  }
+
 
   getAllTimes():Observable<TimeSlots[]> {
     return this.http.get<TimeSlots[]>(`${environment.apiUrl}api/GetTimeSlots`);
@@ -38,19 +36,9 @@ export class ApiServiceService {
   TimeExist(date): Observable<resultsAPI<any[]>> {
     return this.http.get<resultsAPI<any[]>>(`${environment.apiUrl}api/GetSlotsExist?Date=${date}`)
   }
-  getAllServices(): Observable<resultsAPI<Services[]>> {
-    return this.http.get<resultsAPI<Services[]>>(`${environment.apiUrl}api/GetAllServices`)
-  }
-
-  getAllServicetypesByServiceID(id) {
-    return this.http.get<resultsAPI<ServiceTypes[]>>(`${environment.apiUrl}api/GetAllServiceTypeByService?ServiceID=${id}`)
-  }
 
 
-  async getAllServiceTypes() {
-    let ServiceTypes = await this.http.get<resultsAPI<ServiceTypes[]>>(`${environment.apiUrl}api/GetAllServiceTypes`).toPromise()
-    return ServiceTypes.Result;
-  }
+
 
 
 
@@ -67,31 +55,8 @@ export class ApiServiceService {
 
 
 
-  setBook(Book: Book): Observable<resultsAPI<any>> {
-    return this.http.post<resultsAPI<any>>(`${environment.apiUrl}api/SetBook`, Book);
-  }
 
 
-  GetBooksByCustomerPhone() {
-    return this.http.get<resultsAPI<Book[]>>(`${environment.apiUrl}api/GetBooksByCustomer`,{ withCredentials: true });
-  }
-
-  UpdateBook(Book: Book): Observable<resultsAPI<any>> {
-    return this.http.put<resultsAPI<any>>(`${environment.apiUrl}api/UpdateBook`, Book,{withCredentials:true});
-  }
-  UpdateBookAdmin(Book: Book): Observable<resultsAPI<any>> {
-    return this.http.put<resultsAPI<any>>(`${environment.apiUrl}admin/UpdateBook`, Book,{withCredentials:true});
-  }
-
-  DeleteBook(id: any, token): Observable<resultsAPI<any>> {
-    let headers = new HttpHeaders();
-    return this.http.post<resultsAPI<any>>(`${environment.apiUrl}admin/DeleteBook`, { id: id }, { withCredentials: true });
-
-  }
-
-  addServiceType(serviceType):Observable<resultsAPI<any>>{
-    return this.http.post<resultsAPI<any>>(`${environment.apiUrl}api/AddServiceType`,serviceType,{withCredentials:true});
-  }
 
   async getWorkHoursByDay(day){
     let workday = await this.http.get<resultsAPI<WorkingHours>>(`${environment.apiUrl}api/GetWorkHoursByDay?dayOfWeek=${day}`,{withCredentials:true}).toPromise();

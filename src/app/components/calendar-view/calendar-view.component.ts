@@ -32,6 +32,7 @@ import { DialogComponent } from '../dialog/dialog.component';
 import { CEvent } from 'src/app/classes/CEvent';
 import { ActionType } from 'src/app/classes/ActionType';
 import { CloseDays } from 'src/app/classes/CloseDays';
+import { BooksService } from 'src/app/services/books.service';
 
 
 export interface DialogData {
@@ -51,6 +52,7 @@ export class CalendarViewComponent implements OnInit {
   constructor(
     private API: ApiServiceService,
     private router: Router,
+    private bookService: BooksService,
     public dialog: MatDialog,
     public auth: AuthService,
     public Localres: LocalresService, public AuthLogin: AuthTokenService) {
@@ -121,7 +123,7 @@ export class CalendarViewComponent implements OnInit {
    * get API request with check if have token in Query string
    */
   getApiWithToken() {
-    this.API.getBooks().subscribe(allbook => {
+    this.bookService.getBooks().subscribe(allbook => {
       this.getAllLockHours();
       this.getAllCloseDays();
       this.Books = allbook.Result;
@@ -242,7 +244,7 @@ export class CalendarViewComponent implements OnInit {
     var newStartAt = newStart.getHours() * 60 + newStart.getMinutes();
     event.meta.StartDate = event.start.toISOString().split("T")[0];
     event.meta.StartAt = newStartAt
-    this.API.UpdateBookAdmin(event.meta).subscribe(res=>{
+    this.bookService.UpdateBook(event.meta).subscribe(res=>{
 
     });
     this.refresh.next();
@@ -353,7 +355,7 @@ export class CalendarViewComponent implements OnInit {
         if (result.Type == ActionType.Delete) {
           //this.events2 = result;
           this.events2 = this.events2.filter(Cevent => Cevent !== result.event);
-          this.API.DeleteBook(result.event.id, this.tokenCookie).subscribe(data => {
+          this.bookService.DeleteBook(result.event.id).subscribe(data => {
             console.log(data);
           })
         }
@@ -392,7 +394,7 @@ export class CalendarViewComponent implements OnInit {
     {
       label: '<i class="fa fa-fw fa-times"></i>',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.API.DeleteBook(event.id, this.tokenCookie).subscribe(data => {
+        this.bookService.DeleteBook(event.id).subscribe(data => {
           if (data.Result) {
             this.events2 = this.events2.filter(iEvent => iEvent !== event);
           }
