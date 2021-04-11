@@ -17,6 +17,7 @@ import { DialogService } from 'src/app/services/dialog.service';
 import { CustomerService } from 'src/app/services/customer.service';
 import { NavigationEnd, Router } from '@angular/router';
 import { BooksService } from 'src/app/services/books.service';
+import { CalendarService } from 'src/app/services/calendar.service';
 
 
 
@@ -44,7 +45,13 @@ export class ChangeBookComponent implements OnInit {
   loader:boolean = true;
   editMode: boolean = false;
   previousUrl:string;
-  constructor(private router:Router,private booksService:BooksService, private API: ApiServiceService,private cusService: CustomerService, private dialog: DialogService,private googleAnalyticsService:GoogleAnalyticsService) {
+  constructor(private router:Router,
+    private booksService:BooksService, 
+    private API: ApiServiceService,
+    private calendarService:CalendarService,
+    private cusService: CustomerService, 
+    private dialog: DialogService,
+    private googleAnalyticsService:GoogleAnalyticsService) {
 
   }
   
@@ -76,12 +83,10 @@ export class ChangeBookComponent implements OnInit {
   }
 
   async getAllCloseDays() {
-    this.closeDays = await this.API.getAllCloseDays()
+    this.closeDays = await this.calendarService.getAllCloseDays()
   }
 
-  ngOnInit() {
-    debugger;
-    
+  ngOnInit() {    
     this.book = this.bookDetails;
     this.googleAnalyticsService
     .pageview({ page_title: "שינוי התור", page_path: "/updatebook" });

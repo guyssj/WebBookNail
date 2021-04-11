@@ -46,6 +46,7 @@ import { BooksViewComponent } from './components/books-view/books-view.component
 import { CustomerService } from './services/customer.service';
 import { BooksService } from './services/books.service';
 import { ServicetypeService } from './services/servicetype.service';
+import { CalendarService } from './services/calendar.service';
 
 registerLocaleData(localeHe);
 
@@ -114,6 +115,7 @@ registerLocaleData(localeHe);
     AuthTokenService,
     CustomerService,
     BooksService,
+    CalendarService,
     ServicetypeService,
     AuthService,
     GoogleAnalyticsService,

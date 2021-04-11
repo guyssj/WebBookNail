@@ -21,6 +21,8 @@ import { GoogleAnalyticsService } from 'src/app/services/google-analytics.servic
 import { CustomerService } from 'src/app/services/customer.service';
 import { BooksService } from 'src/app/services/books.service';
 import { ServicetypeService } from 'src/app/services/servicetype.service';
+import { CalendarService } from 'src/app/services/calendar.service';
+import { AuthTokenService } from 'src/app/services/auth-token.service';
 
 
 @Component({
@@ -93,24 +95,29 @@ export class SetBookComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     private API: ApiServiceService,
-    private cusService:CustomerService,
-    private booksService:BooksService,
+    private cusService: CustomerService,
+    private booksService: BooksService,
     private servService: ServicetypeService,
+    private calendarService: CalendarService,
     private googleAnalyticsService: GoogleAnalyticsService,
+    private authServ: AuthTokenService,
     private adapter: DateAdapter<any>) {
     this.getAllCloseDays();
   }
 
   ngOnInit() {
     this.adapter.setLocale('he');
-    this.Time$ = this.API.getAllTimes();
+    //this.Time$ = this.API.getAllTimes();
     this.Services$ = this.servService.getAllServices().pipe(map(item => item.Result));
     this.finishStartDate = this.calendarPickerMinDate;
     this.reactiveForm.patchValue({ date: this.finishStartDate });
+    if(this.authServ.currentUserValue.userName)
+      this.reactiveForm.patchValue({ phoneNumber: this.authServ.currentUserValue.userName });
+
   }
 
   async getAllCloseDays() {
-    this.closeDays = await this.API.getAllCloseDays();
+    this.closeDays = await this.calendarService.getAllCloseDays();
   }
 
   /**
@@ -234,7 +241,7 @@ export class SetBookComponent implements OnInit {
         this.finishStartDate = addDays(this.finishStartDate, 1);
     }
 
-    if( this.finishStartDate.getDay() == 6)
+    if (this.finishStartDate.getDay() == 6)
       this.finishStartDate = addDays(this.finishStartDate, 1);
 
     this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0], this.ServcieTypeSelected.Duration);

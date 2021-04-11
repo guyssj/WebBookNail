@@ -33,28 +33,6 @@ export class ApiServiceService {
   getTimeByDate(date,Duration=0):Observable<TimeSlots[]> {
     return this.http.get<TimeSlots[]>(`${environment.apiUrl}api/GetTimeSlots?Date=${date}&Duration=${Duration}`);
   }
-  TimeExist(date): Observable<resultsAPI<any[]>> {
-    return this.http.get<resultsAPI<any[]>>(`${environment.apiUrl}api/GetSlotsExist?Date=${date}`)
-  }
-
-
-
-
-
-
-  async getAllLockHours(){
-    let LockHours = await this.http.get<resultsAPI<CEvent[]>>(`${environment.apiUrl}admin/GetAllLockHours`).toPromise();
-    return LockHours.Result;
-  }
-
-
-  async getAllCloseDays() {
-    let CloseDays = await this.http.get<resultsAPI<CloseDays[]>>(`${environment.apiUrl}api/GetHolidayClosed`).toPromise();
-    return CloseDays.Result;
-  }
-
-
-
 
 
 
@@ -63,10 +41,6 @@ export class ApiServiceService {
     return workday.Result;
   }
 
-  async getLockHoursByDate(date){
-    let LockHours = await this.http.get<resultsAPI<any>>(`${environment.apiUrl}api/GetLockHoursByDate?Date=${date}`,{withCredentials:true}).toPromise();
-    return LockHours.Result;
-  }
 
   getCookie(cname) {
     var name = cname + "=";

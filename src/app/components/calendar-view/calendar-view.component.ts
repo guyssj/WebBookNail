@@ -33,6 +33,7 @@ import { CEvent } from 'src/app/classes/CEvent';
 import { ActionType } from 'src/app/classes/ActionType';
 import { CloseDays } from 'src/app/classes/CloseDays';
 import { BooksService } from 'src/app/services/books.service';
+import { CalendarService } from 'src/app/services/calendar.service';
 
 
 export interface DialogData {
@@ -53,6 +54,7 @@ export class CalendarViewComponent implements OnInit {
     private API: ApiServiceService,
     private router: Router,
     private bookService: BooksService,
+    private calendarService: CalendarService,
     public dialog: MatDialog,
     public auth: AuthService,
     public Localres: LocalresService, public AuthLogin: AuthTokenService) {
@@ -99,10 +101,10 @@ export class CalendarViewComponent implements OnInit {
   }
 
   async getAllLockHours() {
-    this.lockHours = await this.API.getAllLockHours();
+    this.lockHours = await this.calendarService.getAllLockHours();
   }
   async getAllCloseDays() {
-    this.CloseDays = await this.API.getAllCloseDays();
+    this.CloseDays = await this.calendarService.getAllCloseDays();
   }
 
   convertEventToBook(Event: CalendarEvent<Book>): Book {

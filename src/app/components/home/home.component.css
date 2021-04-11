@@ -73,6 +73,14 @@ div{
     }
 }
 
+.heading{
+    color:#e08b91;
+}
+
+li:hover .heading{
+    color: white;
+}
+
 #return-to-top {
     position: fixed;
     bottom: 20px;
