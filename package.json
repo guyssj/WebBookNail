@@ -32,7 +32,7 @@
     "@ng-select/ng-select": "^3.0.6",
     "@types/gapi": "0.0.39",
     "@types/jquery": "^3.3.15",
-    "angular-calendar": "^0.29.0-beta.4",
+    "angular-calendar": "^0.28.24",
     "bootstrap": "^4.3.1",
     "core-js": "^2.5.4",
     "date-fns": "^1.30.1",
