@@ -1,72 +1,66 @@
-<app-navbar [localRes]="localRes" (showChange)="showPanel($event)"></app-navbar>
-
-<div class="bgded overlay" style="background-image:url('assets/background.jpg');">
-<div id="pageintro" class="hoc clear">
-    <div class="fadeIn">
-      <!-- ################################################################################################ -->
-      <article>
-        <h1>{{localRes?.BookNow}}</h1>
-        <main role="contentinfo">
-          <!-- Button trigger modal -->
-          <a class="btn pink " data-toggle="modal" style="padding: 15px;" data-target=".bd-example-modal-lg"
-            href="">{{localRes?.clickBook}}</a>
-        </main>
-
-      </article>
-
-      <!-- ################################################################################################ -->
-    </div>
-  </div>
-  <!-- ################################################################################################ -->
-  <!-- ################################################################################################ -->
-  <!-- ################################################################################################ -->
-  <div id="introblocks" class="hoc clear fadeIn">
-    <ul class="nospace">
-      <!-- ################################################################################################ -->
-      <li>
+<div class="bg">
+  <ul class="nav nav-pills nav-fill">
+    <li class="nav-item">
+      <a class="nav-link " style="color: black;" href="https://wa.me/972{{settings?.PhoneNumber}}">
+        <strong>{{localRes?.SendMessage}}:</strong>{{settings?.PhoneNumber}}&nbsp;<i class="fab fa-whatsapp"></i>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a class="nav-link">
+        <strong>{{localRes?.WorkingHours}}:</strong> {{settings?.WorkingHours}}&nbsp;<i
+          class="far fa-1x fa-clock"></i></a>
+    </li>
+    <li class="nav-item float-right">
+      <a class="nav-link" style="color: black;" [href]="settings?.WazeLink">
         <div>
-          <i class="far fa-3x fa-clock"></i>
-          <h4 class="heading">{{localRes?.WorkingHours}}</h4>
-          <p>{{settings?.WorkingHours}}</p>
-        </div>
-      </li>
-      <li>
-        <a class="nav-link text-white" href="https://wa.me/972{{settings?.PhoneNumber}}">
-        <div>
-          <i class="fab fa-whatsapp"></i>
-          <h4 class="heading">{{localRes?.SendMessage}}</h4>
-          <p>{{settings?.PhoneNumber}}</p>
+          <strong class="">{{localRes?.Address}}</strong>
+          {{settings?.Address}}
+          <i class="fab fa-1x fa-waze"></i>
         </div>
       </a>
-      </li>
-      <li>
-        <a class="nav-link text-white" [href]="settings?.WazeLink">
-        <div>
-          <i class="fab fa-3x fa-waze"></i>
-          <h4 class="heading">{{localRes?.Address}}</h4>
-          <p>{{settings?.Address}}</p>
-        </div>
-      </a>
-      </li>
-      <!-- ################################################################################################ -->
-    </ul>
-  </div>
+    </li>
+  </ul>
 </div>
-<div class="wrapper row4">
-  <footer role="doc-credits" id="footer" class="hoc clear">
-      <div class="one_third float-left">
-                  <!-- <iframe role="none" aria-labelledby="Google" title="Google Maps Frame" aria-label="Google Maps" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1676.6424620671141!2d35.48589961714824!3d32.81121479656767!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x151c3ece8a87ec4b%3A0x1aa67c5155f3911f!2z15TXktek158sINeQ16jXkdec!5e0!3m2!1siw!2sil!4v1571944050463!5m2!1siw!2sil" width="100%" height="100%" frameborder="0" style="border:0; width:46vw; height: 30vh;" allowfullscreen=""></iframe> -->
+<app-navbar [localRes]="localRes" (showChange)="showPanel($event)"></app-navbar>
+<div class="bgded fadeIn" style="background-image:url('assets/backRTL.png');">
+  <main>
+    <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)"
+      (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
+      <div ngxSlickItem *ngFor="let slide of slides" class="slide">
+        <div class="headText" style="display: block;">
+          <h1 class="">{{slide.text}}
+            <hr class="hrLine">
+          </h1>
+          <a class="btn pink" style="height: 50px; text-align: center; padding: 13px;" data-toggle="modal"
+            data-target=".bd-example-modal-lg" href="">{{localRes?.clickBook}}</a>
+        </div>
+        <img class="" src="{{slide.img}}" />
 
-        <!-- <div style="width: 100%"><iframe width="100%" height="100" src="https://maps.google.com/maps?width=100%&amp;height=100&amp;hl=en&amp;q=%D7%94%D7%92%D7%A4%D7%9F%20%D7%90%D7%A8%D7%91%D7%9C+(%D7%9E%D7%99%D7%A8%D7%99%D7%AA%D7%95%D7%A9)&amp;ie=UTF8&amp;t=&amp;z=16&amp;iwloc=B&amp;output=embed" frameborder="0" scrolling="no" marginheight="0" marginwidth="0"><a href="http://www.gps.ie/">Google Maps GPS</a></iframe></div><br /> -->
       </div>
-    <!-- ################################################################################################ -->
-    <div class="one_third float-right">
-      <h6 class="heading">{{localRes?.Contact}}</h6>
+    </ngx-slick-carousel>
+  </main>
+</div>
+<div class="wrapper footer-style fadeIn">
+  <footer role="doc-credits" id="footer" class="hoc clear">
+    <!-- Wokring hours -->
+    <div class="one_quarter float-right">
+      <h6 class="footerHeading">{{localRes?.WorkingHours}}</h6>
+      <hr>
+      <ul role="listitem" class="nospace linklist contact">
+        <li>
+          {{settings?.WorkingHours}}
+        </li>
+      </ul>
+    </div>
+    <!-- contact us -->
+    <div class="one_half float-right">
+      <h6 class="footerHeading">{{localRes?.Contact}}</h6>
+      <hr>
       <ul role="listitem" class="nospace btmspace-30 linklist contact">
         <li>
           <i class="fa fa-map-marker"></i>
           <address>
-           {{settings?.Address}}
+            {{settings?.Address}}
           </address>
         </li>
         <li>
@@ -81,17 +75,18 @@
           </a>
         </li>
         <li>
-            <a class="faicon-facebook" aria-label="Instgram Link" title="Instegram Link" [href]="settings?.InstegramLink">
-                <i class="fab fa-instagram"></i>
-              </a>
-          </li>
+          <a class="faicon-facebook" aria-label="Instgram Link" title="Instegram Link" [href]="settings?.InstegramLink">
+            <i class="fab fa-instagram"></i>
+          </a>
+        </li>
       </ul>
     </div>
-    <!-- ################################################################################################ -->
 
   </footer>
-  
+
 </div>
+
+
 <!-- ################################################################################################ -->
 <!-- ########################footer######################################### -->
 <!-- ################################################################################################ -->
@@ -103,11 +98,13 @@
     </p>
     <p class="fl_right">Template by
       <a target="_blank" href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a>
-      <a href='https://www.freepik.com/free-vector/pedicure-illustration_753439.htm'>&nbsp; Photos by Freepik</a>
+      <a href='https://www.freepik.com/photos/hand'>&nbsp; Photos by Freepik</a>
     </p>
     <!-- ################################################################################################ -->
   </div>
 </div>
+
+
 <!-- ################################################################################################ -->
 <!-- Modal and return button -->
 <!-- ################################################################################################ -->
@@ -116,17 +113,19 @@
   <i class="fa fa-angle-up"></i>
 </a>
 <!-- Modal SetBook -->
-<div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+  aria-hidden="true">
 
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="float-left close" style="margin: -1rem !important;" data-dismiss="modal" aria-label="Close">
+        <button type="button" class="float-left close" style="margin: -1rem !important;" data-dismiss="modal"
+          aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="float-right inline" style="color: rgba(201,109,159,1);">קביעת תור {{settings?.StoreName}}</h4>
+        <h4 class="float-right inline">קביעת תור {{settings?.StoreName}}</h4>
       </div>
-      <div class="line"></div>
+      <hr class="hrLine">
       <div class="modal-body">
         <app-set-book [localRes]="localRes"></app-set-book>
       </div>
@@ -135,20 +134,24 @@
 </div>
 
 
-<div class="modal fade" id="SerachModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2" aria-hidden="true">
+<div class="modal fade" id="SerachModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2"
+  aria-hidden="true">
 
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" (click)="clear(true);" class="float-left close" style="margin: -1rem !important;" data-dismiss="modal" aria-label="Close">
+        <button type="button" (click)="clear(true);" class="float-left close" style="margin: -1rem !important;"
+          data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="float-right inline" style="color: rgba(201,109,159,1);">התור שלך</h4>
+        <h4 class="float-right inline">התור שלך</h4>
       </div>
-      <div class="line"></div>
+      <hr class="hrLine">
       <div class="modal-body">
-        <app-search-book [localRes]="localRes" *ngIf="showSer" (Clear)=clear($event) (BookFounded)="whenCustomerFound($event)"></app-search-book>
-        <app-books-view [localRes]="localRes" [booksDetails]="bookFound" (Clear)=clear($event) *ngIf="hidetheSer" ></app-books-view>
+        <app-search-book [localRes]="localRes" *ngIf="showSer" (Clear)=clear($event)
+          (BookFounded)="whenCustomerFound($event)"></app-search-book>
+        <app-books-view [localRes]="localRes" [booksDetails]="bookFound" (Clear)=clear($event) *ngIf="hidetheSer">
+        </app-books-view>
       </div>
     </div>
   </div>

@@ -47,6 +47,10 @@ import { CustomerService } from './services/customer.service';
 import { BooksService } from './services/books.service';
 import { ServicetypeService } from './services/servicetype.service';
 import { CalendarService } from './services/calendar.service';
+import { NguCarouselModule } from '@ngu/carousel';
+import { SlickCarouselModule } from 'ngx-slick-carousel';
+
+
 
 registerLocaleData(localeHe);
 
@@ -104,6 +108,7 @@ registerLocaleData(localeHe);
     AngularFireAuthModule,
     AdminRoutingModule,
     FontAwesomeModule,
+    SlickCarouselModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory

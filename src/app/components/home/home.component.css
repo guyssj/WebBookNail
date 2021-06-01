@@ -11,6 +11,31 @@ File: Custom Flexslider CSS => For FlexSlider v2.6.1
 /* Browser Resets
 
 --------------------------------------------------------------------------------------------------------------- */
+.slick-dots{
+    margin-left: 30%;
+    color:#ffd8cb;
+}
+.slide{
+    width: 1440px;
+    height: 684px;
+}
+.headText{
+    float: right;
+    margin: 13%;
+    display: block;
+    width: 300px;
+}
+
+.bg{
+    background-color: #ffd8cb;
+    height: 50px;
+    transition-duration: 0.4s;
+}
+.nav{
+    padding-top: 8px;
+}
+
+
 .flex-container a:hover, .flex-slider a:hover{outline:none;}
 .slides, .slides > li, .flex-control-nav, .flex-direction-nav{margin:0; padding:0; list-style:none;}
 .flex-direction-nav a{font-family:"FontAwesome";}
@@ -68,13 +93,28 @@ div{
 .flex-control-paging li a.flex-active{background-color:rgba(255,255,255,0); border-color:rgba(255,255,255,1);}
 
 @media screen and (max-width: 767px){
-    .bgded{
+    /* .bgded{
         background-image: url('/assets/backgroundSmall.jpg') !important;
-    }
+    } */
+}
+
+.hrLine{
+    border-top-width: 3px;
+border-top-style: solid;
+border-top-color: #ffd8cb;
 }
 
 .heading{
-    color:#e08b91;
+    color:#F37272;
+}
+.footerHeading{
+    color: black;
+    font-size: 1.8rem;
+}
+.footer-style hr{
+    border-top-width: 3px;
+    border-top-style: solid;
+    border-top-color: #ffd8cb;
 }
 
 li:hover .heading{
@@ -125,9 +165,9 @@ li:hover .heading{
 .line{
     width: 100%; 
     height: 1px;
-    background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0.96) 4%, rgba(201,109,159,0.5) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(255,255,255,0.96) 4%,rgba(201,109,159,0.5) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to right, rgba(255,255,255,1) 0%,rgba(255,255,255,0.96) 4%,rgba(201,109,159,0.5) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0.96) 4%, rgba(243, 114, 114, 0.5) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(255,255,255,0.96) 4%,rgba(243, 114, 114, 0.5) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, rgba(255,255,255,1) 0%,rgba(255,255,255,0.96) 4%,rgba(243, 114, 114, 0.5) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
     }
 
@@ -155,7 +195,7 @@ li:hover .heading{
 /* Safari, Chrome and Opera > 12.1 */
 @-webkit-keyframes fadein {
     from { opacity: 0; }
-    to   {opacity: 1;}
+    to   {opacity: 1; }
 }
 
 /* Internet Explorer */

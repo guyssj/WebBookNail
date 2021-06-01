@@ -8,46 +8,54 @@ div{
 }
 
 .transparent-navbar{
-
-    -webkit-box-shadow: 0px 3px 9px -3px rgba(0,0,0,0.5);
+    /* -webkit-box-shadow: 0px 3px 9px -3px rgba(0,0,0,0.5);
     -moz-box-shadow: 0px 3px 9px -3px rgba(0,0,0,0.5);
-    box-shadow: 0px 3px 9px -3px rgba(0,0,0,0.5);
-   background-color: rgba(201, 109, 160, 1);
-    -webkit-animation: fadeback .5s; /* Safari, Chrome and Opera > 12.1 */
-    -moz-animation: fadeback .5s; /* Firefox < 16 */
-     -ms-animation: fadeback .5s; /* Internet Explorer */
-      -o-animation: fadeback .5s; /* Opera < 12.1 */
-         animation: fadeback .5s;
-    
-}
-@keyframes fadeback {
-    from { background-color: rgba(0, 0, 0, 0); }
-    to   {background-color: rgba(201, 109, 160, 1);}
+    box-shadow: 0px 3px 9px -3px rgba(0,0,0,0.5); */
+   position: fixed;
+   top:0;
+   width: 100%;
+   transition-duration: 0.4s;
+   background-color: white;
+   z-index: 1;
+
 }
 
-/* Firefox < 16 */
+.brand-centered {
+    display: flex;
+    justify-content: center;
+    left: 0;
+    top: 0;
+  }
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+  }
+  
+
+/* @keyframes fadeback {
+    from { background-color: rgba(0, 0, 0, 0); }
+    to   {background-color: transparent}
+}
+
 @-moz-keyframes fadeback {
     from { background-color: rgba(0, 0, 0, 0); }
-    to   {background-color: rgba(201, 109, 160, 1);}
+    to   {background-color: transparent}
 }
 
-/* Safari, Chrome and Opera > 12.1 */
 @-webkit-keyframes fadeback {
     from { background-color: rgba(0, 0, 0, 0); }
-    to   {background-color: rgba(201, 109, 160, 1);}
+    to   {background-color: transparent}
 }
 
-/* Internet Explorer */
 @-ms-keyframes fadeback {
     from { background-color: rgba(0, 0, 0, 0); }
-    to   {background-color: rgba(201, 109, 160, 1);}
+    to   {background-color: transparent}
 }
 
-/* Opera < 12.1 */
 @-o-keyframes fadeback {
     from { background-color: rgba(0, 0, 0, 0); }
     to   {background-color: rgba(201, 109, 160, 1);}
-}
+} */
 
 @media screen  and (max-width: 767px){
     .transparent-navbar2{
@@ -56,42 +64,106 @@ div{
         box-shadow: 0px 3px 9px -3px rgba(0,0,0,0.5);
         background-color: rgba(201, 109, 160, 1);
     }
+    .brand-centered {
+        display: none;
+      }
 }
 
+ul {
+    list-style-type: none;
+    margin: 0;
+    text-align: center;
+  }
+  ul li {
+    display: inline-block;
+    margin: 0 20px;
+  }
+  
+  a {
+    font-size: 20px;
+    color: #584E4A;
+    position: relative;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding-bottom: 8px;
+  }
+  a:before, a:after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: #F37272;
+  }
+  a:before {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: transform 0s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0s;
+  }
+  a:after {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+  }
+  a:hover:before, a:hover:after, a:focus:before, a:focus:after {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  a:hover:before, a:focus:before {
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+  }
+  a:hover:after, a:focus:after {
+    transition: transform 0s 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0s 0.2s;
+  }
+
+@media screen  and (min-width: 768px){
+    .brand-collose {
+        display: none;
+      }
+}
+/* 
 @keyframes fadeoutback {
     from { background-color: rgba(201, 109, 160, 1); }
     to   {background-color: rgba(0, 0, 0, 0);}
 }
 
-/* Firefox < 16 */
 @-moz-keyframes fadeoutback {
     from { background-color: rgba(201, 109, 160, 1); }
     to   {background-color: rgba(0, 0, 0, 0);}
 }
 
-/* Safari, Chrome and Opera > 12.1 */
 @-webkit-keyframes fadeoutback {
     from { background-color: rgba(201, 109, 160, 1); }
     to   {background-color: rgba(0, 0, 0, 0);}
 }
 
-/* Internet Explorer */
 @-ms-keyframes fadeoutback {
     from { background-color: rgba(201, 109, 160, 1); }
     to   {background-color: rgba(0, 0, 0, 0);}
 }
 
-/* Opera < 12.1 */
 @-o-keyframes fadeoutback {
     from { background-color: rgba(201, 109, 160, 1); }
     to   {background-color: rgba(0, 0, 0, 0);}
-}
+} */
 
 .transparent-navbar2{
-    box-shadow: 0px 3px 9px -3px rgba(0,0,0,0);
-    animation: fadeoutback .5s;
-}
+    /* box-shadow: 0px 3px 9px -3px rgba(0,0,0,0); */
+    transition-duration: 0.4s;
+    background-color: white;
+    z-index: 1;
 
+}
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+  
+  .sticky + .content {
+    padding-top: 60px;
+  }
 .nav-link{
     font-size: 3.5vh;
 }
