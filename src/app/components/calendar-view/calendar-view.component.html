@@ -58,18 +58,19 @@
   </div>
   <div class="row">
     <div class="col-sm-12 bg">
-      <div style="overflow: auto;">
+      <div style="overflow: auto;" dir="rtl">
         <div [ngSwitch]="view" *ngIf="loading2 == false; else loading">
           <mwl-calendar-month-view *ngSwitchCase="'month'" [viewDate]="viewDate" [events]="events2" [refresh]="refresh"
-            [locale]="locale" (eventTimesChanged)="eventTimesChanged($event)" (dayClicked)="dayClicked($event.day)" (eventClicked)="clickEvent($event)"
-            [activeDayIsOpen]="activeDayIsOpen">
+            [locale]="locale" (eventTimesChanged)="eventTimesChanged($event)" (dayClicked)="dayClicked($event.day)"
+            (eventClicked)="clickEvent($event)" [activeDayIsOpen]="activeDayIsOpen">
           </mwl-calendar-month-view>
           <mwl-calendar-week-view *ngSwitchCase="'week'" [viewDate]="viewDate" [events]="events2" [refresh]="refresh"
-            [locale]="locale" (eventTimesChanged)="eventTimesChanged($event)" [hourSegments]="2" [dayStartHour]="8" [dayEndHour]="19"
-            (eventClicked)="clickEvent($event)">
+            [locale]="locale" (eventTimesChanged)="eventTimesChanged($event)" [hourSegments]="2" [dayStartHour]="8"
+            [dayEndHour]="19" (eventClicked)="clickEvent($event)">
           </mwl-calendar-week-view>
-          <mwl-calendar-day-view (eventTimesChanged)="eventTimesChanged($event)" [viewDate]="viewDate"  (eventClicked)="clickEvent($event)"
-             [events]="events2" *ngSwitchCase="'day'"  [refresh]="refresh" [locale]="locale" [dayStartHour]="8" [dayEndHour]="19">
+          <mwl-calendar-day-view (eventTimesChanged)="eventTimesChanged($event)" [viewDate]="viewDate"
+            (eventClicked)="clickEvent($event)" [events]="events2" *ngSwitchCase="'day'" [refresh]="refresh"
+            [locale]="locale" [dayStartHour]="8" [dayEndHour]="19">
           </mwl-calendar-day-view>
 
         </div>

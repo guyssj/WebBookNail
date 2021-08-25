@@ -1,14 +1,30 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MatButtonModule, MatCheckboxModule, MatDialogModule, MatNativeDateModule, MatFormFieldModule, MatInputModule, MatDatepickerModule, MatIconModule, MatProgressBarModule, MatTableModule, MatPaginatorModule, MatOptionModule, MatSelectModule, MatProgressSpinnerModule, MatSidenavModule, MatMenuModule, MatCard, MatCardActions, MatCardModule, MatChipsModule } from '@angular/material';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatNativeDateModule, MatOptionModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatTableModule } from '@angular/material/table';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import localeHe from '@angular/common/locales/he';
 import { registerLocaleData } from '@angular/common';
 import { AppComponent } from './app.component';
-import { SetBookComponent, DialogContentExampleDialog } from './components/set-book/set-book.component';
+import { DialogContentExampleDialog } from './components/set-book/set-book.component';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { CustomersComponent } from './components/customers/customers.component';
 import { ApiServiceService } from './services/api-service.service';
@@ -131,8 +147,8 @@ registerLocaleData(localeHe);
     { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
-  bootstrap: [AppComponent],
-  entryComponents: [DialogContentExampleDialog, DialogForClickEvent, DialogComponent, AddNewServiceType, SetBookDialogComponent]
+  bootstrap: [AppComponent]
+  //entryComponents: [DialogContentExampleDialog, DialogForClickEvent, DialogComponent, AddNewServiceType, SetBookDialogComponent]
 })
 export class AppModule {
   constructor() {

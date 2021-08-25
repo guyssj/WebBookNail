@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { MessageConfig } from '../components/MessageConfig';
 import { DialogContentExampleDialog } from '../components/set-book/set-book.component';
 import { take } from 'rxjs/operators';

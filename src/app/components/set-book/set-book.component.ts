@@ -8,7 +8,9 @@ import { Services } from '../../classes/Services';
 import { ServiceTypes } from '../../classes/servicetypes';
 import { Book } from '../../classes/Book';
 import { Customer } from 'src/app/classes/Customer';
-import { MatDialog, MAT_DIALOG_DATA, DateAdapter, MatSelectChange } from '@angular/material';
+import { DateAdapter } from '@angular/material/core';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
 import { MessageConfig, typeMessage } from '../MessageConfig';
 import { take, map } from 'rxjs/operators';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
@@ -133,6 +135,7 @@ export class SetBookComponent implements OnInit {
    * check if all form field is valid
    */
   onSubmit() {
+    debugger;
     if (!this.reactiveForm.valid) {
       Object.keys(this.reactiveForm.controls).forEach(field => { // {1}
         const control = this.reactiveForm.get(field);            // {2}

@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ApiServiceService } from 'src/app/services/api-service.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { Book } from 'src/app/classes/Book';
 import { ServiceTypes } from 'src/app/classes/servicetypes';
 import { timer } from 'rxjs';

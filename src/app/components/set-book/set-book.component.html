@@ -2,23 +2,23 @@
   <!-- First Name and LastName -->
   <div>
     <div class="form-row">
-      <mat-form-field class="input-inline">
-        <input cdkFocusInitial matInput role="textbox" placeholder="{{localRes?.FirstName}}" formControlName="firstName"
-          required>
-        <mat-error *ngIf="reactiveForm.invalid"> {{localRes?.ValidationFirstName}}</mat-error>
+      <mat-form-field floatLabel="auto" class="input-inline">
+        <input color="primary" cdkFocusInitial matInput placeholder="{{localRes?.FirstName}}"
+          formControlName="firstName" required>
+        <mat-error *ngIf="!reactiveForm.hasError('required')">
+          {{localRes?.ValidationFirstName}}</mat-error>
       </mat-form-field>
       <mat-form-field class="input-inline">
-        <input matInput role="textbox" placeholder="{{localRes?.LastName}}" formControlName="lastName" required>
-        <mat-error *ngIf="reactiveForm.invalid"> {{localRes?.ValidationLastName}}</mat-error>
+        <input matInput placeholder="{{localRes?.LastName}}" formControlName="lastName" required>
+        <mat-error *ngIf="!reactiveForm.hasError('required')">> {{localRes?.ValidationLastName}}</mat-error>
       </mat-form-field>
     </div>
 
     <!-- Phone Number -->
     <div class="form-row">
       <mat-form-field class="input-inline" style="margin-top: 13px;">
-        <input matInput role="textbox" type="tel" placeholder="{{localRes?.PhoneNumber}}" formControlName="phoneNumber"
-          required>
-        <mat-error *ngIf="reactiveForm.invalid">{{localRes?.ValidationPhone}}</mat-error>
+        <input matInput type="tel" placeholder="{{localRes?.PhoneNumber}}" formControlName="phoneNumber" required>
+        <mat-error *ngIf="!reactiveForm.hasError('required')">{{localRes?.ValidationPhone}}</mat-error>
       </mat-form-field>
       <!-- <div class="input-inline">
         <ng-select [items]="Services$ | async" dir="rtl" placeholder="{{localRes?.selectedService}}"
@@ -33,12 +33,11 @@
             {{service.ServiceName}}
           </mat-option>
         </mat-select>
-        <button *ngIf="reactiveForm.controls.service.value" matSuffix mat-icon-button aria-label="Clear"
+        <button type="button" *ngIf="reactiveForm.controls.service.value" matSuffix mat-icon-button aria-label="Clear"
           (click)="onServiceChange(null); $event.stopPropagation()">
           <mat-icon>x</mat-icon>
         </button>
-        <mat-error *ngIf="reactiveForm.invalid">אנא בחר/י טיפול</mat-error>
-        <mat-hint>{{reactiveForm.value?.sound}}</mat-hint>
+        <mat-error *ngIf="!reactiveForm.hasError('required')">אנא בחר/י טיפול</mat-error>
       </mat-form-field>
     </div>
   </div>
@@ -51,12 +50,11 @@
           {{serviceType.ServiceTypeName}}
         </mat-option>
       </mat-select>
-      <button *ngIf="reactiveForm.controls.ServiceType.value" matSuffix mat-icon-button aria-label="Clear"
+      <button type="button" *ngIf="reactiveForm.controls.ServiceType.value" matSuffix mat-icon-button aria-label="Clear"
         (click)="reactiveForm.controls.ServiceType.setValue(null); $event.stopPropagation()">
         <mat-icon>x</mat-icon>
       </button>
       <mat-error *ngIf="reactiveForm.invalid">אנא בחר/י סוג טיפול</mat-error>
-      <mat-hint>{{reactiveForm.value?.sound}}</mat-hint>
     </mat-form-field>
     <div class="input-inline" *ngIf="reactiveForm.controls.ServiceType.value">
       <p>{{reactiveForm.controls.ServiceType.value.Description}}</p>
@@ -96,7 +94,7 @@
   </div>
   <div style="padding-top: 2%;">
     <button type="submit" mat-button [disabled]="reactiveForm.invalid" class="btn pink">{{localRes?.BookSet}}</button>
-    <button mat-dialog-close type="button" class="btn btn-secondary" style="border-radius: 30px;"
+    <button type="button" mat-dialog-close type="button" class="btn btn-secondary" style="border-radius: 30px;"
       data-dismiss="modal">{{localRes?.Cancel}}</button>
   </div>
 </form>

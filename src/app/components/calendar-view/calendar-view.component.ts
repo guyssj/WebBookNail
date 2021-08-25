@@ -18,7 +18,7 @@ import {
 import { Observable, Subject, timer } from "rxjs";
 import { Router } from "@angular/router";
 import { addDays, addMinutes } from 'date-fns';
-import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from "@angular/material";
+import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { DialogContentExampleDialog } from "../set-book/set-book.component";
 import { AuthService } from "src/app/services/auth.service";
 import { GoogleEvent } from "src/app/classes/GoogleEvents";

@@ -6,7 +6,7 @@ import { isObject } from 'util';
 import { ApiServiceService } from 'src/app/services/api-service.service';
 import { Settings } from 'src/app/classes/StoreSettings';
 import { SettingsService } from 'src/app/services/settings.service';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { SetBookDialogComponent } from 'src/app/dialogs/set-book-dialog/set-book-dialog.component';
 
 @Component({

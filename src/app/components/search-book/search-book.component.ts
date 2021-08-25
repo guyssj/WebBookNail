@@ -5,7 +5,7 @@ import { MessageConfig, typeMessage } from '../MessageConfig';
 import { DialogContentExampleDialog } from '../set-book/set-book.component';
 import { timer } from 'rxjs';
 import { take, first } from 'rxjs/operators';
-import { MatDialog } from '@angular/material';
+import { MatDialog } from '@angular/material/dialog';
 import { addDays, min } from 'date-fns';
 import { AuthTokenService } from 'src/app/services/auth-token.service';
 import { DialogService } from 'src/app/services/dialog.service';
