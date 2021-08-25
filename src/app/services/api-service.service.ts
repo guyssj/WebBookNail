@@ -23,24 +23,17 @@ import { CEvent } from '../classes/CEvent';
 export class ApiServiceService {
   constructor(private http: HttpClient) { }
 
-
-
-
-
-  getAllTimes():Observable<TimeSlots[]> {
+  getAllTimes(): Observable<TimeSlots[]> {
     return this.http.get<TimeSlots[]>(`${environment.apiUrl}api/GetTimeSlots`);
   }
-  getTimeByDate(date,Duration=0):Observable<TimeSlots[]> {
+  getTimeByDate(date, Duration = 0): Observable<TimeSlots[]> {
     return this.http.get<TimeSlots[]>(`${environment.apiUrl}api/GetTimeSlots?Date=${date}&Duration=${Duration}`);
   }
 
-
-
-  async getWorkHoursByDay(day){
-    let workday = await this.http.get<resultsAPI<WorkingHours>>(`${environment.apiUrl}api/GetWorkHoursByDay?dayOfWeek=${day}`,{withCredentials:true}).toPromise();
+  async getWorkHoursByDay(day) {
+    let workday = await this.http.get<resultsAPI<WorkingHours>>(`${environment.apiUrl}api/GetWorkHoursByDay?dayOfWeek=${day}`, { withCredentials: true }).toPromise();
     return workday.Result;
   }
-
 
   getCookie(cname) {
     var name = cname + "=";

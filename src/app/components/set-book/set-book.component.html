@@ -1,91 +1,102 @@
-    <form [formGroup]="reactiveForm" (ngSubmit)="onSubmit()">
-      <br>
-      <h6 class="text-primary"> </h6>
-      <!-- First Name and LastName -->
-      <div>
-        <div class="form-row">
-          <mat-form-field class="input-inline">
-            <input matInput role="textbox" placeholder="{{localRes?.FirstName}}"
-              formControlName="firstName" required>
-            <mat-error *ngIf="reactiveForm.invalid"> {{localRes?.ValidationFirstName}}</mat-error>
-          </mat-form-field>
-          <mat-form-field class="input-inline">
-            <input matInput role="textbox" placeholder="{{localRes?.LastName}}"
-              formControlName="lastName" required>
-            <mat-error *ngIf="reactiveForm.invalid"> {{localRes?.ValidationLastName}}</mat-error>
-          </mat-form-field>
-        </div>
-
-        <!-- Phone Number -->
-        <div class="form-row">
-          <mat-form-field class="input-inline">
-            <input matInput role="textbox" type="tel" placeholder="{{localRes?.PhoneNumber}}"
-              formControlName="phoneNumber" required>
-            <mat-error *ngIf="reactiveForm.invalid">{{localRes?.ValidationPhone}}</mat-error>
-          </mat-form-field>
-          <div class="input-inline">
-            <ng-select 
-              [items]="Services$ | async"
-              dir="rtl"
-              placeholder="{{localRes?.selectedService}}"
-              bindLabel="ServiceName" 
-              autofocus
-              [searchable]="false"
-              (change)="onServiceChange($event)"
-              formControlName="service">
-            </ng-select>
-          </div>
-        </div>
-      </div>
-      <!-- ServiceTypes and descirption -->
-      <div class="form-row">
-        <div class="input-inline" *ngIf="ServiceSelected">
-          <ng-select 
-            #select
-            [items]="ServicesTypes$" 
-            [searchable]="false"
-            bindLabel="ServiceTypeName" 
-            placeholder="{{localRes?.selectedType}}"
-            dir="rtl"
-            autofocus
-            (change)="onServiceTypeChange($event,select)" 
-            formControlName="ServcieType">
-          </ng-select>
-        </div>
-        <div class="input-inline" *ngIf="ServcieTypeSelected">
-          <p>{{ServcieTypeSelected.Description}}</p>
-        </div>
-      </div>
-
-      <!-- Calendar and Time -->
-      <div class="form-row">
-        <div class="col-md-12" *ngIf="noFreeTime">
-          <mat-error>{{localRes?.notEnoughtime}}</mat-error>
-        </div>
-        <div class="col-md-6 calendar-wrapper" *ngIf="ServcieTypeSelected">
-          <mat-calendar
-          #calendar
-          (selectedChange)="dateChange($event)"
-          [selected]="finishStartDate"
-          (monthSelected)="monthChange($event)"
-          [minDate]="calendarPickerMinDate"
-          [maxDate]="maxDate"
-          [dateFilter]="FilterWeekend">
-
-      </mat-calendar>
+<form style="height: 100%; width: 100%;" [formGroup]="reactiveForm" (ngSubmit)="onSubmit()">
+  <!-- First Name and LastName -->
+  <div>
+    <div class="form-row">
+      <mat-form-field class="input-inline">
+        <input cdkFocusInitial matInput role="textbox" placeholder="{{localRes?.FirstName}}" formControlName="firstName"
+          required>
+        <mat-error *ngIf="reactiveForm.invalid"> {{localRes?.ValidationFirstName}}</mat-error>
+      </mat-form-field>
+      <mat-form-field class="input-inline">
+        <input matInput role="textbox" placeholder="{{localRes?.LastName}}" formControlName="lastName" required>
+        <mat-error *ngIf="reactiveForm.invalid"> {{localRes?.ValidationLastName}}</mat-error>
+      </mat-form-field>
     </div>
-        <div class="col-md-6" *ngIf="ServcieTypeSelected && finishStartDate && !noFreeTime">
-          <mat-chip-list class="mat-chip-list-stacked" aria-label="Time slot selection">
-            <mat-spinner style="margin: auto;" *ngIf="!(Time$ | async)"></mat-spinner>
-            <mat-chip style="width: 30%;" (mwlClick)="onTimeChange(time)" [ngClass]="{'btn pink':time.id === StartAt}" [selectable]="true" *ngFor="let time of Time$ |async ">
-              {{time.timeSlot}}
-            </mat-chip>
-          </mat-chip-list>
-        </div>
 
-      </div>
-         <div style="padding-top: 2%;">
-          <button role="button" type="submit" [disabled]="reactiveForm.invalid" class="btn pink">{{localRes?.BookSet}}</button>
-          <button role="button" type="button" class="btn btn-secondary" style="border-radius: 30px;" data-dismiss="modal">{{localRes?.Cancel}}</button>
-        </div>
-    </form>
+    <!-- Phone Number -->
+    <div class="form-row">
+      <mat-form-field class="input-inline" style="margin-top: 13px;">
+        <input matInput role="textbox" type="tel" placeholder="{{localRes?.PhoneNumber}}" formControlName="phoneNumber"
+          required>
+        <mat-error *ngIf="reactiveForm.invalid">{{localRes?.ValidationPhone}}</mat-error>
+      </mat-form-field>
+      <!-- <div class="input-inline">
+        <ng-select [items]="Services$ | async" dir="rtl" placeholder="{{localRes?.selectedService}}"
+          bindLabel="ServiceName" autofocus [searchable]="false" (change)="onServiceChange($event)"
+          formControlName="service">
+        </ng-select>
+      </div> -->
+      <mat-form-field class="input-inline" style="margin-top: 13px;">
+        <mat-label>{{localRes?.selectedService}}</mat-label>
+        <mat-select [dir]="'rtl'" (selectionChange)="onServiceChange($event)" formControlName="service" required>
+          <mat-option *ngFor="let service of Services$ | async" [value]="service">
+            {{service.ServiceName}}
+          </mat-option>
+        </mat-select>
+        <button *ngIf="reactiveForm.controls.service.value" matSuffix mat-icon-button aria-label="Clear"
+          (click)="onServiceChange(null); $event.stopPropagation()">
+          <mat-icon>x</mat-icon>
+        </button>
+        <mat-error *ngIf="reactiveForm.invalid">אנא בחר/י טיפול</mat-error>
+        <mat-hint>{{reactiveForm.value?.sound}}</mat-hint>
+      </mat-form-field>
+    </div>
+  </div>
+  <!-- ServiceTypes and descirption -->
+  <div class="form-row">
+    <mat-form-field *ngIf="reactiveForm.controls.service.value" class="input-inline" style="margin-top: 13px;">
+      <mat-label>{{localRes?.selectedService}}</mat-label>
+      <mat-select [dir]="'rtl'" (selectionChange)="onServiceTypeChange($event)" formControlName="ServiceType" required>
+        <mat-option *ngFor="let serviceType of ServicesTypes$" [value]="serviceType">
+          {{serviceType.ServiceTypeName}}
+        </mat-option>
+      </mat-select>
+      <button *ngIf="reactiveForm.controls.ServiceType.value" matSuffix mat-icon-button aria-label="Clear"
+        (click)="reactiveForm.controls.ServiceType.setValue(null); $event.stopPropagation()">
+        <mat-icon>x</mat-icon>
+      </button>
+      <mat-error *ngIf="reactiveForm.invalid">אנא בחר/י סוג טיפול</mat-error>
+      <mat-hint>{{reactiveForm.value?.sound}}</mat-hint>
+    </mat-form-field>
+    <div class="input-inline" *ngIf="reactiveForm.controls.ServiceType.value">
+      <p>{{reactiveForm.controls.ServiceType.value.Description}}</p>
+    </div>
+  </div>
+
+  <!-- Calendar and Time -->
+  <div class="form-row">
+    <div class="col-md-12" *ngIf="noFreeTime">
+      <mat-error>{{localRes?.notEnoughtime}}</mat-error>
+    </div>
+    <div class="col-md-6 calendar-wrapper" *ngIf="ServcieTypeSelected">
+      <!-- <mat-calendar #calendar (selectedChange)="dateChange($event)" [selected]="finishStartDate"
+        (monthSelected)="monthChange($event)" [minDate]="calendarPickerMinDate" [maxDate]="maxDate"
+        [dateFilter]="FilterWeekend">
+
+      </mat-calendar> -->
+      <app-calendar-picker [lang]="localRes" [filterWeeks]="true" (dateChange)="dateChange($event)" [maxDate]="maxDate"
+        [minDate]="calendarPickerMinDate" [dateSelected]="reactiveForm.controls.date.value" [listLockDays]="unFreeDays">
+      </app-calendar-picker>
+      <!-- <input type="hidden" #dp="angular-mydatepicker" name="date" angular-mydatepicker formControlName="date"
+        [options]="myDpOptions" (calendarViewChanged)="monthChange($event)" (dateChanged)="dateChange($event)" /> -->
+    </div>
+    <div class="col-md-6"
+      *ngIf="reactiveForm.controls.ServiceType.value && reactiveForm.controls.date.value && !noFreeTime">
+      <mat-chip-list class="mat-chip-list-stacked" aria-label="Time slot selection">
+        <mat-spinner style="margin: auto;" *ngIf="Time.length <= 0"></mat-spinner>
+        <mat-chip style="width: 30%;" [selected]="time.id === reactiveForm.controls.startAt.value" color="none"
+          (mwlClick)="onTimeChange(time)" (mwlKeydownEnter)="onTimeChange(time)"
+          [ngClass]="{'btn pink':time.id === reactiveForm.controls.startAt.value}" [selectable]="true"
+          *ngFor="let time of Time">
+          {{time.timeSlot}}
+        </mat-chip>
+      </mat-chip-list>
+    </div>
+
+  </div>
+  <div style="padding-top: 2%;">
+    <button type="submit" mat-button [disabled]="reactiveForm.invalid" class="btn pink">{{localRes?.BookSet}}</button>
+    <button mat-dialog-close type="button" class="btn btn-secondary" style="border-radius: 30px;"
+      data-dismiss="modal">{{localRes?.Cancel}}</button>
+  </div>
+</form>

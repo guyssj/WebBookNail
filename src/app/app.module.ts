@@ -17,7 +17,7 @@ import { HomeComponent } from './components/home/home.component';
 import { LocalresService } from './services/localres.service';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NgbModule, NgbDateAdapter, NgbDateNativeAdapter, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbDateAdapter, NgbDateNativeAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateCustomParserFormatter } from './classes/dateformat';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { AngularFireModule } from '@angular/fire';
@@ -27,7 +27,7 @@ import { AuthService } from './services/auth.service';
 import { LoginComponent } from './components/login/login.component';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { fab , faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { fab, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { DialogForClickEvent } from './components/calendar-view/calendar-view.component';
 import { GalleryComponent } from './components/gallery/gallery.component';
 import { ChangeBookComponent } from './components/change-book/change-book.component';
@@ -49,7 +49,10 @@ import { ServicetypeService } from './services/servicetype.service';
 import { CalendarService } from './services/calendar.service';
 import { NguCarouselModule } from '@ngu/carousel';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-
+import { AngularMyDatePickerModule } from 'angular-mydatepicker';
+import { CalendarPickerComponent } from './components/calendar-picker/calendar-picker.component';
+import { ChunkPipe } from './pipes/chunk.pipe';
+import { SetBookDialogComponent } from './dialogs/set-book-dialog/set-book-dialog.component';
 
 
 registerLocaleData(localeHe);
@@ -64,6 +67,7 @@ registerLocaleData(localeHe);
     LoginComponent,
     DialogContentExampleDialog,
     DialogForClickEvent,
+    SetBookDialogComponent,
     GalleryComponent,
     ChangeBookComponent,
     SearchBookComponent,
@@ -75,6 +79,9 @@ registerLocaleData(localeHe);
     AddNewServiceType,
     MinToTimePipe,
     BooksViewComponent,
+    CalendarPickerComponent,
+    ChunkPipe,
+    SetBookDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -106,6 +113,7 @@ registerLocaleData(localeHe);
     ReactiveFormsModule,
     FormsModule,
     AngularFireAuthModule,
+    AngularMyDatePickerModule,
     AdminRoutingModule,
     FontAwesomeModule,
     SlickCarouselModule,
@@ -115,7 +123,7 @@ registerLocaleData(localeHe);
     })
   ],
   providers: [
-    ApiServiceService, 
+    ApiServiceService,
     LocalresService,
     AuthTokenService,
     CustomerService,
@@ -129,12 +137,12 @@ registerLocaleData(localeHe);
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ],
   bootstrap: [AppComponent],
-  entryComponents:[DialogContentExampleDialog,DialogForClickEvent,DialogComponent,AddNewServiceType]
+  entryComponents: [DialogContentExampleDialog, DialogForClickEvent, DialogComponent, AddNewServiceType, SetBookDialogComponent]
 })
-export class AppModule { 
+export class AppModule {
   constructor() {
     // Add an icon to the library for convenient access in other components
-    library.add(fab,faGoogle);
+    library.add(fab, faGoogle);
     library.add(fas);
   }
 }

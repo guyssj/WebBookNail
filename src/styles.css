@@ -1,7 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @import 'https://fonts.googleapis.com/icon?family=Material+Icons';
 @import "../node_modules/angular-calendar/css/angular-calendar.css";
-@import "~@ng-select/ng-select/themes/material.theme.css";
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import url('https://fonts.googleapis.com/css?family=Varela+Round&display=swap');
 @import url('https://fonts.googleapis.com/css?family=Rubik&display=swap');
@@ -126,6 +125,11 @@ li.slick-active{
   a.cal-event-action{
     color:#fff !important;
   }
+
+  .myDpHeaderBtn{
+    display: inline;
+    padding-left: 5px;
+}
 
   /* .cal-month-view .cal-cell-row {
     width: 66.6vw !important;

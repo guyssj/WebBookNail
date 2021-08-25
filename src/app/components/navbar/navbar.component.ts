@@ -23,17 +23,7 @@ export class NavbarComponent implements OnInit {
 
 
 
-  @HostListener("window:scroll", [])
-  onWindowScroll() {
-    var navbar = document.getElementById("navbar");
-    const number = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
-    if (number > navbar.offsetTop) {
-      this.scroll = true;
-    } else if (number <= 10) {
-      this.scroll = false;
-    }
 
-  }
 
   showPanelChange() {
     this.showChange.emit(true)

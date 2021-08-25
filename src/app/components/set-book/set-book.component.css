@@ -13,7 +13,7 @@ div,input,label{
 }
 
 *{
-    font-family: 'Varela Round', sans-serif;
+    font-family: 'Rubik', sans-serif;
 }
 
 .input-inline{
@@ -22,9 +22,10 @@ div,input,label{
 }
 
 .calendar-wrapper{
-    max-width: 300px;
-    width: 100%;
-    text-align: center;
+    /* max-width: 300px; */
+    width: 90%;
+    /* text-align: center; */
+    /* direction: ltr; */
 }
 
 

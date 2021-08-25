@@ -1,0 +1,44 @@
+<div>
+    <div class="calendar-header">
+        <button mat-icon-button [disabled]="minusDisable" (click)="decreaseMonth()" color="primary">
+            <mat-icon>arrow_forward_ios</mat-icon>
+        </button>
+        <div [attr.aria-label]="displayMonth" class="text-center">
+            <strong> {{displayMonth}}</strong>
+        </div>
+        <!-- <button mat-button (click)="setCurrentMonth()" color="primary">Today</button> -->
+        <button mat-icon-button [disabled]="plusDisable" (click)="increaseMonth()" color="primary">
+            <mat-icon>arrow_back_ios</mat-icon>
+        </button>
+    </div>
+</div>
+<table class='calendar-table' *ngIf="calendar">
+    <thead>
+        <tr>
+            <th>א</th>
+            <th>ב</th>
+            <th>ג</th>
+            <th>ד</th>
+            <th>ה</th>
+            <th>ו</th>
+            <th>ש</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr role="row" dir="ltr" *ngFor="let row  of calendar | chunk: 7; let i = index">
+            <ng-container *ngFor="let c of row; let j = index">
+                <td role="gridcell" class="calendar-day">
+                    <div class="calendar-day-header"
+                        [ngClass]=" { 'isToday' : c.isToday , 'disabled':c.isLockDay || c.isPastDate,'dateSelected':c.isSelectedDay}"
+                        *ngIf="c.date.getMonth() == currentMonth">
+                        <button [disabled]="c.isLockDay || c.isPastDate" [attr.aria-pressed]="c.isSelectedDay"
+                            id="dayName_{{c.date.getDate().toString() + c.date.getMonth()}}" (click)="dateClick(c)"
+                            [attr.aria-label]="c.date.toDateString()"
+                            class="buttonTable"><strong>{{c.date.getDate()}}</strong>
+                        </button>
+                    </div>
+                </td>
+            </ng-container>
+        </tr>
+    </tbody>
+</table>

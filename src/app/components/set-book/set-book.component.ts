@@ -1,21 +1,17 @@
-import { Component, OnInit, Injectable, OnChanges, Inject, Input, ViewChild, Renderer2, HostListener } from '@angular/core';
-import { LocalresService } from '../../services/localres.service';
+import { Component, OnInit, Inject, Input, ChangeDetectorRef } from '@angular/core';
 import { ApiServiceService } from '../../services/api-service.service';
 import { Observable, timer } from 'node_modules/rxjs';
 import { TimeSlots } from '../../classes/TimeSlots';
-import { NgbDateStruct, NgbCalendar, NgbCalendarHebrew } from '@ng-bootstrap/ng-bootstrap';
 import { addDays, addMinutes } from 'date-fns';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { Services } from '../../classes/Services';
 import { ServiceTypes } from '../../classes/servicetypes';
 import { Book } from '../../classes/Book';
-import { resultsAPI } from 'src/app/classes/results';
 import { Customer } from 'src/app/classes/Customer';
-import { MatDialog, MAT_DIALOG_DATA, MatFormField, DateAdapter, MatDatepickerInputEvent, MatCalendar, MatCalendarHeader } from '@angular/material';
+import { MatDialog, MAT_DIALOG_DATA, DateAdapter, MatSelectChange } from '@angular/material';
 import { MessageConfig, typeMessage } from '../MessageConfig';
-import { timeInterval, take, map } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 import { FormGroup, Validators, FormControl } from '@angular/forms';
-import { NgSelectComponent } from '@ng-select/ng-select';
 import { CloseDays } from 'src/app/classes/CloseDays';
 import { GoogleAnalyticsService } from 'src/app/services/google-analytics.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -23,6 +19,7 @@ import { BooksService } from 'src/app/services/books.service';
 import { ServicetypeService } from 'src/app/services/servicetype.service';
 import { CalendarService } from 'src/app/services/calendar.service';
 import { AuthTokenService } from 'src/app/services/auth-token.service';
+import { DateChangeEvent } from '../calendar-picker/calendar-picker.component';
 
 
 @Component({
@@ -32,65 +29,28 @@ import { AuthTokenService } from 'src/app/services/auth-token.service';
 })
 export class SetBookComponent implements OnInit {
   @Input() localRes: any;
-  @ViewChild('select', { static: false }) public ngSelect: NgSelectComponent;
-  @ViewChild(MatCalendar, { static: false }) calendar: MatCalendar<Date>;
-
-
-
   faCalendarAlt = faCalendarAlt;
-  Time$: Observable<TimeSlots[]>
+  Time: TimeSlots[] = [];
   Services$: Observable<Services[]>;
-  model: NgbDateStruct;
-  StartAt: number;
-  EndAt: number;
-  ServiceSelected: Services;
   ServcieTypeSelected: ServiceTypes;
   customer: Customer;
   ServicesTypes$: ServiceTypes[];
   dateNow: Date = new Date(Date.now());
   calendarPickerMinDate: Date = addDays(this.dateNow, 2);
   maxDate: Date = addDays(this.dateNow, 120);
-  formBuilder: any;
-  finishStartDate: Date;
   noFreeTime: boolean = false;
   Books: Book;
+  unFreeDays: string[] = [];
   reactiveForm = new FormGroup({
     firstName: new FormControl(null, Validators.required),
     lastName: new FormControl(null, Validators.required),
     phoneNumber: new FormControl(null, Validators.required),
     date: new FormControl(null, Validators.required),
-    timeSlot: new FormControl(null, Validators.required),
+    startAt: new FormControl(null, Validators.required),
     service: new FormControl(null, Validators.required),
-    ServcieType: new FormControl(null, Validators.required)
+    ServiceType: new FormControl(null, Validators.required)
   });
-  DateSelected: any;
   closeDays: CloseDays[] = [];
-  FilterWeekend = (d: Date): boolean => {
-    let days;
-    let noVacentTime = false;
-    if (d.getDate() < 10 && d.getMonth() + 1 < 10) {
-      days = d.getFullYear() + "-" + "0" + (d.getMonth() + 1) + "-" + "0" + d.getDate()
-    }
-    else if (d.getMonth() + 1 < 10 && d.getDate() > 9) {
-      days = d.getFullYear() + "-" + "0" + (d.getMonth() + 1) + "-" + d.getDate()
-    }
-    else if (d.getDate() < 10 && d.getMonth() + 1 > 9) {
-      days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + "0" + d.getDate()
-    }
-    else {
-      days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
-    }
-    const sat = d.getDay();
-    if (this.finishStartDate.toISOString().split("T")[0] == days)
-      noVacentTime = this.noFreeTime;
-    let DaytoClose = this.closeDays.filter(date => date.Date == days);
-    if (DaytoClose.length > 0 || sat == 6 || noVacentTime) {
-      return false;
-    }
-    else {
-      return true;
-    }
-  }
 
   constructor(
     private dialog: MatDialog,
@@ -99,23 +59,32 @@ export class SetBookComponent implements OnInit {
     private booksService: BooksService,
     private servService: ServicetypeService,
     private calendarService: CalendarService,
+    private cdr: ChangeDetectorRef,
     private googleAnalyticsService: GoogleAnalyticsService,
     private authServ: AuthTokenService,
     private adapter: DateAdapter<any>) {
     this.getAllCloseDays();
   }
 
+
+
   ngOnInit() {
     this.adapter.setLocale('he');
-    //this.Time$ = this.API.getAllTimes();
     this.Services$ = this.servService.getAllServices().pipe(map(item => item.Result));
-    this.finishStartDate = this.calendarPickerMinDate;
-    this.reactiveForm.patchValue({ date: this.finishStartDate });
-    if(this.authServ.currentUserValue.userName)
+    this.setDate(this.calendarPickerMinDate);
+    this.googleAnalyticsService
+      .pageview({ page_title: "קביעת פגישה", page_path: "/setbook" });
+    if (this.authServ.currentUserValue)
       this.reactiveForm.patchValue({ phoneNumber: this.authServ.currentUserValue.userName });
-
   }
 
+  setDate(date: Date) {
+    let newDate = new Date(date);
+    newDate = this.clearTime(newDate);
+    newDate = addMinutes(newDate, 0);
+    newDate = addMinutes(newDate, newDate.getTimezoneOffset() * (-1));
+    this.reactiveForm.patchValue({ date: newDate });
+  }
   async getAllCloseDays() {
     this.closeDays = await this.calendarService.getAllCloseDays();
   }
@@ -127,30 +96,33 @@ export class SetBookComponent implements OnInit {
    * @param Event:MatDatepickerInputEvent
    * 
    */
-  dateChange(event) {
+  dateChange(event: DateChangeEvent) {
     if (!event)
       return;
-    this.noFreeTime = false;
-    this.googleAnalyticsService
-      .pageview({ page_title: "קביעת פגישה", page_path: "/setbook" });
-    this.finishStartDate = new Date(event);
-    this.finishStartDate = this.clearTime(this.finishStartDate);
-    this.finishStartDate = addMinutes(this.finishStartDate, 0);
-    this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
-    this.reactiveForm.patchValue({ date: this.finishStartDate });
-    if (this.StartAt) {
-      this.reactiveForm.patchValue({ timeSlot: null });
-      this.StartAt = null;
-    }
 
-    if (this.ServcieTypeSelected) {
-      this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0], this.ServcieTypeSelected.Duration);
-      this.Time$.subscribe(res => {
-        if (res.length == 0) {
+    this.setDate(event.date);
+    if (this.reactiveForm.get('startAt').value) {
+      this.reactiveForm.patchValue({ startAt: null });
+    }
+    this.Time = [];
+
+    if (this.reactiveForm.get('ServiceType').value) {
+      this.API.getTimeByDate(
+        this.getDateString(this.reactiveForm.get('date').value),
+        this.reactiveForm.get('ServiceType').value.Duration).subscribe(res => {
+          this.Time = [];
+          this.noFreeTime = false;
+
+          this.Time = res;
+          this.cdr.detectChanges();
+          if (res.length == 0) {
+            this.noFreeTime = true;
+          }
+        }, error => {
           this.noFreeTime = true;
-          this.calendar.updateTodaysDate();
-        }
-      })
+          this.Time = [];
+
+        });
     }
   }
 
@@ -181,15 +153,7 @@ export class SetBookComponent implements OnInit {
   onTimeChange(event: TimeSlots) {
     if (!event)
       return;
-
-    if (this.finishStartDate) {
-      this.StartAt = event.id;
-      this.reactiveForm.patchValue({ timeSlot: event })
-    }
-    else {
-      this.StartAt = event.id;
-      this.reactiveForm.patchValue({ timeSlot: event })
-    }
+    this.reactiveForm.patchValue({ startAt: event.id })
   }
 
   /**
@@ -198,21 +162,47 @@ export class SetBookComponent implements OnInit {
    * Go to api with service selected and get ServiceTypes
    * @param event Services
    */
-  onServiceChange(event: Services) {
-    if (this.ServcieTypeSelected) {
-      this.reactiveForm.value.ServcieType = null;
-      this.ngSelect.clearModel();
-      this.ServcieTypeSelected = null;
+  onServiceChange(event: MatSelectChange) {
+    if (!event && !this.reactiveForm.controls.ServiceType.value) {
+      this.reactiveForm.patchValue({ service: null })
+      this.cdr.detectChanges();
+      return;
     }
-    try {
-      this.servService.getAllServicetypesByServiceID(event.ServiceID = !undefined ? event.ServiceID : 4).subscribe(api => {
-        this.ServicesTypes$ = api.Result;
-        this.ServiceSelected = this.reactiveForm.value.service;
-      })
-    } catch (error) {
-
+    if (this.reactiveForm.controls.ServiceType.value && event) {
+      this.reactiveForm.patchValue({ ServiceType: null })
+      this.ServcieTypeSelected = null;
+      this.servService.
+        getAllServicetypesByServiceID(event.value.ServiceID = !undefined ? event.value.ServiceID : 0).subscribe(api => {
+          this.ServicesTypes$ = api.Result;
+          this.cdr.detectChanges();
+        })
+      return;
+    }
+    if (!event && this.reactiveForm.controls.ServiceType.value) {
+      this.reactiveForm.patchValue({ service: null, ServiceType: null })
+      this.ServcieTypeSelected = null;
+      this.cdr.detectChanges();
+    }
+    else {
+      this.servService.
+        getAllServicetypesByServiceID(event.value.ServiceID = !undefined ? event.value.ServiceID : 4).subscribe(api => {
+          this.ServicesTypes$ = api.Result;
+          this.cdr.detectChanges();
+        })
     }
   }
+
+  private getDateString(date: Date): string {
+    date = this.clearTime(date);
+    date = addMinutes(date, 0);
+    date = addMinutes(date, date.getTimezoneOffset() * (-1));
+    return date.toISOString().split("T")[0];
+  }
+
+  private getFirstDayMonth(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), 1);
+  }
+
   /**
    * Method event when Service type selected
    * 
@@ -220,43 +210,43 @@ export class SetBookComponent implements OnInit {
    * 
    * @param event ServiceTypes
    */
-  onServiceTypeChange(event: ServiceTypes, select: NgSelectComponent) {
-    if (this.StartAt) {
-      this.reactiveForm.patchValue({ timeSlot: null });
-      this.StartAt = null;
-    }
+  async onServiceTypeChange(event: MatSelectChange) {
     if (!event) {
+      this.reactiveForm.patchValue({ ServiceType: null });
       this.ServcieTypeSelected = null;
       return;
     }
-    this
-      .googleAnalyticsService
-      .eventEmitter("change_servicetyoe", "servicetype", "changeType", "change", 10);
-    this.ServcieTypeSelected = event;
-
-    //check close dates
-    for (let i = 0; i < this.closeDays.length; i++) {
-      let element = this.closeDays[i].Date;
-      if (element == this.finishStartDate.toISOString().split("T")[0])
-        this.finishStartDate = addDays(this.finishStartDate, 1);
+    if (this.reactiveForm.get("startAt").value) {
+      this.reactiveForm.patchValue({ timeSlot: null });
     }
 
-    if (this.finishStartDate.getDay() == 6)
-      this.finishStartDate = addDays(this.finishStartDate, 1);
+    this.calendarService
+      .getUnFreeDays(this.getDateString(this.getFirstDayMonth(this.reactiveForm.get('date').value)), event.value.Duration).subscribe(results => {
+        this.unFreeDays = results.Result
+        this.closeDays.forEach(closeDay => {
+          this.unFreeDays.push(closeDay.Date);
+        });
+        this
+          .googleAnalyticsService
+          .eventEmitter("change_servicetyoe", "servicetype", "changeType", "change", 10);
 
-    this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0], this.ServcieTypeSelected.Duration);
-    this.Time$.subscribe(res => {
-      if (res.length == 0) {
-        this.noFreeTime = true;
-        this.calendar.updateTodaysDate();
-      }
-    })
-  }
+        //check if automatic selected date is shabat
+        if (this.reactiveForm.get('date').value.getDay() == 6)
+          this.setDate(addDays(this.reactiveForm.get('date').value, 1))
 
-  monthChange(event) {
-    this.reactiveForm.patchValue({ timeSlot: null, date: null });
-    this.dateChange(event);
-    this.StartAt = null;
+        this.Time = [];
+        this.API.getTimeByDate(
+          this.getDateString(this.reactiveForm.get('date').value),
+          event.value.Duration).subscribe(resp => {
+            this.Time = resp;
+            if (resp.length == 0) {
+              this.noFreeTime = true;
+            }
+            this.cdr.detectChanges();
+
+          });
+        this.ServcieTypeSelected = event.value;
+      })
   }
 
 
@@ -276,11 +266,11 @@ export class SetBookComponent implements OnInit {
       this.Books = new Book();
       this.Books = {
         CustomerID: this.customer.CustomerID,
-        StartDate: this.finishStartDate.toISOString().split("T")[0],
-        StartAt: this.StartAt,
-        ServiceID: this.ServiceSelected.ServiceID,
-        ServiceTypeID: this.ServcieTypeSelected.ServiceTypeID,
-        Durtion: this.ServcieTypeSelected.Duration
+        StartDate: this.getDateString(this.reactiveForm.get("date").value),
+        StartAt: this.reactiveForm.get('startAt').value,
+        ServiceID: this.reactiveForm.get('service').value.ServiceID,
+        ServiceTypeID: this.reactiveForm.get('ServiceType').value.ServiceTypeID,
+        Durtion: this.reactiveForm.get('ServiceType').value.Duration
       }
       this.booksService.setBook(this.Books).subscribe(results => {
         if (results.Result > 0) {
@@ -317,18 +307,9 @@ export class SetBookComponent implements OnInit {
    */
   clearForm() {
     this.Books = null;
-    this.reactiveForm = new FormGroup({
-      firstName: new FormControl(null, Validators.required),
-      lastName: new FormControl(null, Validators.required),
-      phoneNumber: new FormControl(null, Validators.required),
-      date: new FormControl(null, Validators.required),
-      timeSlot: new FormControl(null, Validators.required),
-      service: new FormControl(null, Validators.required),
-      ServcieType: new FormControl(null, Validators.required)
-    });
     this.customer = null;
-    this.ServiceSelected = null;
     this.ServcieTypeSelected = null;
+    this.reactiveForm.reset();
   }
 
   openDialog(messageObj: MessageConfig, time) {

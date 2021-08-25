@@ -1,4 +1,4 @@
-<div class="bg">
+<div class="header" class="bg">
   <ul class="nav nav-pills nav-fill">
     <li class="nav-item">
       <a class="nav-link " style="color: black;" href="https://wa.me/972{{settings?.PhoneNumber}}">
@@ -23,22 +23,20 @@
 </div>
 <app-navbar [localRes]="localRes" (showChange)="showPanel($event)"></app-navbar>
 <div class="bgded fadeIn" style="background-image:url('assets/backRTL.png');">
-  <main>
-    <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig" (init)="slickInit($event)"
-      (breakpoint)="breakpoint($event)" (afterChange)="afterChange($event)" (beforeChange)="beforeChange($event)">
-      <div ngxSlickItem *ngFor="let slide of slides" class="slide">
-        <div class="headText" style="display: block;">
-          <h1 class="">{{slide.text}}
-            <hr class="hrLine">
-          </h1>
-          <a class="btn pink" style="height: 50px; text-align: center; padding: 13px;" data-toggle="modal"
-            data-target=".bd-example-modal-lg" href="">{{localRes?.clickBook}}</a>
-        </div>
-        <img class="" src="{{slide.img}}" />
-
+  <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+    <div ngxSlickItem *ngFor="let slide of slides" class="slide">
+      <div class="headText" style="display: block;">
+        <h1 class="sliderText   ">{{slide.text}}
+          <hr class="hrLine slide-left ">
+        </h1>
+        <!-- <a class="btn pink" style="height: 50px; text-align: center; padding: 13px; border:1px solid black;"
+          data-toggle="modal" data-target=".bd-example-modal-lg" href="">{{localRes?.clickBook}}</a> -->
+        <button class="btn pink" style="height: 50px; text-align: center; padding: 13px; border:1px solid black;"
+          (click)="openSetBook()">{{localRes?.clickBook}}</button>
       </div>
-    </ngx-slick-carousel>
-  </main>
+      <img class="" src="{{slide.img}}" />
+    </div>
+  </ngx-slick-carousel>
 </div>
 <div class="wrapper footer-style fadeIn">
   <footer role="doc-credits" id="footer" class="hoc clear">
@@ -64,9 +62,11 @@
           </address>
         </li>
         <li>
-          <i class="fa fa-phone"></i>{{settings?.PhoneNumber}}</li>
+          <i class="fa fa-phone"></i>{{settings?.PhoneNumber}}
+        </li>
         <li>
-          <i class="fas fa-envelope-o"></i>{{settings?.Email}}</li>
+          <i class="fas fa-envelope-o"></i>{{settings?.Email}}
+        </li>
       </ul>
       <ul class="faico clear">
         <li>
@@ -109,30 +109,9 @@
 <!-- Modal and return button -->
 <!-- ################################################################################################ -->
 <!-- Return to Top -->
-<a href="javascript:" id="return-to-top" style="z-index: 1">
+<a href="#" id="return-to-top" style="z-index: 1">
   <i class="fa fa-angle-up"></i>
 </a>
-<!-- Modal SetBook -->
-<div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-  aria-hidden="true">
-
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="float-left close" style="margin: -1rem !important;" data-dismiss="modal"
-          aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="float-right inline">קביעת תור {{settings?.StoreName}}</h4>
-      </div>
-      <hr class="hrLine">
-      <div class="modal-body">
-        <app-set-book [localRes]="localRes"></app-set-book>
-      </div>
-    </div>
-  </div>
-</div>
-
 
 <div class="modal fade" id="SerachModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2"
   aria-hidden="true">

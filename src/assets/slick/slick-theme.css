@@ -83,7 +83,7 @@
 }
 [dir='rtl'] .slick-prev
 {
-    right: -25px;
+    /* right: -25px; */
     left: auto;
 }
 .slick-prev:before

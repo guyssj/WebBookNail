@@ -10,62 +10,58 @@ import { MatCarousel, MatCarouselComponent } from '@ngmodule/material-carousel';
 import { NguCarouselConfig, NguCarouselStore } from '@ngu/carousel';
 import { interval, Observable } from 'rxjs';
 import { map, startWith, take } from 'rxjs/operators';
+import { MatDialog } from '@angular/material';
+import { SetBookDialogComponent } from 'src/app/dialogs/set-book-dialog/set-book-dialog.component';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css']
 })
-export class HomeComponent implements OnInit, AfterViewInit {
+export class HomeComponent implements OnInit {
   localRes: any = {};
-  settings:Settings;
+  settings: Settings;
   hidetheSer: boolean;
-  showSer:boolean = true;
-  carouselBanner:any;
+  showSer: boolean = true;
+  carouselBanner: any;
   bookFound: any;
   @ViewChild(SetBookComponent, { static: true }) setBookCom;
-  constructor(private localres: LocalresService, private API: ApiServiceService, private Set:SettingsService) { }
+  constructor(private localres: LocalresService,
+    private API: ApiServiceService,
+    private Set: SettingsService,
+    public dialog: MatDialog,
+  ) { }
   slides = [
-    {text:"להיות שונה עם עיצוב הציפורניים בהתאמה אישית" , img:"assets/handsSmall.png",desc:"מספקת מגוון רחב של שירותי עיצוב ציפורניים עברוך"},
-    {text:"טיפוח אישי באווירה אחרת, עם מוזיקה מעולה, והמון אהבה" , img:"assets/legsSmall.png",desc:"מספקת מגוון רחב של שירותי עיצוב ציפורניים עברוך"},
-    {text:"text 3"},
-
+    { text: "להיות שונה עם עיצוב הציפורניים בהתאמה אישית", img: "assets/handsSmall.png", desc: "מספקת מגוון רחב של שירותי עיצוב ציפורניים עברוך" },
+    { text: "טיפוח אישי באווירה אחרת, עם מוזיקה מעולה, והמון אהבה", img: "assets/legsSmall.png", desc: "מספקת מגוון רחב של שירותי עיצוב ציפורניים עברוך" },
   ];
-  slideConfig = {  dots: true,
+  slideConfig = {
+    dots: true,
     infinite: true,
     speed: 300,
-    fade:true,
-    autoplay:true,
+    fade: true,
+    autoplay: true,
     slidesToShow: 1,
-    adaptiveHeight: true};
-  
-  addSlide() {
-  }
-  
+    adaptiveHeight: true
+  };
+
   removeSlide() {
     this.slides.length = this.slides.length - 1;
   }
-  
-  slickInit(e) {
-    console.log('slick initialized');
+
+  openSetBook() {
+    this.dialog.open(SetBookDialogComponent, {
+      data: { localRes: this.localRes, settings: this.settings },
+      maxWidth: '97vw',
+      maxHeight: '90vh'
+    });
   }
-  
-  breakpoint(e) {
-    console.log('breakpoint');
-  }
-  
-  afterChange(e) {
-    console.log('afterChange');
-  }
-  
-  beforeChange(e) {
-    console.log('beforeChange');
-  }
+
   ngOnInit() {
     this.localres.getLocalResoruce("he").subscribe(data => {
       this.localRes = data;
     })
-    this.Set.getSettings().subscribe(res=>{
+    this.Set.getSettings().subscribe(res => {
       this.settings = res;
     })
     $(function () {
@@ -84,9 +80,6 @@ export class HomeComponent implements OnInit, AfterViewInit {
       });
     });
   }
-  ngAfterViewInit() {
-  }
-
 
   whenCustomerFound(event) {
     if (isObject(event)) {
@@ -106,7 +99,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.showSer = false;
   }
 
-  showPanel(event){
+  showPanel(event) {
     this.showSer = true;
   }
 }

@@ -11,21 +11,24 @@ import { resultsAPI } from '../classes/results';
 })
 export class CalendarService {
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   async getAllCloseDays() {
     let CloseDays = await this.http.get<resultsAPI<CloseDays[]>>(`${environment.apiUrl}api/Calendar/GetHolidayClosed`).toPromise();
     return CloseDays.Result;
   }
-  
-  async getAllLockHours(){
+
+  async getAllLockHours() {
     let LockHours = await this.http.get<resultsAPI<CEvent[]>>(`${environment.apiUrl}admin/Calendar/GetAllLockHours`).toPromise();
     return LockHours.Result;
   }
 
+  getUnFreeDays(date, duration): Observable<resultsAPI<string[]>> {
+    return this.http.get<resultsAPI<string[]>>(`${environment.apiUrl}api/Calendar/GetUnFreeDays?Date=${date}&Duration=${duration}`);
+  }
 
-  async getLockHoursByDate(date){
-    let LockHours = await this.http.get<resultsAPI<any>>(`${environment.apiUrl}api/Calendar/GetLockHoursByDate?Date=${date}`,{withCredentials:true}).toPromise();
+  async getLockHoursByDate(date) {
+    let LockHours = await this.http.get<resultsAPI<any>>(`${environment.apiUrl}api/Calendar/GetLockHoursByDate?Date=${date}`, { withCredentials: true }).toPromise();
     return LockHours.Result;
   }
 

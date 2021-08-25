@@ -16,14 +16,14 @@ File: Custom Flexslider CSS => For FlexSlider v2.6.1
     color:#ffd8cb;
 }
 .slide{
-    width: 1440px;
-    height: 684px;
+    /* width: 1440px;*/
+    height: 684px; 
 }
 .headText{
     float: right;
-    margin: 13%;
+    margin: 5%;
     display: block;
-    width: 300px;
+    max-width: 500px;
 }
 
 .bg{
@@ -35,12 +35,24 @@ File: Custom Flexslider CSS => For FlexSlider v2.6.1
     padding-top: 8px;
 }
 
+/***** Slide Left *****/
+.slide-left {
+  animation: 3s slide-left;
+}
+@keyframes slide-left {
+  from {
+    margin-left: 100%;
+  }
+  to {
+    margin-left: 0%;
+  }
+}
 
 .flex-container a:hover, .flex-slider a:hover{outline:none;}
 .slides, .slides > li, .flex-control-nav, .flex-direction-nav{margin:0; padding:0; list-style:none;}
 .flex-direction-nav a{font-family:"FontAwesome";}
 div{
-    font-family: 'Varela Round', sans-serif;
+    font-family: 'Rubik', sans-serif;
 }
 
 /* Necessary Styles
@@ -210,7 +222,15 @@ li:hover .heading{
     to   {opacity: 1;}
 }
 
-    
+.header {
+  background-color: #f1f1f1;
+  padding: 30px;
+  text-align: center;
+}
+
+.sliderText{
+    font-size:6vmin;
+}
 
 /* Extra Things */
 /* body{background: #eee ;font-family: 'Open Sans', sans-serif;}h3{font-size: 30px; font-weight: 400;text-align: center;margin-top: 50px;}h3 i{color: #444;} */

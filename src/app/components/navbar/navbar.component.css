@@ -1,5 +1,5 @@
 div{
-    font-family: 'Varela Round', sans-serif;
+    font-family: 'Rubik', sans-serif;
 }
 
 
@@ -11,12 +11,8 @@ div{
     /* -webkit-box-shadow: 0px 3px 9px -3px rgba(0,0,0,0.5);
     -moz-box-shadow: 0px 3px 9px -3px rgba(0,0,0,0.5);
     box-shadow: 0px 3px 9px -3px rgba(0,0,0,0.5); */
-   position: fixed;
-   top:0;
-   width: 100%;
    transition-duration: 0.4s;
    background-color: white;
-   z-index: 1;
 
 }
 
@@ -94,7 +90,7 @@ ul {
     left: 0;
     right: 0;
     height: 2px;
-    background-color: #F37272;
+    background-color:  #ffd8cb;
   }
   a:before {
     opacity: 0;
@@ -102,6 +98,25 @@ ul {
     transition: transform 0s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0s;
   }
   a:after {
+    opacity: 0;
+    transform: translateY(4px);
+    transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
+  }
+    a.active:before, a.active:after {
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color:  #ffd8cb;
+  }
+  a.active:before {
+    opacity:1;
+    transform: translateY(0);
+    transition: transform 0s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0s;
+  }
+  a.active:after {
     opacity: 0;
     transform: translateY(4px);
     transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.2s;
@@ -156,9 +171,12 @@ ul {
 
 }
 .sticky {
-    position: fixed;
+    position: sticky;
+    position: -webkit-sticky;
     top: 0;
     width: 100%;
+    z-index: 1;
+
   }
   
   .sticky + .content {
@@ -166,4 +184,8 @@ ul {
   }
 .nav-link{
     font-size: 3.5vh;
+}
+
+#navbar {
+  overflow: hidden;
 }
