@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import * as $ from "jquery";
 import { LocalresService } from '../../services/localres.service';
 import { SetBookComponent } from '../set-book/set-book.component';
@@ -6,10 +6,6 @@ import { isObject } from 'util';
 import { ApiServiceService } from 'src/app/services/api-service.service';
 import { Settings } from 'src/app/classes/StoreSettings';
 import { SettingsService } from 'src/app/services/settings.service';
-import { MatCarousel, MatCarouselComponent } from '@ngmodule/material-carousel';
-import { NguCarouselConfig, NguCarouselStore } from '@ngu/carousel';
-import { interval, Observable } from 'rxjs';
-import { map, startWith, take } from 'rxjs/operators';
 import { MatDialog } from '@angular/material';
 import { SetBookDialogComponent } from 'src/app/dialogs/set-book-dialog/set-book-dialog.component';
 

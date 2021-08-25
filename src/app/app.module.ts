@@ -15,7 +15,6 @@ import { ApiServiceService } from './services/api-service.service';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { HomeComponent } from './components/home/home.component';
 import { LocalresService } from './services/localres.service';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule, NgbDateAdapter, NgbDateNativeAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateCustomParserFormatter } from './classes/dateformat';
@@ -47,9 +46,7 @@ import { CustomerService } from './services/customer.service';
 import { BooksService } from './services/books.service';
 import { ServicetypeService } from './services/servicetype.service';
 import { CalendarService } from './services/calendar.service';
-import { NguCarouselModule } from '@ngu/carousel';
 import { SlickCarouselModule } from 'ngx-slick-carousel';
-import { AngularMyDatePickerModule } from 'angular-mydatepicker';
 import { CalendarPickerComponent } from './components/calendar-picker/calendar-picker.component';
 import { ChunkPipe } from './pipes/chunk.pipe';
 import { SetBookDialogComponent } from './dialogs/set-book-dialog/set-book-dialog.component';
@@ -91,7 +88,6 @@ registerLocaleData(localeHe);
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features
     NgbModule,
     BrowserAnimationsModule,
-    NgSelectModule,
     MatCheckboxModule,
     MatButtonModule,
     MatProgressBarModule,
@@ -113,7 +109,6 @@ registerLocaleData(localeHe);
     ReactiveFormsModule,
     FormsModule,
     AngularFireAuthModule,
-    AngularMyDatePickerModule,
     AdminRoutingModule,
     FontAwesomeModule,
     SlickCarouselModule,

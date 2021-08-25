@@ -10,9 +10,8 @@ import localeHe from '@angular/common/locales/he';
 import { registerLocaleData } from '@angular/common';
 import { HomeComponent } from './components/home/home.component';
 import { LocalresService } from './services/localres.service';
-import { NgSelectModule } from '@ng-select/ng-select';
 import { FormsModule } from '@angular/forms';
-import {NgbModule, NgbDateAdapter, NgbDateNativeAdapter, NgbDateParserFormatter} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbDateAdapter, NgbDateNativeAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
 import { NgbDateCustomParserFormatter } from './classes/dateformat';
 import { AuthService } from './services/auth.service';
 import { LoginComponent } from './components/login/login.component';
@@ -28,7 +27,7 @@ const routes: Routes = [
   { path: 'Calendar', component: CalendarViewComponent },
   { path: '', component: HomeComponent },
   { path: 'Login', component: LoginComponent },
-  { path: 'Admin', component: AdminComponent ,canActivate:[AuthGuard] },
+  { path: 'Admin', component: AdminComponent, canActivate: [AuthGuard] },
   { path: 'Gallery', component: GalleryComponent }
 ];
 
@@ -36,21 +35,20 @@ const routes: Routes = [
   imports: [
     CommonModule,
     HttpClientModule,
-    NgSelectModule,
     FormsModule,
     NgbModule,
     RouterModule.forRoot(routes)],
   exports: [RouterModule],
-  providers:[
+  providers: [
     ApiServiceService,
     AuthTokenService,
     LocalresService,
     AuthService,
-    {provide:LocationStrategy,useClass:HashLocationStrategy},
-    {provide: NgbDateAdapter, useClass: NgbDateNativeAdapter},
-    {provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter},
+    { provide: LocationStrategy, useClass: HashLocationStrategy },
+    { provide: NgbDateAdapter, useClass: NgbDateNativeAdapter },
+    { provide: NgbDateParserFormatter, useClass: NgbDateCustomParserFormatter },
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true }
   ]
 })
 export class AppRoutingModule { }
-export const routingComponents = [SetBookComponent, CustomersComponent, CalendarViewComponent,LoginComponent];
+export const routingComponents = [SetBookComponent, CustomersComponent, CalendarViewComponent, LoginComponent];
