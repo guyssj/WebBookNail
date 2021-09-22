@@ -26,10 +26,10 @@ import { registerLocaleData } from '@angular/common';
 import { AppComponent } from './app.component';
 import { DialogContentExampleDialog } from './components/set-book/set-book.component';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
-import { CustomersComponent } from './components/customers/customers.component';
+import { CustomersComponent } from './pages/customers/customers.component';
 import { ApiServiceService } from './services/api-service.service';
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent } from './pages/home/home.component';
 import { LocalresService } from './services/localres.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgbModule, NgbDateAdapter, NgbDateNativeAdapter, NgbDateParserFormatter } from '@ng-bootstrap/ng-bootstrap';
@@ -39,19 +39,19 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth'
 import { environment } from '../environments/environment';
 import { AuthService } from './services/auth.service';
-import { LoginComponent } from './components/login/login.component';
+import { LoginComponent } from './pages/login/login.component';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { fab, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { DialogForClickEvent } from './components/calendar-view/calendar-view.component';
-import { GalleryComponent } from './components/gallery/gallery.component';
+import { GalleryComponent } from './pages/gallery/gallery.component';
 import { ChangeBookComponent } from './components/change-book/change-book.component';
 import { SearchBookComponent } from './components/search-book/search-book.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { AdminRoutingModule } from './components/admin/admin-routing.module';
-import { ServicesComponent } from './components/services/services.component';
-import { ServiceTypesComponent, AddNewServiceType } from './components/service-types/service-types.component';
+import { ServicesComponent } from './pages/services/services.component';
+import { ServiceTypesComponent, AddNewServiceType } from './pages/service-types/service-types.component';
 import { AuthTokenService } from './services/auth-token.service';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { DialogComponent } from './components/dialog/dialog.component';
@@ -66,7 +66,7 @@ import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CalendarPickerComponent } from './components/calendar-picker/calendar-picker.component';
 import { ChunkPipe } from './pipes/chunk.pipe';
 import { SetBookDialogComponent } from './dialogs/set-book-dialog/set-book-dialog.component';
-
+import { BooksViewDialogComponent } from './dialogs/books-view-dialog/books-view-dialog.component';
 
 registerLocaleData(localeHe);
 
@@ -95,6 +95,7 @@ registerLocaleData(localeHe);
     CalendarPickerComponent,
     ChunkPipe,
     SetBookDialogComponent,
+    BooksViewDialogComponent,
   ],
   imports: [
     BrowserModule,

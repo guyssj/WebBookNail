@@ -1,6 +1,8 @@
 <div mat-dialog-title>
     <h4 class="float-right inline" style="color: rgba(201,109,159,1);">פרטי התור</h4>
-    <button class="float-left" mat-button mat-dialog-close><mat-icon>close</mat-icon></button>
+    <button class="float-left" mat-button mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
     <div class="line" style="display: flex;"></div>
 
 </div>
@@ -62,7 +64,7 @@
                 <strong>
                     <label>{{data.localRes?.Time}}:</label>
                 </strong>
-                <label>{{data.event.meta.StartAt | minToTime}} - {{newEnd | minToTime}}</label>
+                <label>{{data.event.meta.StartAt | minToTime}} - {{newEnd}}</label>
             </div>
             <div class="col-auto">
                 <i class="far fa-calendar-alt"></i>
@@ -86,7 +88,8 @@
                 <i class="far fa-sticky-note"></i>
             </div>
             <div class="col-md-11" *ngIf="data.event.customer.Notes">
-                <strong> <label>{{data.localRes?.NotesCustomer}}:</label></strong> <label>{{data.event.customer?.Notes}}</label>
+                <strong> <label>{{data.localRes?.NotesCustomer}}:</label></strong>
+                <label>{{data.event.customer?.Notes}}</label>
             </div>
         </div>
     </div>

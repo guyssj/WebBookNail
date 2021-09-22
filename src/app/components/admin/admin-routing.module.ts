@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Routes, RouterModule } from '@angular/router';
 import { AdminComponent } from './admin.component';
 import { CalendarViewComponent } from '../calendar-view/calendar-view.component';
-import { CustomersComponent } from '../customers/customers.component';
-import { ServicesComponent } from '../services/services.component';
-import { ServiceTypesComponent } from '../service-types/service-types.component';
+import { CustomersComponent } from '../../pages/customers/customers.component';
+import { ServicesComponent } from '../../pages/services/services.component';
+import { ServiceTypesComponent } from '../../pages/service-types/service-types.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
 
 const routes: Routes = [
@@ -16,7 +16,7 @@ const routes: Routes = [
       {
         path: 'Calendar',
         component: CalendarViewComponent,
-        canActivate:[AuthGuard]
+        canActivate: [AuthGuard]
       },
       {
         path: 'Customers',

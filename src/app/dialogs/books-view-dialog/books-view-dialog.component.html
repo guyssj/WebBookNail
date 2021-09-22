@@ -1,0 +1,16 @@
+<div mat-dialog-title>
+    <h4 class="inline">{{data.localRes?.EditAndView}}</h4>
+    <button class="float-left" mat-button mat-dialog-close>
+        <mat-icon>close</mat-icon>
+    </button>
+    <hr class="hrLine" style="display: flex;">
+</div>
+<app-search-book [localRes]="data.localRes" *ngIf="showSer" (Clear)="clear($event)"
+    (BookFounded)="whenCustomerFound($event)">
+</app-search-book>
+<app-books-view [localRes]="data.localRes" [booksDetails]="bookFound" (Clear)="clear($event)" *ngIf="hidetheSer">
+</app-books-view>
+<mat-dialog-content class="mat-typography">
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+</mat-dialog-actions>

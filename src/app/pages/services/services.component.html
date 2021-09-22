@@ -1,6 +1,6 @@
 <div class="table row">
   <mat-form-field class="col-md-10">
-    <input matInput (keyup)="applyFilter($event.target.value)" [placeholder]="localRes?.Search">
+    <input matInput (keyup)="applyFilter($event)" [placeholder]="localRes?.Search">
   </mat-form-field>
   <div class="col-md-10">
     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">

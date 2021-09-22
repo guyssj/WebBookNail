@@ -1,12 +1,12 @@
 <div>
-    <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" [placeholder]="localRes?.Search">
-    </mat-form-field>
-    <mat-spinner style="margin: auto;" *ngIf="loader"></mat-spinner>
+  <mat-form-field>
+    <input matInput (keyup)="applyFilter($event)" [placeholder]="localRes?.Search">
+  </mat-form-field>
+  <mat-spinner style="margin: auto;" *ngIf="loader"></mat-spinner>
 
-    <div *ngIf="!loader" class="col-md-10">
-      
-      <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+  <div *ngIf="!loader" class="col-md-10">
+
+    <table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
       <!-- Position Column -->
       <ng-container matColumnDef="firstname">
         <th mat-header-cell *matHeaderCellDef> {{localRes?.FirstName}} </th>

@@ -1,7 +1,7 @@
 <div>
   <div>
     <mat-form-field>
-      <input matInput (keyup)="applyFilter($event.target.value)" [placeholder]="localRes?.Search">
+      <input matInput (keyup)="applyFilter($event)" [placeholder]="localRes?.Search">
       <button matSuffix mat-button class="btn pink" (click)="addNewServiceType()">{{localRes?.AddServiceType}}</button>
     </mat-form-field>
   </div>

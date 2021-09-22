@@ -1,5 +1,6 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
-import { addDays, addMinutes } from 'date-fns';
+import { addDays, addMinutes, addMonths, getMonth } from 'date-fns';
 import { CalendarDay } from 'src/app/classes/calendarday';
 
 export class DateChangeEvent {
@@ -20,11 +21,13 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
   public minusDisable = false;
   public plusDisable = false;
   public currentMonth: number;
+  public currentDate: Date;
+
   @Input() maxDate: Date;
   @Input() lang: any = {};
   @Input() minDate: Date;
   @Input() dateSelected: Date;
-  @Input() listLockDays: string[];
+  @Input() listLockDays: string[] = [];
   @Input() filterWeeks: boolean = false;
   @Output() dateChange = new EventEmitter<DateChangeEvent>();
 
@@ -61,15 +64,31 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
     date = addMinutes(date, date.getTimezoneOffset() * (-1));
     return date.toISOString().split("T")[0];
   }
+  private clearTime(date) {
+    date.setMinutes(0);
+    date.setHours(0);
+    date.setSeconds(0);
+    date.setMilliseconds(0);
+    date = addMinutes(date, date.getTimezoneOffset() * (-1));
+    return date;
+
+  }
 
   private generateCalendarDays(monthIndex: number): void {
     // we reset our calendar
     this.calendar = [];
     this.plusDisable = false;
     this.minusDisable = false;
-
     // we set the date 
-    let day: Date = new Date(new Date().setMonth(new Date().getMonth() + monthIndex));
+
+    let day: Date = new Date();
+    day.setMinutes(0);
+    day.setHours(0);
+    day.setSeconds(0);
+    day.setMilliseconds(0);
+    day = addMinutes(day, day.getTimezoneOffset() * (-1));
+    //let monthToAdd = day.getMonth() + monthIndex;
+    day = addMonths(day, monthIndex);
     if (day >= this.maxDate) {
       this.plusDisable = true;
     }
@@ -79,26 +98,34 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
     this.currentMonth = day.getMonth();
     // set the dispaly month for UI
     this.displayMonth = this.monthNames[day.getMonth()];
-
+    if (this.dateSelected.getMonth() > this.currentMonth) {
+      this.setMonth(this.dateSelected.getMonth() - this.currentMonth);
+      this.minusDisable = true;
+      return;
+    }
     let startingDateOfCalendar = this.getStartDateForCalendar(day);
     let dateToAdd = startingDateOfCalendar;
 
     for (var i = 0; i < 42; i++) {
       let calendarDay = new CalendarDay(new Date(dateToAdd));
       calendarDay.isLockDay = this.listLockDays.includes(this.getDateString(dateToAdd))
-      if (dateToAdd >= this.maxDate)
+      if (dateToAdd > this.maxDate)
         calendarDay.isLockDay = true;
-      else if (dateToAdd <= this.minDate)
+      else if (this.clearTime(dateToAdd) < this.clearTime(this.minDate))
         calendarDay.isPastDate = true;
       else if (this.filterWeeks && calendarDay.date.getDay() == 6) //filter satarday (shabat)
         calendarDay.isLockDay = true;
       else if (calendarDay.isLockDay && this.getDateString(this.dateSelected) == this.getDateString(calendarDay.date)) {
         this.dateSelected = addDays(this.getDateString(calendarDay.date), 1)
-        this.updateDate(this.dateSelected);
+        if (this.dateSelected.getMonth() > this.currentMonth)
+          //this.increaseMonth();
+          this.updateDate(this.dateSelected);
       }
-      else if (this.getDateString(this.dateSelected) == this.getDateString(calendarDay.date))
+      else if (this.getDateString(this.dateSelected) == this.getDateString(calendarDay.date)) {
         calendarDay.isSelectedDay = true;
-
+        //if (this.dateSelected.getMonth() > this.currentMonth)
+        //this.increaseMonth();
+      }
       this.calendar.push(calendarDay);
       dateToAdd = new Date(dateToAdd.setDate(dateToAdd.getDate() + 1));
     }
@@ -145,6 +172,10 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
 
   public setCurrentMonth() {
     this.monthIndex = 0;
+    this.generateCalendarDays(this.monthIndex);
+  }
+  public setMonth(index) {
+    this.monthIndex = index
     this.generateCalendarDays(this.monthIndex);
   }
 

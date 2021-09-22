@@ -135,7 +135,6 @@ export class SetBookComponent implements OnInit {
    * check if all form field is valid
    */
   onSubmit() {
-    debugger;
     if (!this.reactiveForm.valid) {
       Object.keys(this.reactiveForm.controls).forEach(field => { // {1}
         const control = this.reactiveForm.get(field);            // {2}

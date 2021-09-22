@@ -21,7 +21,7 @@
     </li>
   </ul>
 </div>
-<app-navbar [localRes]="localRes" (showChange)="showPanel($event)"></app-navbar>
+<app-navbar [localRes]="localRes"></app-navbar>
 <div class="bgded fadeIn" style="background-image:url('assets/backRTL.png');">
   <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
     <div ngxSlickItem *ngFor="let slide of slides" class="slide">
@@ -114,7 +114,7 @@
   <i class="fa fa-angle-up"></i>
 </a>
 
-<div class="modal fade" id="SerachModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2"
+<!-- <div class="modal fade" id="SerachModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2"
   aria-hidden="true">
 
   <div class="modal-dialog modal-lg">
@@ -130,9 +130,9 @@
       <div class="modal-body">
         <app-search-book [localRes]="localRes" *ngIf="showSer" (Clear)=clear($event)
           (BookFounded)="whenCustomerFound($event)"></app-search-book>
-        <app-books-view [localRes]="localRes" [booksDetails]="bookFound" (Clear)=clear($event) *ngIf="hidetheSer">
+        <app-books-view [localRes]="localRes" [booksDetails]="bookFound" (Clear)="clear($event)" *ngIf="hidetheSer">
         </app-books-view>
       </div>
     </div>
   </div>
-</div>
+</div> -->

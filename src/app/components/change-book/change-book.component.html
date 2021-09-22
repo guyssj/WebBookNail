@@ -1,35 +1,47 @@
 <mat-spinner style="margin: auto;" *ngIf="loader"></mat-spinner>
-
-<div *ngIf="!loader">
+<ng-container *ngIf="customer">
     <div class="form-row">
-        <mat-form-field class="col-md-6">
-            <input matInput placeholder="{{localRes?.FirstName}}" [(ngModel)]="customer.FirstName" readonly>
-        </mat-form-field>
-        <mat-form-field class="col-md-6">
-            <input matInput placeholder="{{localRes?.LastName}}" [(ngModel)]="customer.LastName" readonly>
-        </mat-form-field>
+        <div class="col-md-6" tabindex="0">
+            <h5>{{localRes?.FirstName}}</h5>
+            <p>{{customer.FirstName}}</p>
+        </div>
+        <div class="col-md-6" tabindex="0">
+            <h5>{{localRes?.LastName}}</h5>
+            <p>{{customer.LastName}}</p>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="col-md-6" tabindex="0">
+            <h5>{{localRes?.PhoneNumber}}</h5>
+            <p>{{customer.PhoneNumber}}</p>
+        </div>
+        <div class="col-md-6" tabindex="0">
+            <h5>{{localRes?.TimeBook}}</h5>
+            <p>{{newStart}}</p>
+        </div>
+        <div class="col-md-6" tabindex="0">
+            <h5>{{localRes?.Date}}</h5>
+            <p>{{book.StartDate}}</p>
+        </div>
     </div>
     <div class="row">
-        <mat-form-field class="col-md-6">
-            <input matInput placeholder="{{localRes?.PhoneNumber}}" [(ngModel)]="customer.PhoneNumber" readonly>
-        </mat-form-field>
-        <mat-form-field class="col-md-6">
-            <input matInput placeholder="{{localRes?.TimeBook}}" [(ngModel)]="newStart" readonly>
-        </mat-form-field>
-        <mat-form-field class="col-md-6">
-            <input matInput [min]="calendarPickerMinDate" [(ngModel)]="book.StartDate"
-                [matDatepickerFilter]="FilterWeekend" (dateChange)="dateChange($event)" [max]="maxDate"
-                [matDatepicker]="picker" placeholder="{{localRes?.selectedDate}}">
-            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker touchUi #picker></mat-datepicker>
-        </mat-form-field>
+        <div class="col-md-12" *ngIf="finishStartDate">
+            <app-calendar-picker [lang]="localRes" [filterWeeks]="true" (dateChange)="dateChange($event)"
+                [maxDate]="maxDate" [minDate]="calendarPickerMinDate" [dateSelected]="finishStartDate"
+                [listLockDays]="unFreeDays">
+            </app-calendar-picker>
+        </div>
     </div>
     <div class="row">
-        <div class="col-md-6">
-            <!-- <ng-select dir="rtl" #select [items]="Time$ | async" bindLabel="timeSlot" clearAllText="Clear"
-                [searchable]="false" autofocus bindValue="id" [(ngModel)]="book.StartAt"
-                placeholder="{{localRes?.selectedTime}}" (change)="onTimeChange($event,select)">
-            </ng-select> -->
+        <div class="col-md-12">
+            <mat-chip-list *ngIf="Time.length >= 0" class="mat-chip-list-stacked" aria-label="Time slot selection">
+                <mat-spinner style="margin: auto;" *ngIf="Time.length <= 0"></mat-spinner>
+                <mat-chip style="width: 30%;" [selected]="time.id === book.StartAt" (mwlClick)="onTimeChange(time)"
+                    (mwlKeydownEnter)="onTimeChange(time)" [ngClass]="{'btn pink':time.id === book.StartAt}"
+                    [selectable]="true" *ngFor="let time of Time">
+                    {{time.timeSlot}}
+                </mat-chip>
+            </mat-chip-list>
         </div>
 
     </div>
@@ -38,4 +50,4 @@
         <button type="submit" (click)="UpdateBook(book)" [disabled]="!editMode"
             class="btn pink">{{localRes?.BookSet}}</button>
     </div>
-</div>
+</ng-container>

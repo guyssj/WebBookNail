@@ -10,7 +10,7 @@
       </mat-form-field>
       <mat-form-field class="input-inline">
         <input matInput placeholder="{{localRes?.LastName}}" formControlName="lastName" required>
-        <mat-error *ngIf="!reactiveForm.hasError('required')">> {{localRes?.ValidationLastName}}</mat-error>
+        <mat-error *ngIf="!reactiveForm.hasError('required')">{{localRes?.ValidationLastName}}</mat-error>
       </mat-form-field>
     </div>
 
@@ -51,7 +51,7 @@
         </mat-option>
       </mat-select>
       <button type="button" *ngIf="reactiveForm.controls.ServiceType.value" matSuffix mat-icon-button aria-label="Clear"
-        (click)="reactiveForm.controls.ServiceType.setValue(null); $event.stopPropagation()">
+        (click)="reactiveForm.controls.ServiceType.setValue(null); $event.stopPropagation(); ServcieTypeSelected = null">
         <mat-icon>x</mat-icon>
       </button>
       <mat-error *ngIf="reactiveForm.invalid">אנא בחר/י סוג טיפול</mat-error>
@@ -82,7 +82,7 @@
       *ngIf="reactiveForm.controls.ServiceType.value && reactiveForm.controls.date.value && !noFreeTime">
       <mat-chip-list class="mat-chip-list-stacked" aria-label="Time slot selection">
         <mat-spinner style="margin: auto;" *ngIf="Time.length <= 0"></mat-spinner>
-        <mat-chip style="width: 30%;" [selected]="time.id === reactiveForm.controls.startAt.value" color="none"
+        <mat-chip style="width: 30%;" [selected]="time.id === reactiveForm.controls.startAt.value"
           (mwlClick)="onTimeChange(time)" (mwlKeydownEnter)="onTimeChange(time)"
           [ngClass]="{'btn pink':time.id === reactiveForm.controls.startAt.value}" [selectable]="true"
           *ngFor="let time of Time">

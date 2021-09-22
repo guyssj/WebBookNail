@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef } from '@angular/core';
 import { ApiServiceService } from 'src/app/services/api-service.service';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MessageConfig, typeMessage } from '../MessageConfig';
@@ -18,35 +18,59 @@ import { BooksService } from 'src/app/services/books.service';
   styleUrls: ['./search-book.component.css']
 })
 export class SearchBookComponent implements OnInit {
-  phoneNumber: string;
-  constructor(private API: ApiServiceService, private booksService:BooksService, private cusService: CustomerService, private dialog: DialogService, private AuthLogin: AuthTokenService) { }
+  //phoneNumber: string;
+  phoneNumber = new FormControl('', [Validators.required, Validators.minLength(8)]);
+  OtpCode = new FormControl('', [Validators.required]);
+  constructor(private API: ApiServiceService,
+    private booksService: BooksService,
+    private cusService: CustomerService,
+    private dialog: DialogService,
+    private AuthLogin: AuthTokenService) { }
   @Output() BookFounded = new EventEmitter<any>();
   @Input() localRes: any;
   @Output() Clear = new EventEmitter<boolean>();
-
-  showOTP: boolean = false;
-  token: string;
+  @ViewChild('OTP') OTPInput: ElementRef;
+  private _showOTP: boolean = false;
   dateNow: Date = new Date(Date.now());
   OtpMissing: boolean = false;
+  customerNotFound = false;
   ngOnInit() {
 
   }
 
-  SearchByPhone(phone: string) {
-    if (!phone)
+  get showOTP() {
+    return this._showOTP;
+  }
+  set showOTP(val) {
+    this._showOTP = val;
+    if (val) {
+      setTimeout(() => {
+        this.OTPInput.nativeElement.focus();
+      }, 10);
+    }
+  }
+
+  SearchByPhone() {
+    if (this.phoneNumber.invalid)
       return;
-    this.cusService.generateOTP(this.phoneNumber).subscribe(token => {
+    this.cusService.generateOTP(this.phoneNumber.value).subscribe(token => {
       if (token.Result) {
+        this.customerNotFound = false;
         this.showOTP = true;
+        //this.OTPInput.nativeElement.focus();
       }
       else {
-        this.dialog.openDialog({ message: this.localRes.CustomerNotFound, type: typeMessage.Error }, 3000);
+        this.customerNotFound = true;
+        //this.dialog.openDialog({ message: this.localRes.CustomerNotFound, type: typeMessage.Error }, 3000);
       }
     })
   }
 
   enter() {
-    this.AuthLogin.otpLogin(this.phoneNumber, this.token)
+    this.OtpMissing = false;
+    if (this.OtpCode.invalid)
+      return;
+    this.AuthLogin.otpLogin(this.phoneNumber.value, this.OtpCode.value)
       .pipe(first())
       .subscribe(
         data => {
@@ -58,7 +82,7 @@ export class SearchBookComponent implements OnInit {
                 var newBooks = book.Result.filter(book => new Date(book.StartDate).getTime() >= minDate.getTime()); //filter only book 2 day ahead
                 this.BookFounded.emit({ book: newBooks });
                 this.showOTP = false;
-                this.token = '';
+                this.OtpCode.setValue('');
                 this.Clear.emit(false);
               }
               else {
@@ -68,8 +92,9 @@ export class SearchBookComponent implements OnInit {
               this.dialog.openDialog({ message: this.localRes.CustomerNotFound, type: typeMessage.Error }, 3000);
             })
           }
-          else{
-            this.dialog.openDialog({ message: this.localRes.OTPInvalid, type: typeMessage.Error }, 3000);
+          else {
+            this.OtpMissing = true;
+            //this.dialog.openDialog({ message: this.localRes.OTPInvalid, type: typeMessage.Error }, 3000);
           }
         },
         error => {

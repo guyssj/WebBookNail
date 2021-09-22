@@ -1,11 +1,15 @@
-<div class="form-row">
+<div #conDiv class="form-row">
     <mat-form-field class="col-md-12">
-        <input matInput type="tel" placeholder="הקשי מספר פלאפון" [(ngModel)]="phoneNumber">
+        <input matInput cdkFocusInitial type="tel" placeholder="הקשי מספר פלאפון" [formControl]="phoneNumber" required>
+        <mat-hint align="end" *ngIf="customerNotFound">{{localRes?.CustomerNotFound}}</mat-hint>
+        <mat-error *ngIf="phoneNumber.invalid && !customerNotFound">{{localRes?.ValidationPhone}}</mat-error>
     </mat-form-field>
-    <mat-form-field  *ngIf="showOTP" class="col-md-12">
-        <input matInput type="tel" name="otp-code" auto-complete="one-time-code" placeholder="קוד אימות" [(ngModel)]="token">
-        
+    <mat-form-field *ngIf="showOTP" class="col-md-12">
+        <input matInput #OTP type="tel" name="otp-code" auto-complete="one-time-code" placeholder="קוד אימות"
+            [formControl]="OtpCode" required>
+        <mat-hint align="end" *ngIf="OtpMissing">{{localRes?.OTPInvalid}}</mat-hint>
     </mat-form-field>
-    <button *ngIf="!showOTP" type="button" class="btn pink"  (click)="SearchByPhone(phoneNumber)"> חפשי </button>
-    <button *ngIf="showOTP" type="button" class="btn pink" (click)="enter(token)"> חפשי </button>
+    <button mat-button *ngIf="!showOTP" type="button" class="btn pink" (click)="SearchByPhone()"> חפש/י
+    </button>
+    <button mat-button *ngIf="showOTP" type="button" class="btn pink" (click)="enter()">התחבר/י</button>
 </div>

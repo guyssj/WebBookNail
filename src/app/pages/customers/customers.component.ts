@@ -13,17 +13,17 @@ import { CustomerService } from 'src/app/services/customer.service';
 })
 export class CustomersComponent implements OnInit {
 
-  constructor(private cusService:CustomerService, private localres:LocalresService) { }
-  Customers:Customer[] = [];
-  @ViewChild(MatPaginator, {static: true}) paginator: MatPaginator;
+  constructor(private cusService: CustomerService, private localres: LocalresService) { }
+  Customers: Customer[] = [];
+  @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   displayedColumns: string[] = ['firstname', 'lastname', 'phonenumber'];
-  resultsLen:any;
-  localRes:any;
-  loader:boolean = true;
-  dataSource:MatTableDataSource<Customer>;
+  resultsLen: any;
+  localRes: any;
+  loader: boolean = true;
+  dataSource: MatTableDataSource<Customer>;
   ngOnInit() {
     this.getAllCustomers();
-    this.localres.getLocalResoruce('he').subscribe(res =>{
+    this.localres.getLocalResoruce('he').subscribe(res => {
       this.localRes = res;
     })
   }
@@ -35,7 +35,8 @@ export class CustomersComponent implements OnInit {
     this.dataSource.paginator = this.paginator;
     this.loader = false;
   }
-  applyFilter(filterValue: string) {
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 

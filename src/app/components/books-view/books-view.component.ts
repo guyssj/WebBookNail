@@ -30,7 +30,7 @@ export class BooksViewComponent implements OnInit {
   bookEdit: bookDetails;
 
 
-  constructor(private API: ApiServiceService,private servService:ServicetypeService, private dialog: MatDialog) {
+  constructor(private API: ApiServiceService, private servService: ServicetypeService, private dialog: MatDialog) {
 
   }
 

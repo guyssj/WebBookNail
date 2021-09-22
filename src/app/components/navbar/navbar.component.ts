@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, HostListener, Output, EventEmitter } from '@angular/core';
 import { LocalresService } from '../../services/localres.service';
 import { MatDialog } from '@angular/material/dialog';
+import { BooksViewDialogComponent } from 'src/app/dialogs/books-view-dialog/books-view-dialog.component';
 
 @Component({
   selector: 'app-navbar',
@@ -21,12 +22,12 @@ export class NavbarComponent implements OnInit {
     }
   }
 
-
-
-
-
   showPanelChange() {
-    this.showChange.emit(true)
+    this.dialog.open(BooksViewDialogComponent, {
+      data: { localRes: this.localRes },
+      maxWidth: '97vw',
+      maxHeight: '90vh'
+    });
   }
 
 }

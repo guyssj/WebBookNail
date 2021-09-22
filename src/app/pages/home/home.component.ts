@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import * as $ from "jquery";
 import { LocalresService } from '../../services/localres.service';
-import { SetBookComponent } from '../set-book/set-book.component';
+import { SetBookComponent } from '../../components/set-book/set-book.component';
 import { isObject } from 'util';
 import { ApiServiceService } from 'src/app/services/api-service.service';
 import { Settings } from 'src/app/classes/StoreSettings';
@@ -77,25 +77,5 @@ export class HomeComponent implements OnInit {
     });
   }
 
-  whenCustomerFound(event) {
-    if (isObject(event)) {
-      this.bookFound = event;
-      this.hidetheSer = true;
-    }
-    else {
-      console.log(event);
-    }
-  }
 
-  clear(event) {
-    if (event) {
-      this.bookFound = null;
-      this.hidetheSer = false;
-    }
-    this.showSer = false;
-  }
-
-  showPanel(event) {
-    this.showSer = true;
-  }
 }

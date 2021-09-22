@@ -37,7 +37,8 @@
                 </div>
             </mat-card-content>
             <mat-card-actions>
-                <button *ngIf="book.canEdit" class="btn pink" (click)="buttonChange(book)">{{localRes?.EditMode}}</button>
+                <button *ngIf="book.canEdit" class="btn pink"
+                    (click)="buttonChange(book)">{{localRes?.EditMode}}</button>
             </mat-card-actions>
         </mat-card>
     </div>
@@ -47,5 +48,5 @@
 </div>
 
 <div *ngIf="!loader && bookEdit">
-    <app-change-book (Clear)="ClearAll($event)" [localRes]="localRes" [bookDetails]="bookEdit"></app-change-book>
+    <app-change-book (Clear)="ClearAll()" [localRes]="localRes" [bookDetails]="bookEdit"></app-change-book>
 </div>

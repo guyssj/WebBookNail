@@ -31,7 +31,8 @@
                     <div class="calendar-day-header"
                         [ngClass]=" { 'isToday' : c.isToday , 'disabled':c.isLockDay || c.isPastDate,'dateSelected':c.isSelectedDay}"
                         *ngIf="c.date.getMonth() == currentMonth">
-                        <button [disabled]="c.isLockDay || c.isPastDate" [attr.aria-pressed]="c.isSelectedDay"
+                        <button type="button" [disabled]="c.isLockDay || c.isPastDate"
+                            [attr.aria-pressed]="c.isSelectedDay"
                             id="dayName_{{c.date.getDate().toString() + c.date.getMonth()}}" (click)="dateClick(c)"
                             [attr.aria-label]="c.date.toDateString()"
                             class="buttonTable"><strong>{{c.date.getDate()}}</strong>

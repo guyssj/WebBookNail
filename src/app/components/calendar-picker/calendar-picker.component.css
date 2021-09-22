@@ -9,6 +9,7 @@
 .calendar-header{
   display: flex;
   margin: 5% calc(33% / 7 - 16px);
+  max-width: 450px;
 }
 .calendar-header button, .calendar-header div{
   margin: auto;

@@ -14,6 +14,7 @@ import { CustomerService } from 'src/app/services/customer.service';
 import { Router } from '@angular/router';
 import { BooksService } from 'src/app/services/books.service';
 import { CalendarService } from 'src/app/services/calendar.service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 
 
@@ -37,10 +38,20 @@ export class ChangeBookComponent implements OnInit {
   newStart: string;
   newEnd: string;
   Time$: Observable<TimeSlots[]>;
-  finishStartDate: Date;
+  Time: TimeSlots[] = [];
+  noFreeTime: boolean = false;
+  finishStartDate: Date = this.calendarPickerMinDate;
   loader: boolean = true;
   editMode: boolean = false;
   previousUrl: string;
+  closeDays: CloseDays[] = [];
+  unFreeDays: string[] = [];
+
+  updateForm = new FormGroup({
+    date: new FormControl(null, Validators.required),
+    startAt: new FormControl(null, Validators.required),
+  });
+
   constructor(private router: Router,
     private booksService: BooksService,
     private API: ApiServiceService,
@@ -51,64 +62,60 @@ export class ChangeBookComponent implements OnInit {
 
   }
 
-  closeDays: CloseDays[] = [];
-  FilterWeekend = (d: Date): boolean => {
-    let days;
-    if (d.getDate() < 10 && d.getMonth() + 1 < 10) {
-      days = d.getFullYear() + "-" + "0" + (d.getMonth() + 1) + "-" + "0" + d.getDate()
-    }
-    else if (d.getMonth() + 1 < 10 && d.getDate() > 9) {
-      days = d.getFullYear() + "-" + "0" + (d.getMonth() + 1) + "-" + d.getDate()
-    }
-    else if (d.getDate() < 10 && d.getMonth() + 1 > 9) {
-      days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + "0" + d.getDate()
-    }
-    else {
-      days = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate()
-    }
-    const sat = d.getDay();
-    let DaytoClose = this.closeDays.filter(date => date.Date == days);
-    if (DaytoClose.length > 0 || sat == 6) {
-      return false;
-    }
-    else {
-      return true;
-    }
-    // console.log(this.dates[d.toLocaleDateString("he-IL")])
-    // return !this.dates[d.toLocaleDateString("he-IL")];
-  }
-
   async getAllCloseDays() {
-    this.closeDays = await this.calendarService.getAllCloseDays()
+    this.closeDays = await this.calendarService.getAllCloseDays();
   }
 
   ngOnInit() {
     this.book = this.bookDetails;
+    this.setDate(this.book.StartDate);
     this.googleAnalyticsService
       .pageview({ page_title: "שינוי התור", page_path: "/updatebook" });
     this.getAllCloseDays();
-    if (!this.finishStartDate)
-      this.finishStartDate = new Date(this.book.StartDate);
     if (this.router.url === "/Admin/Calendar") {
       this.cusService.getCustomerById(this.book.CustomerID).subscribe(res => {
         this.newStart = this.MinToTime(this.book.StartAt);
-        this.newEnd = this.MinToTime(this.book.StartAt + this.book.Durtion);
         this.customer = res.Result;
         this.loader = false;
       })
     }
     else {
       this.cusService.GetCustomerByPhone().subscribe(res => {
-        this.newStart = this.MinToTime(this.book.StartAt);
-        this.newEnd = this.MinToTime(this.book.StartAt + this.book.Durtion);
-        this.customer = res.Result;
-        this.loader = false;
+        this.calendarService.getUnFreeDays(this.getDateString(this.getFirstDayMonth(new Date())), this.book.Durtion).subscribe(unFree => {
+          this.unFreeDays = unFree.Result;
+          this.closeDays.forEach(closeDay => {
+            this.unFreeDays.push(closeDay.Date);
+          });
+          this.newStart = this.MinToTime(this.book.StartAt);
+          this.customer = res.Result;
+          this.loader = false;
+        })
+
       })
     }
+    this.API.getTimeByDate(
+      this.book.StartDate,
+      this.book.Durtion).subscribe(res => {
+        this.Time = [];
+        this.noFreeTime = false;
+        this.Time = res;
+        //this.cdr.detectChanges();
+        if (res.length == 0) {
+          this.noFreeTime = true;
+        }
+      }, error => {
+        this.noFreeTime = true;
+        this.Time = [];
 
-    this.Time$ = this.API.getTimeByDate(this.book.StartDate, this.book.Durtion);
+      });
   }
-
+  setDate(date: Date) {
+    let newDate = new Date(date);
+    newDate = this.clearTime(newDate);
+    newDate = addMinutes(newDate, 0);
+    newDate = addMinutes(newDate, newDate.getTimezoneOffset() * (-1));
+    this.finishStartDate = newDate;
+  }
 
   /**
    * 
@@ -117,7 +124,7 @@ export class ChangeBookComponent implements OnInit {
    * 
    */
   UpdateBook(book: Book) {
-    book.StartDate = this.finishStartDate.toISOString().split("T")[0];
+    book.StartDate = this.getDateString(this.finishStartDate);
     this.booksService.UpdateBook(book).subscribe(res => {
       if (res.Result) {
         this.dialog.openDialog({ message: this.localRes.SuccessApp, type: typeMessage.Success }, 3000);
@@ -174,7 +181,6 @@ export class ChangeBookComponent implements OnInit {
    * @param event TimeSlots
    */
   onTimeChange(event: TimeSlots) {
-
     if (!event) {
       return;
     }
@@ -184,7 +190,16 @@ export class ChangeBookComponent implements OnInit {
       //in this request from server to check all time exist in date choosed
     }
   }
+  private getDateString(date: Date): string {
+    date = this.clearTime(date);
+    date = addMinutes(date, 0);
+    date = addMinutes(date, date.getTimezoneOffset() * (-1));
+    return date.toISOString().split("T")[0];
+  }
 
+  private getFirstDayMonth(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), 1);
+  }
 
   /**
    * 
@@ -192,20 +207,30 @@ export class ChangeBookComponent implements OnInit {
    * @param event 
    * 
    */
-  dateChange(event: MatDatepickerInputEvent<Date>) {
-    this.finishStartDate = new Date(event.value);
-    this.finishStartDate = this.clearTime(this.finishStartDate);
-    this.finishStartDate = addMinutes(this.finishStartDate, 0);
-    this.finishStartDate = addMinutes(this.finishStartDate, this.finishStartDate.getTimezoneOffset() * (-1));
-    this.book.StartDate = this.finishStartDate.toISOString();
-    this.Time$ = this.API.getTimeByDate(this.finishStartDate.toISOString().split("T")[0], this.book.Durtion);
+  dateChange(event) {
     if (!event)
       return;
     if (this.book.StartAt) {
-      //this.ngSelect.clearModel();
       this.editMode = false;
       this.book.StartAt = null;
     }
+    this.setDate(event.date);
+    this.book.StartDate = this.getDateString(this.finishStartDate);
+    this.API.getTimeByDate(
+      this.getDateString(this.finishStartDate),
+      this.book.Durtion).subscribe(res => {
+        this.Time = [];
+        this.noFreeTime = false;
+        this.Time = res;
+        //this.cdr.detectChanges();
+        if (res.length == 0) {
+          this.noFreeTime = true;
+        }
+      }, error => {
+        this.noFreeTime = true;
+        this.Time = [];
+
+      });
 
   }
   /**

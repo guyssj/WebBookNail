@@ -7,8 +7,8 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Services } from 'src/app/classes/Services';
-import { DialogContentExampleDialog } from '../set-book/set-book.component';
-import { MessageConfig, typeMessage } from '../MessageConfig';
+import { DialogContentExampleDialog } from '../../components/set-book/set-book.component';
+import { MessageConfig, typeMessage } from '../../components/MessageConfig';
 import { timer } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { ServicetypeService } from 'src/app/services/servicetype.service';
@@ -20,13 +20,13 @@ import { ServicetypeService } from 'src/app/services/servicetype.service';
 })
 export class ServiceTypesComponent implements OnInit {
 
-  constructor(private API: ApiServiceService, private servService:ServicetypeService,private localres: LocalresService, private dialog: MatDialog) { }
+  constructor(private API: ApiServiceService, private servService: ServicetypeService, private localres: LocalresService, private dialog: MatDialog) { }
   ServiceTypes: ServiceTypes[] = [];
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
   displayedColumns: string[] = ['ServiceTypeName', 'ServiceID', 'Description', 'Price', 'Duration'];
   resultsLen: any;
   localRes: any;
-  loader:boolean = true;
+  loader: boolean = true;
   dataSource: MatTableDataSource<ServiceTypes>;
   ngOnInit() {
     this.GetAllServiceTypes();
@@ -42,7 +42,8 @@ export class ServiceTypesComponent implements OnInit {
     this.loader = false;
   }
 
-  applyFilter(filterValue: string) {
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
 

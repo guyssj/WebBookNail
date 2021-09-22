@@ -19,7 +19,7 @@ export class CustomerService {
     return this.http.get<resultsAPI<boolean>>(`${environment.apiUrl}api/Customer/GenerateToken?PhoneNumber=${phoneNumber}`)
   }
   async GetAllCustomers() {
-    let customers = await this.http.get<resultsAPI<Customer[]>>(`${environment.apiUrl}admin/Customer/GetAllCustomers`, { withCredentials: true }).toPromise();
+    let customers = await this.http.get<resultsAPI<Customer[]>>(`${environment.apiUrl}admin/Customer/GetAll`, { withCredentials: true }).toPromise();
     return customers.Result;
   }
   getCustomerById(id) {
