@@ -21,6 +21,7 @@ export class NavbarComponent implements OnInit {
       this.scroll = true;
     }
   }
+  
 
   showPanelChange() {
     this.dialog.open(BooksViewDialogComponent, {

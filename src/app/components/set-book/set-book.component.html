@@ -72,7 +72,7 @@
         [dateFilter]="FilterWeekend">
 
       </mat-calendar> -->
-      <app-calendar-picker [lang]="localRes" [filterWeeks]="true" (dateChange)="dateChange($event)" [maxDate]="maxDate"
+      <app-calendar-picker (monthChange)="monthChange($event)" [lang]="localRes" [filterWeeks]="true" (dateChange)="dateChange($event)" [maxDate]="maxDate"
         [minDate]="calendarPickerMinDate" [dateSelected]="reactiveForm.controls.date.value" [listLockDays]="unFreeDays">
       </app-calendar-picker>
       <!-- <input type="hidden" #dp="angular-mydatepicker" name="date" angular-mydatepicker formControlName="date"

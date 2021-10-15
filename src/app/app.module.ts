@@ -62,11 +62,11 @@ import { CustomerService } from './services/customer.service';
 import { BooksService } from './services/books.service';
 import { ServicetypeService } from './services/servicetype.service';
 import { CalendarService } from './services/calendar.service';
-import { SlickCarouselModule } from 'ngx-slick-carousel';
 import { CalendarPickerComponent } from './components/calendar-picker/calendar-picker.component';
 import { ChunkPipe } from './pipes/chunk.pipe';
 import { SetBookDialogComponent } from './dialogs/set-book-dialog/set-book-dialog.component';
 import { BooksViewDialogComponent } from './dialogs/books-view-dialog/books-view-dialog.component';
+import { OwlModule } from 'ngx-owl-carousel';
 
 registerLocaleData(localeHe);
 
@@ -125,10 +125,10 @@ registerLocaleData(localeHe);
     MatNativeDateModule,
     ReactiveFormsModule,
     FormsModule,
+    OwlModule,
     AngularFireAuthModule,
     AdminRoutingModule,
     FontAwesomeModule,
-    SlickCarouselModule,
     CalendarModule.forRoot({
       provide: DateAdapter,
       useFactory: adapterFactory

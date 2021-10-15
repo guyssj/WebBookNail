@@ -1,135 +1,150 @@
 @charset "utf-8";
-/*
-Template Name: Garler
-Author: <a href="http://www.os-templates.com/">OS Templates</a>
-Author URI: http://www.os-templates.com/
-Licence: Free to use under our free template licence terms
-Licence URI: http://www.os-templates.com/template-terms
-File: Custom Flexslider CSS => For FlexSlider v2.6.1
-*/
 
-/* Browser Resets
 
---------------------------------------------------------------------------------------------------------------- */
-.slick-dots{
-    margin-left: 30%;
-    color:#ffd8cb;
-}
-.slide{
-    /* width: 1440px;*/
-    height: 684px; 
-}
-.headText{
+.slider-text {
     float: right;
+    color: #000;
     margin: 5%;
-    display: block;
+    display: flex;
+    flex: 1;
     max-width: 500px;
 }
 
-.bg{
-    background-color: #ffd8cb;
-    height: 50px;
-    transition-duration: 0.4s;
+.text-h1 {
+    font-size: 2.3em !important;
 }
-.nav{
-    padding-top: 8px;
+
+.laser-img .img img {
+    position: relative;
+    z-index: 3;
+}
+
+.laser-img .img {
+    padding: 0 30px 30px 15px;
+    position: relative;
+}
+
+.laser-img .img::before {
+    content: '';
+    position: absolute;
+    top: 30px;
+    right: 0;
+    left: 45px;
+    bottom: 0;
+    border: 10px solid #f5e5ed;
+    z-index: 2;
+}
+
+.laser-img .img::after {
+    content: '';
+    width: 90%;
+    position: absolute;
+    top: -5%;
+    bottom: -6%;
+    left: -3%;
+    background-repeat: repeat;
+    z-index: 1;
+}
+
+img {
+    width: 100%;
+    height: auto;
+}
+
+.setAppButton {
+    height: 60px;
+    text-align: center;
+    padding: 13px;
+    font-size: 1.2em;
+    border: 1px solid black;
+}
+
+@media screen and (max-width: 767px) {
+    .text-h1 {
+        font-size: 2em !important;
+        color: white;
+    }
+}
+
+h1,
+h2 {
+    color: white;
+    text-shadow:
+        -1px -1px 0 #000,
+        1px -1px 0 #000,
+        -1px 1px 0 #000,
+        1px 1px 0 #000;
+}
+
+.header {
+    min-height: 100vh;
+    overflow: hidden;
+}
+
+.item {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.v-middle {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 0;
+    -webkit-transform: translate(0%, -50%);
+    transform: translate(0%, -50%);
 }
 
 /***** Slide Left *****/
 .slide-left {
-  animation: 3s slide-left;
-}
-@keyframes slide-left {
-  from {
-    margin-left: 100%;
-  }
-  to {
-    margin-left: 0%;
-  }
+    animation: 3s slide-left;
 }
 
-.flex-container a:hover, .flex-slider a:hover{outline:none;}
-.slides, .slides > li, .flex-control-nav, .flex-direction-nav{margin:0; padding:0; list-style:none;}
-.flex-direction-nav a{font-family:"FontAwesome";}
-div{
+@keyframes slide-left {
+    from {
+        margin-left: 100%;
+    }
+
+    to {
+        margin-left: 0%;
+    }
+}
+
+div {
     font-family: 'Rubik', sans-serif;
 }
 
-/* Necessary Styles
---------------------------------------------------------------------------------------------------------------- */
-.flexslider{display:block; position:relative; margin:0; padding:0;}
-.flexslider .slides{display:block; width:100%; overflow:hidden;}
-.flexslider .slides > li{display:none; -webkit-backface-visibility:hidden;}/* Hide the slides before the JS is loaded. Avoids image jumping */
-.flexslider .slides a{text-decoration:none; outline:none;}
-.flexslider .slides a img{border:none;}
-.flexslider .slides img{display:block; max-width:100%; margin:0 auto;}
-/* Modern Clear fix for the .slides element */
-.slides::before, .slides::after{display:table; content:"";}
-.slides, .slides::after{clear:both;}
-
-
-/* Default Theme
---------------------------------------------------------------------------------------------------------------- */
-.flex-viewport{max-height:2000px; transition:all 1s ease;}
-.loading .flex-viewport{max-height:300px;}
-.flexslider.carousel .slides li{margin-right:20px;}/* Must be the same as in the javascript */
-
-/* Direction Nav */
-.flex-direction-nav{}
-.flex-direction-nav a{display:block; position:absolute; top:50%; width:40px; height:40px; margin:-20px 0 0 0; z-index:10; overflow:hidden; opacity:0; cursor:pointer; text-decoration:none;}
-.flex-direction-nav a::before{display:inline-block; font-size:40px; line-height:1; content:"\f053"; z-index:999;}
-.flex-direction-nav a.flex-next::before{content:"\f054";}
-.flex-direction-nav .flex-prev{left:0;}
-.flex-direction-nav .flex-next{right:0;}
-.flexslider:hover .flex-prev, .flexslider:hover .flex-next{opacity:.5;}
-.flexslider:hover .flex-prev:hover, .flexslider:hover .flex-next:hover{opacity:1;}
-.flex-direction-nav .flex-disabled{visibility:hidden; opacity:0; cursor:default; z-index:-1;}
-
-/* Control Nav */
-.flex-control-nav{display:block; position:absolute; bottom:-80px; width:100%; text-align:center;}
-.flex-control-nav li{display:inline-block; margin:0 5px;}
-.flex-control-paging li a{display:block; width:11px; height:11px; cursor:pointer; text-indent:-9999px; border:2px solid; border-radius:20px;}
-.flex-control-paging li a.flex-active{cursor:default;}
-
-
-/* Responsive
---------------------------------------------------------------------------------------------------------------- */
-@media screen and (max-width:650px){
-	.flex-direction-nav .flex-prev, .flex-direction-nav .flex-next{display:none;}
-}
-
-/* Colours
---------------------------------------------------------------------------------------------------------------- */
-.flex-direction-nav a{color:rgba(255,255,255,1);}
-.flex-control-paging li a{background-color:rgba(255,255,255,1); border-color:rgba(255,255,255,0);}
-.flex-control-paging li a.flex-active{background-color:rgba(255,255,255,0); border-color:rgba(255,255,255,1);}
-
-@media screen and (max-width: 767px){
-    /* .bgded{
-        background-image: url('/assets/backgroundSmall.jpg') !important;
-    } */
-}
-
-.hrLine{
-    border-top-width: 3px;
-border-top-style: solid;
-border-top-color: #ffd8cb;
-}
-
-.heading{
-    color:#F37272;
-}
-.footerHeading{
-    color: black;
-    font-size: 1.8rem;
-}
-.footer-style hr{
+.hrLine {
     border-top-width: 3px;
     border-top-style: solid;
     border-top-color: #ffd8cb;
 }
 
-li:hover .heading{
+
+.footerHeading {
+    color: black;
+    font-size: 1.8rem;
+}
+
+.footer-style hr {
+    border-top-width: 3px;
+    border-top-style: solid;
+    border-top-color: #ffd8cb;
+}
+
+hr {
+    border-top-width: 3px;
+    border-top-style: solid;
+    border-top-color: #ffd8cb;
+}
+
+li:hover .heading {
     color: white;
 }
 
@@ -153,6 +168,7 @@ li:hover .heading{
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
+
 #return-to-top i {
     color: #fff;
     margin: 0;
@@ -166,71 +182,95 @@ li:hover .heading{
     -o-transition: all 0.3s ease;
     transition: all 0.3s ease;
 }
+
 #return-to-top:hover {
     background: rgba(0, 0, 0, 0.9);
 }
+
 #return-to-top:hover i {
     color: #fff;
     top: 5px;
 }
 
-.line{
-    width: 100%; 
+.line {
+    width: 100%;
     height: 1px;
-    background: -moz-linear-gradient(left, rgba(255,255,255,1) 0%, rgba(255,255,255,0.96) 4%, rgba(243, 114, 114, 0.5) 50%, rgba(255,255,255,0) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(left, rgba(255,255,255,1) 0%,rgba(255,255,255,0.96) 4%,rgba(243, 114, 114, 0.5) 50%,rgba(255,255,255,0) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to right, rgba(255,255,255,1) 0%,rgba(255,255,255,0.96) 4%,rgba(243, 114, 114, 0.5) 50%,rgba(255,255,255,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 ); /* IE6-9 */
+    background: -moz-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.96) 4%, rgba(243, 114, 114, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
+    /* FF3.6-15 */
+    background: -webkit-linear-gradient(left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.96) 4%, rgba(243, 114, 114, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
+    /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0.96) 4%, rgba(243, 114, 114, 0.5) 50%, rgba(255, 255, 255, 0) 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#00ffffff', GradientType=1);
+    /* IE6-9 */
+}
+
+.modal-header {
+    border-bottom: none !important;
+}
+
+.fadeIn {
+    -webkit-animation: fadein 3s;
+    /* Safari, Chrome and Opera > 12.1 */
+    -moz-animation: fadein 3s;
+    /* Firefox < 16 */
+    -ms-animation: fadein 3s;
+    /* Internet Explorer */
+    -o-animation: fadein 3s;
+    /* Opera < 12.1 */
+    animation: fadein 3s;
+}
+
+@keyframes fadein {
+    from {
+        opacity: 0;
     }
 
-    .modal-header{
-        border-bottom:none !important;
+    to {
+        opacity: 1;
     }
-    .fadeIn{
-        -webkit-animation: fadein 3s; /* Safari, Chrome and Opera > 12.1 */
-        -moz-animation: fadein 3s; /* Firefox < 16 */
-         -ms-animation: fadein 3s; /* Internet Explorer */
-          -o-animation: fadein 3s; /* Opera < 12.1 */
-             animation: fadein 3s;
-    }
- @keyframes fadein {
-    from { opacity: 0; }
-    to   {opacity: 1;}
 }
 
 /* Firefox < 16 */
 @-moz-keyframes fadein {
-    from { opacity: 0; }
-    to   {opacity: 1;}
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* Safari, Chrome and Opera > 12.1 */
 @-webkit-keyframes fadein {
-    from { opacity: 0; }
-    to   {opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* Internet Explorer */
 @-ms-keyframes fadein {
-    from { opacity: 0; }
-    to   {opacity: 1;}
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 /* Opera < 12.1 */
 @-o-keyframes fadein {
-    from { opacity: 0; }
-    to   {opacity: 1;}
-}
+    from {
+        opacity: 0;
+    }
 
-.header {
-  background-color: #f1f1f1;
-  padding: 30px;
-  text-align: center;
+    to {
+        opacity: 1;
+    }
 }
-
-.sliderText{
-    font-size:6vmin;
-}
-
-/* Extra Things */
-/* body{background: #eee ;font-family: 'Open Sans', sans-serif;}h3{font-size: 30px; font-weight: 400;text-align: center;margin-top: 50px;}h3 i{color: #444;} */

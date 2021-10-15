@@ -1,3 +1,5 @@
+<!-- <header class="fadeIn">
+
 <div class="header" class="bg">
   <ul class="nav nav-pills nav-fill">
     <li class="nav-item">
@@ -21,90 +23,134 @@
     </li>
   </ul>
 </div>
+</header> -->
 <app-navbar [localRes]="localRes"></app-navbar>
-<div class="bgded fadeIn" style="background-image:url('assets/backRTL.png');">
-  <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
-    <div ngxSlickItem *ngFor="let slide of slides" class="slide">
-      <div class="headText" style="display: block;">
-        <h1 class="sliderText   ">{{slide.text}}
-          <hr class="hrLine slide-left ">
-        </h1>
-        <!-- <a class="btn pink" style="height: 50px; text-align: center; padding: 13px; border:1px solid black;"
-          data-toggle="modal" data-target=".bd-example-modal-lg" href="">{{localRes?.clickBook}}</a> -->
-        <button type="button" class="btn pink"
-          style="height: 50px; text-align: center; padding: 13px; border:1px solid black;"
-          (click)="openSetBook()">{{localRes?.clickBook}}</button>
+
+<header>
+  <owl-carousel [options]="SlideOptions" [items]="[]" [carouselClasses]="['owl-theme', 'sliding','header','fadeIn']">
+    <ng-container *ngFor="let slide of slides">
+      <div class="item" style="background-image: url({{slide.img}});">
+        <div style="align-content:flex-start">
+          <div class="v-middle caption mt-30">
+            <div class="col-md-12">
+              <div class="slider-text" style="display: block;">
+                <h1 class="animate__animated animate__fadeInUp text-h1">{{slide.text}}
+                  <hr class="hrLine slide-left">
+                </h1>
+                <h2 class="text-h1" *ngIf="slide.desc">
+                  {{slide.desc}}
+                </h2>
+                <button type="button" class="btn pink setAppButton"
+                  (click)="openSetBook()">{{localRes?.clickBook}}</button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <img class="" src="{{slide.img}}" />
-    </div>
-  </ngx-slick-carousel>
-</div>
-<div class="wrapper footer-style fadeIn">
-  <footer role="doc-credits" id="footer" class="hoc clear">
-    <!-- Wokring hours -->
-    <div class="one_quarter float-right">
-      <h6 class="footerHeading">{{localRes?.WorkingHours}}</h6>
-      <hr>
-      <ul role="listitem" class="nospace linklist contact">
-        <li>
-          {{settings?.WorkingHours}}
-        </li>
-      </ul>
-    </div>
-    <!-- contact us -->
-    <div class="one_half float-right">
-      <h6 class="footerHeading">{{localRes?.Contact}}</h6>
-      <hr>
-      <ul role="listitem" class="nospace btmspace-30 linklist contact">
-        <li>
-          <i class="fa fa-map-marker"></i>
-          <address>
-            {{settings?.Address}}
-          </address>
-        </li>
-        <li>
-          <i class="fa fa-phone"></i>{{settings?.PhoneNumber}}
-        </li>
-        <li>
-          <i class="fas fa-envelope-o"></i>{{settings?.Email}}
-        </li>
-      </ul>
-      <ul class="faico clear">
-        <li>
-          <a class="faicon-facebook" aria-label="Facebook Link" title="Facebook Link" [href]="settings?.FacebookLink">
-            <i class="fab fa-facebook-f"></i>
-          </a>
-        </li>
-        <li>
-          <a class="faicon-facebook" aria-label="Instgram Link" title="Instegram Link" [href]="settings?.InstegramLink">
-            <i class="fab fa-instagram"></i>
-          </a>
-        </li>
-      </ul>
-    </div>
+    </ng-container>
+  </owl-carousel>
+</header>
 
-  </footer>
+<main>
 
-</div>
+  <section class="">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 mb-30 animate__animated animate__fadeInUp">
+          <h3 class="section-title">חדש אצל מיריתוש</h3>
+          <span class="section-subtitle">הסרת שיער בלייזר</span>
+          <hr>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-7 mb-60 animate__animated animate__fadeInUp">
+          <h6>טיפולי הסרת שיער אולטרה מהירים
+          </h6>
+          <p>Qהמערכת החדשנית שהכירה לעולם האסתטיקה מציאות חדשה, בזכות טכנולוגיית ה־ ALT פורצת הדרך
+            מכשיר להסרת שיער מושלם לטיפולי גוף ועור, המשלב טכנולוגיה, קדמה ויעילות ללא כאבים וללא תופעות לוואי.</p>
+          <!-- <p>Duis scelerisque the nibhse drana moss pulvinar laie. Quality the biberon endum in finbus elit egethe solli
+            citudin elit. Phasellus rutrum inle lacusut euismod. Vestibulum eleifend tortor eu misse endumin finbus elit
+            eget the soli citudin elit.</p>
+          <p>Vivense eu nunc bibe endum in finibus elit eget the solli citudin elit. Avensie rutrumin lacus ut euismod.
+            Vestibulum eleifend tortor orci eu ornare sempe.</p>
+          <h6>Betty White | Salon Owner</h6> -->
+        </div>
+        <div class="col-md-5 mb-60">
+          <div class="laser-img">
+            <div class="img"> <img src="assets/1.JPG" alt=""> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrapper footer-style fadeIn">
+    <section class="hoc clear">
+      <!-- Wokring hours -->
+      <div class="one_quarter float-right">
+        <h6 class="footerHeading">{{localRes?.WorkingHours}}</h6>
+        <hr>
+        <ul role="listitem" class="nospace linklist contact">
+          <li>
+            {{settings?.WorkingHours}}
+          </li>
+        </ul>
+      </div>
+      <!-- contact us -->
+      <div class="one_half float-right">
+        <h6 class="footerHeading">{{localRes?.Contact}}</h6>
+        <hr>
+        <ul role="listitem" class="nospace btmspace-30 linklist contact">
+          <li>
+            <i class="fa fa-map-marker"></i>
+            <address>
+              {{settings?.Address}}
+            </address>
+          </li>
+          <li>
+            <i class="fa fa-phone"></i>{{settings?.PhoneNumber}}
+          </li>
+          <li>
+            <i class="fas fa-envelope-o"></i>{{settings?.Email}}
+          </li>
+        </ul>
+        <ul class="faico clear">
+          <li>
+            <a class="faicon-facebook" aria-label="Facebook Link" title="Facebook Link" [href]="settings?.FacebookLink">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+          </li>
+          <li>
+            <a class="faicon-facebook" aria-label="Instgram Link" title="Instegram Link"
+              [href]="settings?.InstegramLink">
+              <i class="fab fa-instagram"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </section>
+  </div>
+</main>
 
 
 <!-- ################################################################################################ -->
 <!-- ########################footer######################################### -->
 <!-- ################################################################################################ -->
-<div class="wrapper row5">
-  <div id="copyright" class="hoc clear">
-    <!-- ################################################################################################ -->
-    <p class="fl_left">Copyright &copy; 2019 - All Rights Reserved -
-      <a href="#">Mirit Eliyhu & Guy Goldboim</a>
-    </p>
-    <p class="fl_right">Template by
-      <a target="_blank" href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a>
-      <a href='https://www.freepik.com/photos/hand'>&nbsp; Photos by Freepik</a>
-    </p>
-    <!-- ################################################################################################ -->
+<footer role="doc-credits" class="">
+  <div class="wrapper row5">
+    <div id="copyright" class="hoc clear">
+      <!-- ################################################################################################ -->
+      <p class="fl_left">Copyright &copy; 2019 - All Rights Reserved -
+        <a href="#">Mirit Eliyhu & Guy Goldboim</a>
+      </p>
+      <p class="fl_right">Template by
+        <a target="_blank" href="http://www.os-templates.com/" title="Free Website Templates">OS Templates</a>
+        <a href='https://www.freepik.com/photos/hand'>&nbsp; Photos by Freepik</a>
+      </p>
+      <!-- ################################################################################################ -->
+    </div>
   </div>
-</div>
-
+</footer>
 
 <!-- ################################################################################################ -->
 <!-- Modal and return button -->
@@ -113,26 +159,3 @@
 <a href="#" id="return-to-top" style="z-index: 1">
   <i class="fa fa-angle-up"></i>
 </a>
-
-<!-- <div class="modal fade" id="SerachModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel2"
-  aria-hidden="true">
-
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" (click)="clear(true);" class="float-left close" style="margin: -1rem !important;"
-          data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-        <h4 class="float-right inline">התור שלך</h4>
-      </div>
-      <hr class="hrLine">
-      <div class="modal-body">
-        <app-search-book [localRes]="localRes" *ngIf="showSer" (Clear)=clear($event)
-          (BookFounded)="whenCustomerFound($event)"></app-search-book>
-        <app-books-view [localRes]="localRes" [booksDetails]="bookFound" (Clear)="clear($event)" *ngIf="hidetheSer">
-        </app-books-view>
-      </div>
-    </div>
-  </div>
-</div> -->

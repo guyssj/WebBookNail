@@ -2,7 +2,7 @@ import { Component, OnInit, Inject, Input, ChangeDetectorRef } from '@angular/co
 import { ApiServiceService } from '../../services/api-service.service';
 import { Observable, timer } from 'node_modules/rxjs';
 import { TimeSlots } from '../../classes/TimeSlots';
-import { addDays, addMinutes } from 'date-fns';
+import { addDays, addMinutes, addMonths } from 'date-fns';
 import { faCalendarAlt } from '@fortawesome/free-solid-svg-icons';
 import { Services } from '../../classes/Services';
 import { ServiceTypes } from '../../classes/servicetypes';
@@ -99,6 +99,7 @@ export class SetBookComponent implements OnInit {
    * 
    */
   dateChange(event: DateChangeEvent) {
+    debugger;
     if (!event)
       return;
 
@@ -205,6 +206,9 @@ export class SetBookComponent implements OnInit {
     return new Date(date.getFullYear(), date.getMonth(), 1);
   }
 
+  monthChange(event){
+ 
+  }
   /**
    * Method event when Service type selected
    * 
@@ -237,6 +241,7 @@ export class SetBookComponent implements OnInit {
           this.setDate(addDays(this.reactiveForm.get('date').value, 1))
 
         this.Time = [];
+        debugger;
         this.API.getTimeByDate(
           this.getDateString(this.reactiveForm.get('date').value),
           event.value.Duration).subscribe(resp => {

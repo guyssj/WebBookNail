@@ -23,13 +23,16 @@ export class HomeComponent implements OnInit {
   bookFound: any;
   @ViewChild(SetBookComponent, { static: true }) setBookCom;
   constructor(private localres: LocalresService,
-    private API: ApiServiceService,
     private Set: SettingsService,
     public dialog: MatDialog,
   ) { }
   slides = [
-    { text: "להיות שונה עם עיצוב הציפורניים בהתאמה אישית", img: "assets/handsSmall.png", desc: "מספקת מגוון רחב של שירותי עיצוב ציפורניים עברוך" },
-    { text: "טיפוח אישי באווירה אחרת, עם מוזיקה מעולה, והמון אהבה", img: "assets/legsSmall.png", desc: "מספקת מגוון רחב של שירותי עיצוב ציפורניים עברוך" },
+    { id: "text21312", text: "הסרת שיער בלייזר היא הדרך היעילה, המהירה והמשתלמת ביותר להסרת שיער", img: "assets/2.jpg", desc: "" },
+    { id: "text24312", text: "!עכשיו אצלי בקליניקה", img: "assets/3.jpg", desc: "הסרת שיער סופר מהירה ללא כאבים או תופעות לוואי" },
+    { id: "text22312", text: "טיפוח אישי באווירה אחרת, עם מוזיקה מעולה, והמון אהבה", img: "assets/4.jpg", desc: "" },
+    { id: "text22314", text: "רק אצל מיריתוש תרגישי מיוחדת עם עיצוב הציפורניים בהתאמה אישית", img: "assets/5.jpg", desc: "" },
+    { id: "text22314", text: "חדש! הסרת שיער בלייזר ללא כאבים", img: "assets/6.JPG", desc: "" }
+
   ];
   slideConfig = {
     dots: true,
@@ -41,9 +44,44 @@ export class HomeComponent implements OnInit {
     adaptiveHeight: true
   };
 
-  removeSlide() {
-    this.slides.length = this.slides.length - 1;
-  }
+  SlideOptions = {
+    items: 1,
+    loop: true,
+    dots: false,
+    touchDrag: true,
+    margin: 0,
+    autoplay: true,
+    navSpeed: 100,
+    smartSpeed: 500,
+    animateOut: 'fadeOut',
+    nav: true,
+    autoHeight: true,
+    responsiveClass: true,
+    responsive: {
+      0: {
+        items: 1,
+      },
+      600: {
+        items: 1
+      },
+      1000: {
+        items: 1
+      }
+    }
+  };
+  // customOptions: OwlOptions = {
+  //   loop: true,
+  //   mouseDrag: false,
+  //   touchDrag: false,
+  //   pullDrag: true,
+  //   margin:30,
+  //   autoHeight:true,
+  //   dots: true,
+  //   navSpeed: 700,
+  //   navText: ['', ''],
+  //   items:1,
+  //   nav: false
+  // }
 
   openSetBook() {
     this.dialog.open(SetBookDialogComponent, {
@@ -61,7 +99,19 @@ export class HomeComponent implements OnInit {
       this.settings = res;
     })
     $(function () {
-      // ===== Scroll to Top ==== 
+      $(window).on("scroll", function () {
+        var bodyScroll = $(window).scrollTop(),
+          navbar = $(".navbar"),
+          logo = $(".navbar .logo> img");
+        if (bodyScroll > 100) {
+          navbar.addClass("nav-scroll");
+          logo.attr('src', 'img/logo-dark.png');
+        } else {
+          navbar.removeClass("nav-scroll");
+          logo.attr('src', 'img/logo-light.png');
+        }
+      });
+      // ===== Scroll to Top ====
       $(window).scroll(function () {
         if ($(this).scrollTop() >= 50) {        // If page is scrolled more than 50px
           $('#return-to-top').fadeIn(200);    // Fade in the arrow

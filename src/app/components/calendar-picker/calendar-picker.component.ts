@@ -30,6 +30,8 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
   @Input() listLockDays: string[] = [];
   @Input() filterWeeks: boolean = false;
   @Output() dateChange = new EventEmitter<DateChangeEvent>();
+  @Output() monthChange = new EventEmitter<any>();
+
 
   public monthNames = ["January", "February", "March", "April", "May", "June",
     "July", "August", "September", "October", "November", "December"
@@ -39,6 +41,7 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
+    debugger;
     if ('dateSelected' in changes) {
       this.dateSelected = changes.dateSelected.currentValue
       if (this.dateSelected) {
@@ -52,6 +55,9 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
             item.isSelectedDay = true;
         })
       }
+    }
+    if('monthIndex' in changes){
+      console.log(changes);
     }
   }
   ngOnInit(): void {
@@ -98,7 +104,9 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
     this.currentMonth = day.getMonth();
     // set the dispaly month for UI
     this.displayMonth = this.monthNames[day.getMonth()];
-    if (this.dateSelected.getMonth() > this.currentMonth) {
+
+    //check if current month is current date
+    if (this.dateSelected.getMonth() > this.currentMonth && this.dateSelected.getFullYear() == day.getFullYear()) {
       this.setMonth(this.dateSelected.getMonth() - this.currentMonth);
       this.minusDisable = true;
       return;
@@ -107,6 +115,12 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
     let dateToAdd = startingDateOfCalendar;
 
     for (var i = 0; i < 42; i++) {
+
+      //check if not shabat selected
+      if(this.dateSelected.getDay() == 6){
+        this.dateSelected = addDays(this.dateSelected,1);
+        this.updateDate(this.dateSelected);
+      }
       let calendarDay = new CalendarDay(new Date(dateToAdd));
       calendarDay.isLockDay = this.listLockDays.includes(this.getDateString(dateToAdd))
       if (dateToAdd > this.maxDate)
@@ -115,16 +129,14 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
         calendarDay.isPastDate = true;
       else if (this.filterWeeks && calendarDay.date.getDay() == 6) //filter satarday (shabat)
         calendarDay.isLockDay = true;
-      else if (calendarDay.isLockDay && this.getDateString(this.dateSelected) == this.getDateString(calendarDay.date)) {
+      else if (calendarDay.isLockDay && this.getDateString(this.dateSelected) == this.getDateString(calendarDay.date)) { //check if all month date is full
         this.dateSelected = addDays(this.getDateString(calendarDay.date), 1)
         if (this.dateSelected.getMonth() > this.currentMonth)
-          //this.increaseMonth();
           this.updateDate(this.dateSelected);
       }
-      else if (this.getDateString(this.dateSelected) == this.getDateString(calendarDay.date)) {
+      else if (this.getDateString(this.dateSelected) == this.getDateString(calendarDay.date)) {// render the selected date
         calendarDay.isSelectedDay = true;
-        //if (this.dateSelected.getMonth() > this.currentMonth)
-        //this.increaseMonth();
+        this.updateDate(calendarDay.date);
       }
       this.calendar.push(calendarDay);
       dateToAdd = new Date(dateToAdd.setDate(dateToAdd.getDate() + 1));
@@ -149,8 +161,6 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
   }
   dateClick(e: CalendarDay) {
     let CalendarEvent = new DateChangeEvent();
-
-
     CalendarEvent.date = e.date;
     this.dateChange.emit(CalendarEvent);
   }
@@ -162,11 +172,13 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
   }
   public increaseMonth() {
     this.monthIndex++;
+    this.monthChange.emit(this.monthIndex)
     this.generateCalendarDays(this.monthIndex);
   }
 
   public decreaseMonth() {
     this.monthIndex--
+    this.monthChange.emit(this.monthIndex)
     this.generateCalendarDays(this.monthIndex);
   }
 
@@ -176,6 +188,7 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
   }
   public setMonth(index) {
     this.monthIndex = index
+    this.monthChange.emit(this.monthIndex)
     this.generateCalendarDays(this.monthIndex);
   }
 
