@@ -67,6 +67,7 @@ import { ChunkPipe } from './pipes/chunk.pipe';
 import { SetBookDialogComponent } from './dialogs/set-book-dialog/set-book-dialog.component';
 import { BooksViewDialogComponent } from './dialogs/books-view-dialog/books-view-dialog.component';
 import { OwlModule } from 'ngx-owl-carousel';
+import { AdvDialogComponent } from './dialogs/adv-dialog/adv-dialog.component';
 
 registerLocaleData(localeHe);
 
@@ -96,6 +97,7 @@ registerLocaleData(localeHe);
     ChunkPipe,
     SetBookDialogComponent,
     BooksViewDialogComponent,
+    AdvDialogComponent,
   ],
   imports: [
     BrowserModule,

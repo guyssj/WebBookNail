@@ -1,5 +1,4 @@
-import { Component, OnInit, Input, HostListener, Output, EventEmitter } from '@angular/core';
-import { LocalresService } from '../../services/localres.service';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BooksViewDialogComponent } from 'src/app/dialogs/books-view-dialog/books-view-dialog.component';
 
@@ -10,7 +9,7 @@ import { BooksViewDialogComponent } from 'src/app/dialogs/books-view-dialog/book
 })
 export class NavbarComponent implements OnInit {
 
-  constructor(private localres: LocalresService, private dialog: MatDialog) { }
+  constructor(private dialog: MatDialog) { }
   @Input() localRes: any;
   @Input() form: any;
   @Output() showChange = new EventEmitter<boolean>();
@@ -21,7 +20,7 @@ export class NavbarComponent implements OnInit {
       this.scroll = true;
     }
   }
-  
+
 
   showPanelChange() {
     this.dialog.open(BooksViewDialogComponent, {

@@ -1,0 +1,9 @@
+.hrLine {
+    border-top-width: 3px;
+    border-top-style: solid;
+    border-top-color: #ffd8cb;
+}
+
+.inline {
+    display: inline-block;
+}

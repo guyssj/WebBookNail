@@ -1,4 +1,3 @@
-import { ThrowStmt } from '@angular/compiler';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChange, SimpleChanges } from '@angular/core';
 import { addDays, addMinutes, addMonths, getMonth } from 'date-fns';
 import { CalendarDay } from 'src/app/classes/calendarday';
@@ -56,7 +55,7 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
         })
       }
     }
-    if('monthIndex' in changes){
+    if ('monthIndex' in changes) {
       console.log(changes);
     }
   }
@@ -117,8 +116,8 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
     for (var i = 0; i < 42; i++) {
 
       //check if not shabat selected
-      if(this.dateSelected.getDay() == 6){
-        this.dateSelected = addDays(this.dateSelected,1);
+      if (this.dateSelected.getDay() == 6) {
+        this.dateSelected = addDays(this.dateSelected, 1);
         this.updateDate(this.dateSelected);
       }
       let calendarDay = new CalendarDay(new Date(dateToAdd));

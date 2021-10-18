@@ -1,12 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef } from '@angular/core';
 import { ApiServiceService } from 'src/app/services/api-service.service';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { MessageConfig, typeMessage } from '../MessageConfig';
-import { DialogContentExampleDialog } from '../set-book/set-book.component';
-import { timer } from 'rxjs';
-import { take, first } from 'rxjs/operators';
-import { MatDialog } from '@angular/material/dialog';
-import { addDays, min } from 'date-fns';
+import { FormControl, Validators } from '@angular/forms';
+import { typeMessage } from '../MessageConfig';
+import { first } from 'rxjs/operators';
 import { AuthTokenService } from 'src/app/services/auth-token.service';
 import { DialogService } from 'src/app/services/dialog.service';
 import { CustomerService } from 'src/app/services/customer.service';
@@ -18,11 +14,9 @@ import { BooksService } from 'src/app/services/books.service';
   styleUrls: ['./search-book.component.css']
 })
 export class SearchBookComponent implements OnInit {
-  //phoneNumber: string;
   phoneNumber = new FormControl('', [Validators.required, Validators.minLength(8)]);
   OtpCode = new FormControl('', [Validators.required]);
-  constructor(private API: ApiServiceService,
-    private booksService: BooksService,
+  constructor(private booksService: BooksService,
     private cusService: CustomerService,
     private dialog: DialogService,
     private AuthLogin: AuthTokenService) { }

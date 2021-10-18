@@ -20,12 +20,6 @@
         <input matInput type="tel" placeholder="{{localRes?.PhoneNumber}}" formControlName="phoneNumber" required>
         <mat-error *ngIf="!reactiveForm.hasError('required')">{{localRes?.ValidationPhone}}</mat-error>
       </mat-form-field>
-      <!-- <div class="input-inline">
-        <ng-select [items]="Services$ | async" dir="rtl" placeholder="{{localRes?.selectedService}}"
-          bindLabel="ServiceName" autofocus [searchable]="false" (change)="onServiceChange($event)"
-          formControlName="service">
-        </ng-select>
-      </div> -->
       <mat-form-field class="input-inline" style="margin-top: 13px;">
         <mat-label>{{localRes?.selectedService}}</mat-label>
         <mat-select [dir]="'rtl'" (selectionChange)="onServiceChange($event)" formControlName="service" required>
@@ -51,7 +45,7 @@
         </mat-option>
       </mat-select>
       <button type="button" *ngIf="reactiveForm.controls.ServiceType.value" matSuffix mat-icon-button aria-label="Clear"
-        (click)="reactiveForm.controls.ServiceType.setValue(null); $event.stopPropagation(); ServcieTypeSelected = null">
+        (click)="onServiceTypeChange(null); $event.stopPropagation();">
         <mat-icon>x</mat-icon>
       </button>
       <mat-error *ngIf="reactiveForm.invalid">אנא בחר/י סוג טיפול</mat-error>
@@ -72,12 +66,17 @@
         [dateFilter]="FilterWeekend">
 
       </mat-calendar> -->
-      <app-calendar-picker (monthChange)="monthChange($event)" [lang]="localRes" [filterWeeks]="true" (dateChange)="dateChange($event)" [maxDate]="maxDate"
-        [minDate]="calendarPickerMinDate" [dateSelected]="reactiveForm.controls.date.value" [listLockDays]="unFreeDays">
+      <mat-spinner style="margin: auto;" *ngIf="loader"></mat-spinner>
+
+      <app-calendar-picker (monthChange)="monthChange($event)" [lang]="localRes" [filterWeeks]="true"
+        (dateChange)="dateChange($event)" [maxDate]="maxDate" [minDate]="calendarPickerMinDate"
+        [dateSelected]="reactiveForm.controls.date.value" [listLockDays]="unFreeDays">
       </app-calendar-picker>
+
       <!-- <input type="hidden" #dp="angular-mydatepicker" name="date" angular-mydatepicker formControlName="date"
         [options]="myDpOptions" (calendarViewChanged)="monthChange($event)" (dateChanged)="dateChange($event)" /> -->
     </div>
+
     <div class="col-md-6"
       *ngIf="reactiveForm.controls.ServiceType.value && reactiveForm.controls.date.value && !noFreeTime">
       <mat-chip-list class="mat-chip-list-stacked" aria-label="Time slot selection">

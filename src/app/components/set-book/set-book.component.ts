@@ -53,6 +53,7 @@ export class SetBookComponent implements OnInit {
     ServiceType: new FormControl(null, Validators.required)
   });
   closeDays: CloseDays[] = [];
+  loader: boolean = false;
 
   constructor(
     private dialog: MatDialog,
@@ -206,8 +207,8 @@ export class SetBookComponent implements OnInit {
     return new Date(date.getFullYear(), date.getMonth(), 1);
   }
 
-  monthChange(event){
- 
+  monthChange(event) {
+
   }
   /**
    * Method event when Service type selected
@@ -226,9 +227,12 @@ export class SetBookComponent implements OnInit {
       this.reactiveForm.patchValue({ timeSlot: null });
     }
 
+
+    this.loader = true;
     this.calendarService
       .getUnFreeDays(this.getDateString(this.getFirstDayMonth(this.reactiveForm.get('date').value)), event.value.Duration).subscribe(results => {
         this.unFreeDays = results.Result
+        this.loader = false;
         this.closeDays.forEach(closeDay => {
           this.unFreeDays.push(closeDay.Date);
         });
@@ -241,7 +245,7 @@ export class SetBookComponent implements OnInit {
           this.setDate(addDays(this.reactiveForm.get('date').value, 1))
 
         this.Time = [];
-        debugger;
+        this.cdr.detectChanges();
         this.API.getTimeByDate(
           this.getDateString(this.reactiveForm.get('date').value),
           event.value.Duration).subscribe(resp => {

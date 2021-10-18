@@ -1,21 +1,13 @@
 import { Component, OnInit, Inject, Input } from "@angular/core";
-import * as $ from "jquery";
 import { Book } from "../../classes/Book";
 import { ApiServiceService } from "../../services/api-service.service";
 import { take } from "rxjs/operators";
 import { CalendarEvent, CalendarView, CalendarEventAction, CalendarEventTimesChangedEvent } from "angular-calendar";
 import {
   isSameMonth,
-  isSameDay,
-  startOfMonth,
-  endOfMonth,
-  startOfWeek,
-  endOfWeek,
-  startOfDay,
-  endOfDay,
-  format
+  isSameDay
 } from "date-fns";
-import { Observable, Subject, timer } from "rxjs";
+import { Subject, timer } from "rxjs";
 import { Router } from "@angular/router";
 import { addDays, addMinutes } from 'date-fns';
 import { MatDialog, MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
@@ -51,7 +43,6 @@ export interface DialogData {
 
 export class CalendarViewComponent implements OnInit {
   constructor(
-    private API: ApiServiceService,
     private router: Router,
     private bookService: BooksService,
     private calendarService: CalendarService,
@@ -85,12 +76,12 @@ export class CalendarViewComponent implements OnInit {
   hidetheSer: boolean = false;
   successEvents = [];
   currentUser: any;
-  photoGoogle:any;
+  photoGoogle: any;
   ngOnInit() {
     this.auth.auth2().subscribe((res) => {
-      if(res){
-      this.UserGoogle = res;
-      this.photoGoogle = this.UserGoogle.photoURL;
+      if (res) {
+        this.UserGoogle = res;
+        this.photoGoogle = this.UserGoogle.photoURL;
       }
     })
     this.Localres.getLocalResoruce("he").subscribe(res => {
@@ -246,7 +237,7 @@ export class CalendarViewComponent implements OnInit {
     var newStartAt = newStart.getHours() * 60 + newStart.getMinutes();
     event.meta.StartDate = event.start.toISOString().split("T")[0];
     event.meta.StartAt = newStartAt
-    this.bookService.UpdateBook(event.meta).subscribe(res=>{
+    this.bookService.UpdateBook(event.meta).subscribe(res => {
 
     });
     this.refresh.next();
@@ -386,7 +377,7 @@ export class CalendarViewComponent implements OnInit {
     {
       label: '<i class="far fa-edit"></i>',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.BookEditing =  event.meta//this.convertEventToBook(event);
+        this.BookEditing = event.meta//this.convertEventToBook(event);
         this.hidetheSer = true;
         this.dialog.open(DialogComponent, {
           data: { localRes: this.localRes, book: this.BookEditing }

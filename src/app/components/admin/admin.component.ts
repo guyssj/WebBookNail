@@ -1,11 +1,5 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LocalresService } from 'src/app/services/localres.service';
-import { CalendarViewComponent } from '../calendar-view/calendar-view.component';
-import { Book } from 'src/app/classes/Book';
-import { CalendarEvent } from 'angular-calendar';
-import { GoogleEvent } from 'src/app/classes/GoogleEvents';
-import { ApiServiceService } from 'src/app/services/api-service.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
@@ -14,9 +8,7 @@ import { Router } from '@angular/router';
 })
 export class AdminComponent implements OnInit {
   localRes: any;
-  constructor(private Localres: LocalresService,
-    private API: ApiServiceService,
-    private router: Router) { }
+  constructor(private Localres: LocalresService) { }
 
   ngOnInit() {
     this.Localres.getLocalResoruce("he").subscribe(res => {
