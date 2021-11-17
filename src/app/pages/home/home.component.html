@@ -1,59 +1,80 @@
-<!-- <header class="fadeIn">
+<main>
+  <app-navbar [localRes]="localRes"></app-navbar>
 
-<div class="header" class="bg">
-  <ul class="nav nav-pills nav-fill">
-    <li class="nav-item">
-      <a class="nav-link " style="color: black;" href="https://wa.me/972{{settings?.PhoneNumber}}">
-        <strong>{{localRes?.SendMessage}}:</strong>{{settings?.PhoneNumber}}&nbsp;<i class="fab fa-whatsapp"></i>
-      </a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link">
-        <strong>{{localRes?.WorkingHours}}:</strong> {{settings?.WorkingHours}}&nbsp;<i
-          class="far fa-1x fa-clock"></i></a>
-    </li>
-    <li class="nav-item float-right">
-      <a class="nav-link" style="color: black;" [href]="settings?.WazeLink">
-        <div>
-          <strong class="">{{localRes?.Address}}</strong>
-          {{settings?.Address}}
-          <i class="fab fa-1x fa-waze"></i>
+  <section id="aboutMe">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12 mb-30 animate__animated animate__fadeInUp">
+          <h1 dir="rtl" class="section-title">נעים להכיר!</h1>
+          <hr>
         </div>
-      </a>
-    </li>
-  </ul>
-</div>
-</header> -->
-<app-navbar [localRes]="localRes"></app-navbar>
+      </div>
+      <div class="row">
+        <div class="col-md-7 mb-60 animate__animated animate__fadeInUp">
+          <p dir="rtl" style="font-size: large;">
+            אני מיריתוש בעלת מכון יופי בתחום הסרות שיער וטיפוח הציפורניים.
+            מאז ומתמיד חלמתי לעסוק בשני הדברים האהובים עלי - אומנות ועולם היופי והטיפוח כשלנגד עיניי החזון:
+            להצליח לגרום לכל לקוח/ה להרגיש טוב עם עצמו בדרך הכי נעימה ונינוחה
+            שבסופה יכול/ה להביט במראה בסיפוק ענק ולהגיד "מושלם"!!
+          </p>
 
-<header>
-  <owl-carousel [options]="SlideOptions" [items]="[]" [carouselClasses]="['owl-theme', 'sliding','header','fadeIn']">
-    <ng-container *ngFor="let slide of slides">
-      <div class="item" style="background-image: url({{slide.img}});">
-        <div style="align-content:flex-start">
-          <div class="v-middle caption mt-30">
-            <div class="col-md-12">
-              <div class="slider-text" style="display: block;">
-                <h1 class="animate__animated animate__fadeInUp text-h1">{{slide.text}}
-                  <hr class="hrLine slide-left">
-                </h1>
-                <h2 class="text-h1" *ngIf="slide.desc">
-                  {{slide.desc}}
-                </h2>
-                <button type="button" class="btn pink setAppButton"
-                  (click)="openSetBook()">{{localRes?.clickBook}}</button>
-              </div>
-            </div>
+          <p dir="rtl" style="font-size: large;">
+            לאורך השנים התמקצעתי בתחום הציפורניים והסרות שיער,
+            עברתי אין ספור הדרכות והשתלמויות בארץ ובחו“ל.
+            צברתי שעות של ניסיון ועדיין לא מפסיקה ללמוד להתמקצע ולהביא את כל החידושים שקיימים בתחום.
+          </p>
+          <h3 dir="rtl">
+            <b>קצת על טיפולים</b>
+          </h3>
+          <p dir="rtl" style="font-size: large;">
+
+            בקליניקה ניתן לקבל מגוון טיפולים בתחום טיפוח הציפורניים - בניית ציפורניים בג'ל, לק ג'ל, פדיקור, טיפול בפטרת
+            הציפורניים.
+            הסרת שיער בטכנולוגיה מתקדמת בשיטת ALT - קרן אור המורכבת מאורכי גל שונים בעלי עצימות תרמית גבוהה.
+            טכנולוגיה זו מתאימה לכל גווני העור ולכל סוגי השיער ( מלבד שיער שיבה,בלונדיני או ג'ינג'י) והיא בטוחה לשימוש
+            לכולם כולל ילדים ובני נוער.
+            קצב העבודה בטכנולוגיית ALT ביחד עם מערכת קירור עוצמתית באמצעות הקפאה ממוקדת ומאלחשת את איזור הטיפול ובכך
+            <b>מאפשרת טיפול מהיר וללא כאבים</b>
+            , בנוסף הפחתת השיער נשמרת לאורך זמן.
+            חשוב לזכור שטכנולוגיית ALT גורמת להרס זקיק השערה ולא לעיכוב צמיחה.
+            מחכה לכם מיריתוש!!
+          </p>
+        </div>
+        <div class="col-md-5 mb-60">
+          <div class="laser-img">
+            <div class="img"> <img src="assets/6.JPG" alt=""> </div>
           </div>
         </div>
       </div>
-    </ng-container>
-  </owl-carousel>
-</header>
+    </div>
+  </section>
 
-<main>
+  <div class="wrapper" *ngIf="customOptions">
+    <owl-carousel-o [classList]="['header','fadeIn']" [options]="customOptions">
+      <ng-container *ngFor="let slide of slides">
+        <ng-template [width]="1500" carouselSlide [id]="slide.id">
+          <div class="item fadeIn" style="background-image: url('{{slide.img}}');">
+            <div class="v-middle caption mt-30">
+              <div class="col-md-12">
+                <div class="slider-text" style="display: block;">
+                  <h1 class="animate__animated animate__fadeInUp text-h1">{{slide.text}}
+                    <hr class="hrLine slide-left">
+                  </h1>
+                  <h2 class="text-h1" *ngIf="slide.desc">
+                    {{slide.desc}}
+                  </h2>
+                  <button type="button" class="btn pink setAppButton"
+                    (click)="openSetBook()">{{localRes?.clickBook}}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </ng-container>
 
-  <section class="">
+    </owl-carousel-o>
+  </div>
+  <section id="adsLaesr">
     <div class="container">
       <div class="row">
         <div class="col-md-12 mb-30 animate__animated animate__fadeInUp">
@@ -66,9 +87,10 @@
         <div class="col-md-7 mb-60 animate__animated animate__fadeInUp">
           <h3>טיפולי הסרת שיער אולטרה מהירים
           </h3>
-          <p style="font-size: large;">Qהמערכת החדשנית שהכירה לעולם האסתטיקה מציאות חדשה, בזכות טכנולוגיית ה־ ALT פורצת
-            הדרך
-            מכשיר להסרת שיער מושלם לטיפולי גוף ועור, המשלב טכנולוגיה, קדמה ויעילות ללא כאבים וללא תופעות לוואי.</p>
+          <p dir="rtl" style="font-size: large;">
+            המערכת החדשנית שהכירה לעולם האסתטיקה מציאות חדשה, בזכות טכנולוגיית ה <cite dir="ltr"> Q-ALT</cite>
+            פורצת
+            הדרך מכשיר להסרת שיער מושלם לטיפולי גוף ועור, המשלב טכנולוגיה, קדמה ויעילות ללא כאבים וללא תופעות לוואי.</p>
         </div>
         <div class="col-md-5 mb-60">
           <div class="laser-img">
@@ -85,7 +107,7 @@
       <div class="one_quarter float-right">
         <h6 class="footerHeading">{{localRes?.WorkingHours}}</h6>
         <hr>
-        <ul role="listitem" class="nospace linklist contact">
+        <ul dir="rtl" role="listitem" class="nospace linklist contact">
           <li>
             {{settings?.WorkingHours}}
           </li>
@@ -153,3 +175,6 @@
 <a href="#" id="return-to-top" style="z-index: 1">
   <i class="fa fa-angle-up"></i>
 </a>
+
+<button type="button" id="fabButton" class="btn pink setAppButton"
+  (click)="openSetBook()">{{localRes?.clickBook}}</button>

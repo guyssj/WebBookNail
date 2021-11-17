@@ -68,7 +68,7 @@
       </mat-calendar> -->
       <mat-spinner style="margin: auto;" *ngIf="loader"></mat-spinner>
 
-      <app-calendar-picker (monthChange)="monthChange($event)" [lang]="localRes" [filterWeeks]="true"
+      <app-calendar-picker *ngIf="!loader" (monthChange)="monthChange($event)" [lang]="localRes" [filterWeeks]="true"
         (dateChange)="dateChange($event)" [maxDate]="maxDate" [minDate]="calendarPickerMinDate"
         [dateSelected]="reactiveForm.controls.date.value" [listLockDays]="unFreeDays">
       </app-calendar-picker>

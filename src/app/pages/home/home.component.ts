@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import * as $ from "jquery";
 import { LocalresService } from '../../services/localres.service';
-import { SetBookComponent } from '../../components/set-book/set-book.component';
 import { Settings } from 'src/app/classes/StoreSettings';
 import { SettingsService } from 'src/app/services/settings.service';
 import { MatDialog } from '@angular/material/dialog';
 import { SetBookDialogComponent } from 'src/app/dialogs/set-book-dialog/set-book-dialog.component';
 import { AdvDialogComponent } from 'src/app/dialogs/adv-dialog/adv-dialog.component';
+import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
   selector: 'app-home',
@@ -16,15 +16,16 @@ import { AdvDialogComponent } from 'src/app/dialogs/adv-dialog/adv-dialog.compon
 export class HomeComponent implements OnInit {
   localRes: any = {};
   settings: Settings;
+  customOptions: OwlOptions;
   constructor(private localres: LocalresService,
     private Set: SettingsService,
     public dialog: MatDialog,
   ) { }
   slides = [
-    { text: "הסרת שיער בלייזר היא הדרך היעילה, המהירה והמשתלמת ביותר להסרת שיער", img: "assets/2.jpg", desc: "" },
-    { text: "!עכשיו אצלי בקליניקה", img: "assets/3.jpg", desc: "הסרת שיער סופר מהירה ללא כאבים או תופעות לוואי" },
-    { text: "טיפוח אישי באווירה אחרת, עם מוזיקה מעולה, והמון אהבה", img: "assets/4.jpg", desc: "" },
-    { text: "רק אצל מיריתוש תרגישי מיוחדת עם עיצוב הציפורניים בהתאמה אישית", img: "assets/5.jpg", desc: "" },
+    { id: "3", text: "הסרת שיער בלייזר היא הדרך היעילה, המהירה והמשתלמת ביותר להסרת שיער", img: "assets/2.jpg", desc: "" },
+    { id: "4", text: "!עכשיו אצלי בקליניקה", img: "assets/3.jpg", desc: "הסרת שיער סופר מהירה ללא כאבים או תופעות לוואי" },
+    { id: "5", text: "טיפוח אישי באווירה אחרת, עם מוזיקה מעולה, והמון אהבה", img: "assets/4.jpg", desc: "" },
+    { id: "7", text: "רק אצל מיריתוש תרגישי מיוחדת עם עיצוב הציפורניים בהתאמה אישית", img: "assets/5.jpg", desc: "" },
 
   ];
   slideConfig = {
@@ -37,6 +38,7 @@ export class HomeComponent implements OnInit {
     adaptiveHeight: true
   };
 
+
   SlideOptions = {
     items: 1,
     loop: true,
@@ -46,6 +48,7 @@ export class HomeComponent implements OnInit {
     autoplay: true,
     navSpeed: 100,
     smartSpeed: 500,
+    lazyLoad: true,
     animateOut: 'fadeOut',
     nav: true,
     autoHeight: true,
@@ -71,7 +74,14 @@ export class HomeComponent implements OnInit {
     });
   }
 
+  setStyles(imgUrl: string) {
+    return {
+      'background-image': `url('${imgUrl}')`,
+    }
+  }
+
   ngOnInit() {
+
     this.localres.getLocalResoruce("he").subscribe(data => {
       this.localRes = data;
     })
@@ -102,11 +112,39 @@ export class HomeComponent implements OnInit {
         }, 500);
       });
     });
-    this.dialog.open(AdvDialogComponent, {
-      data: { localRes: this.localRes, settings: this.settings },
-      maxWidth: '97vw',
-      maxHeight: '90vh'
-    });
+    // this.dialog.open(AdvDialogComponent, {
+    //   data: { localRes: this.localRes, settings: this.settings },
+    //   maxWidth: '97vw',
+    //   maxHeight: '90vh'
+    // });
+    setTimeout(() => {
+      this.customOptions = {
+        loop: true,
+        autoplay: true,
+        mergeFit: true,
+        merge: true,
+        lazyLoad: true,
+        center: true,
+        dots: false,
+        autoHeight: true,
+        autoWidth: false,
+        animateOut: 'fadeOut',
+        responsiveRefreshRate: 12,
+
+        responsive: {
+          0: {
+            items: 1,
+          },
+          600: {
+            items: 1,
+          },
+          1000: {
+            items: 1,
+          }
+        }
+      }
+    }, 2000);
+
   }
 
 

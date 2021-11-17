@@ -4,7 +4,7 @@
 .slider-text {
     float: right;
     color: #000;
-    margin: 5%;
+    margin: 10%;
     display: flex;
     flex: 1;
     max-width: 500px;
@@ -84,7 +84,6 @@ h2 {
 .item {
     position: absolute;
     top: 0;
-    left: 0;
     height: 100%;
     width: 100%;
     background-size: cover;
@@ -190,6 +189,29 @@ li:hover .heading {
 #return-to-top:hover i {
     color: #fff;
     top: 5px;
+}
+
+.section-title {
+    color: black;
+    text-shadow: none;
+    padding-top: 7px;
+}
+
+#fabButton {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 9999;
+    display: block;
+    text-decoration: none;
+    -webkit-border-radius: 35px;
+    -moz-border-radius: 35px;
+    border-radius: 35px;
+    -webkit-transition: all 0.3s linear;
+    -moz-transition: all 0.3s ease;
+    -ms-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .line {

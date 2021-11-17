@@ -21,6 +21,7 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
   public plusDisable = false;
   public currentMonth: number;
   public currentDate: Date;
+  private canupdate: boolean = false;
 
   @Input() maxDate: Date;
   @Input() lang: any = {};
@@ -40,7 +41,6 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    debugger;
     if ('dateSelected' in changes) {
       this.dateSelected = changes.dateSelected.currentValue
       if (this.dateSelected) {
@@ -48,6 +48,12 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
           let date = addDays(this.dateSelected, 1);
           this.updateDate(date);
         }
+        if (!changes.dateSelected.firstChange && this.canupdate) {
+          this.canupdate = false;
+          this.setMonth(this.dateSelected.getMonth() - this.currentMonth);
+        }
+        else if (changes.dateSelected.firstChange)
+          this.canupdate = true;
         this.calendar.forEach(item => {
           item.isSelectedDay = false;
           if (this.getDateString(item.date) == this.getDateString(this.dateSelected))
@@ -105,11 +111,11 @@ export class CalendarPickerComponent implements OnInit, OnChanges {
     this.displayMonth = this.monthNames[day.getMonth()];
 
     //check if current month is current date
-    if (this.dateSelected.getMonth() > this.currentMonth && this.dateSelected.getFullYear() == day.getFullYear()) {
-      this.setMonth(this.dateSelected.getMonth() - this.currentMonth);
-      this.minusDisable = true;
-      return;
-    }
+    // if (this.dateSelected.getMonth() > this.currentMonth && this.dateSelected.getFullYear() == day.getFullYear()) {
+    //   this.setMonth(this.dateSelected.getMonth() - this.currentMonth);
+    //   //this.minusDisable = true;
+    //   return;
+    // }
     let startingDateOfCalendar = this.getStartDateForCalendar(day);
     let dateToAdd = startingDateOfCalendar;
 

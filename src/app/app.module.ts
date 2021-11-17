@@ -24,6 +24,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
 import localeHe from '@angular/common/locales/he';
 import { registerLocaleData } from '@angular/common';
 import { AppComponent } from './app.component';
+import { OwlModule } from 'ngx-owl-carousel';
 import { DialogContentExampleDialog } from './components/set-book/set-book.component';
 import { AppRoutingModule, routingComponents } from './app-routing.module';
 import { CustomersComponent } from './pages/customers/customers.component';
@@ -66,8 +67,8 @@ import { CalendarPickerComponent } from './components/calendar-picker/calendar-p
 import { ChunkPipe } from './pipes/chunk.pipe';
 import { SetBookDialogComponent } from './dialogs/set-book-dialog/set-book-dialog.component';
 import { BooksViewDialogComponent } from './dialogs/books-view-dialog/books-view-dialog.component';
-import { OwlModule } from 'ngx-owl-carousel';
 import { AdvDialogComponent } from './dialogs/adv-dialog/adv-dialog.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 
 registerLocaleData(localeHe);
 
@@ -102,6 +103,8 @@ registerLocaleData(localeHe);
   imports: [
     BrowserModule,
     AppRoutingModule,
+    OwlModule,
+    CarouselModule,
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule, // imports firebase/auth, only needed for auth features
@@ -127,7 +130,6 @@ registerLocaleData(localeHe);
     MatNativeDateModule,
     ReactiveFormsModule,
     FormsModule,
-    OwlModule,
     AngularFireAuthModule,
     AdminRoutingModule,
     FontAwesomeModule,

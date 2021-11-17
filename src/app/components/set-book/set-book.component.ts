@@ -100,7 +100,6 @@ export class SetBookComponent implements OnInit {
    * 
    */
   dateChange(event: DateChangeEvent) {
-    debugger;
     if (!event)
       return;
 
@@ -208,7 +207,9 @@ export class SetBookComponent implements OnInit {
   }
 
   monthChange(event) {
-
+    if (this.reactiveForm.get("startAt").value) {
+      this.reactiveForm.patchValue({ startAt: null });
+    }
   }
   /**
    * Method event when Service type selected
@@ -224,7 +225,7 @@ export class SetBookComponent implements OnInit {
       return;
     }
     if (this.reactiveForm.get("startAt").value) {
-      this.reactiveForm.patchValue({ timeSlot: null });
+      this.reactiveForm.patchValue({ startAt: null });
     }
 
 
