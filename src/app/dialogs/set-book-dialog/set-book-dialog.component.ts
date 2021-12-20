@@ -12,4 +12,7 @@ export class SetBookDialogComponent {
   public data: any,
     public dialogRef: MatDialogRef<SetBookDialogComponent>) {
   }
+  closeDialog() {
+    this.dialogRef.close(false);
+  }
 }

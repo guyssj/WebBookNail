@@ -74,7 +74,7 @@
 
     </owl-carousel-o>
   </div>
-  <section id="adsLaesr">
+  <!-- <section id="adsLaesr">
     <div class="container">
       <div class="row">
         <div class="col-md-12 mb-30 animate__animated animate__fadeInUp">
@@ -99,7 +99,7 @@
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
 
   <div class="wrapper footer-style fadeIn">
     <section class="hoc clear">
@@ -128,7 +128,7 @@
             <i class="fa fa-phone"></i>{{settings?.PhoneNumber}}
           </li>
           <li>
-            <i class="fas fa-envelope-o"></i>{{settings?.Email}}
+            <i class="fas fa-envelope-o"></i><a href="mailto:{{settings?.Email}}">{{settings?.Email}}</a>
           </li>
         </ul>
         <ul class="faico clear">
@@ -160,7 +160,7 @@
       <p class="fl_left">Copyright &copy; 2021 - All Rights Reserved -
         <a href="#">Mirit Eliyhu & Guy Goldboim</a>
       </p>
-      <p class="fl_right">Design by Guy Gold
+      <p class="fl_right">Design by Guy Goldboim
         <a href='https://www.freepik.com/photos/hand'>&nbsp; Photos by Freepik</a>
       </p>
       <!-- ################################################################################################ -->
@@ -176,5 +176,5 @@
   <i class="fa fa-angle-up"></i>
 </a>
 
-<button type="button" id="fabButton" class="btn pink setAppButton"
+<button *ngIf="!isOpen" type="button" id="fabButton" class="btn pink setAppButton"
   (click)="openSetBook()">{{localRes?.clickBook}}</button>

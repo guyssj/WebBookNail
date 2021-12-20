@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   localRes: any = {};
   settings: Settings;
   customOptions: OwlOptions;
+  isOpen: boolean = false;
   constructor(private localres: LocalresService,
     private Set: SettingsService,
     public dialog: MatDialog,
@@ -67,10 +68,14 @@ export class HomeComponent implements OnInit {
   };
 
   openSetBook() {
-    this.dialog.open(SetBookDialogComponent, {
+    this.isOpen = true;
+    let dialogRefClose = this.dialog.open(SetBookDialogComponent, {
       data: { localRes: this.localRes, settings: this.settings },
       maxWidth: '97vw',
       maxHeight: '90vh'
+    });
+    dialogRefClose.afterClosed().subscribe(result => {
+      this.isOpen = false;
     });
   }
 

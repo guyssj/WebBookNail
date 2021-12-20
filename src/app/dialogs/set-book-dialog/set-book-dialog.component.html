@@ -1,6 +1,6 @@
 <div mat-dialog-title>
     <h4 class="inline">קביעת תור {{data.settings?.StoreName}}</h4>
-    <button class="float-left" mat-button mat-dialog-close>
+    <button (click)="closeDialog()" class="float-left" mat-button mat-dialog-close>
         <mat-icon>close</mat-icon>
     </button>
     <hr class="hrLine" style="display: flex;">
