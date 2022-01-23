@@ -151,6 +151,4 @@ export class HomeComponent implements OnInit {
     }, 2000);
 
   }
-
-
 }

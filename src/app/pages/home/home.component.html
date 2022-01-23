@@ -63,8 +63,7 @@
                   <h2 class="text-h1" *ngIf="slide.desc">
                     {{slide.desc}}
                   </h2>
-                  <button type="button" class="btn pink setAppButton"
-                    (click)="openSetBook()">{{localRes?.clickBook}}</button>
+                  <a href="https://ezbz.me/ZSeiDUNRfGb8" class="btn pink setAppButton">{{localRes?.clickBook}}</a>
                 </div>
               </div>
             </div>
@@ -176,5 +175,5 @@
   <i class="fa fa-angle-up"></i>
 </a>
 
-<button *ngIf="!isOpen" type="button" id="fabButton" class="btn pink setAppButton"
-  (click)="openSetBook()">{{localRes?.clickBook}}</button>
+<a *ngIf="!isOpen" id="fabButton" class="btn pink setAppButton"
+  href="https://ezbz.me/ZSeiDUNRfGb8">{{localRes?.clickBook}}</a>
